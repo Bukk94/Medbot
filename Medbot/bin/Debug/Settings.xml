@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Medbot>
+  <!-- Jméno bodů, množné číslo a jednotky (např.: 1 gold, 10 goldů) -->
+  <Currency name="med" plural="medu" units="ml" />
+  
+  <WelcomeMessage></WelcomeMessage>
+  <GoodbyeMessage></GoodbyeMessage>
+</Medbot>

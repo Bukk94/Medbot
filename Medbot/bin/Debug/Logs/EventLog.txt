@@ -1,0 +1,82 @@
+
+[8.7.2017 | 15:48] Sender method: LoadCommands # Commands Loaded
+[8.7.2017 | 15:49] Sender method: LoadCommands # Commands Loaded
+[8.7.2017 | 16:48] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[8.7.2017 | 16:48] Sender method: LoadCommands # Commands Loaded
+[8.7.2017 | 21:32] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[8.7.2017 | 21:32] Sender method: LoadCommands # Commands Loaded
+[8.7.2017 | 21:32] Sender method: PointsHandler # !addhoney {0} {1}  Args: 20, Vetrik - Points successfully added
+[8.7.2017 | 21:33] Sender method: PointsHandler # !removehoney {0} {1}  Args: 50, Vetrik - Points successfully removed
+[8.7.2017 | 21:33] Sender method: PointsHandler # !med  Args: None # Points printed for user Bukk94 # Value: 317
+[8.7.2017 | 22:05] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[8.7.2017 | 22:05] Sender method: LoadCurrencyDetails # Currency details were load successfully
+[8.7.2017 | 22:05] Sender method: LoadCommands # Commands Loaded
+[8.7.2017 | 22:05] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: PointsHandler # !addhoney {0} {1}  Args: 1000, VETRIK - Points successfully added
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:07] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 22:36] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[8.7.2017 | 22:36] Sender method: LoadCurrencyDetails # Currency details were load successfully
+[8.7.2017 | 22:36] Sender method: LoadCommands # Commands Loaded
+[8.7.2017 | 23:05] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[8.7.2017 | 23:05] Sender method: LoadCurrencyDetails # Currency details were load successfully
+[8.7.2017 | 23:05] Sender method: LoadCommands # Commands Loaded
+[8.7.2017 | 23:05] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:06] Sender method: PointsHandler # !med  Args: None # Points printed for user Bukk94 # Value: 321
+[8.7.2017 | 23:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:06] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:14] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[8.7.2017 | 23:14] Sender method: LoadCurrencyDetails # Currency details were load successfully
+[8.7.2017 | 23:14] Sender method: LoadCommands # Commands Loaded
+[8.7.2017 | 23:14] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:14] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:14] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[8.7.2017 | 23:14] Sender method: LoadCurrencyDetails # Currency details were load successfully
+[8.7.2017 | 23:14] Sender method: LoadCommands # Commands Loaded
+[8.7.2017 | 23:16] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[8.7.2017 | 23:16] Sender method: LoadCurrencyDetails # Currency details were load successfully
+[8.7.2017 | 23:16] Sender method: LoadCommands # Commands Loaded
+[8.7.2017 | 23:20] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[8.7.2017 | 23:20] Sender method: LoadCurrencyDetails # Currency details were load successfully
+[8.7.2017 | 23:20] Sender method: LoadCommands # Commands Loaded
+[8.7.2017 | 23:21] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:21] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:21] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:21] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:22] Sender method: LoadCurrencyDetails # Currency details were load successfully
+[8.7.2017 | 23:22] Sender method: LoadCommands # Commands Loaded
+[8.7.2017 | 23:22] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[8.7.2017 | 23:22] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:22] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:22] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:27] Sender method: LoadCurrencyDetails # Currency details were load successfully
+[8.7.2017 | 23:27] Sender method: LoadCommands # Commands Loaded
+[8.7.2017 | 23:27] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[8.7.2017 | 23:28] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:28] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:28] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:28] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:28] Sender method: SavePoints # Points were saved successfully
+[8.7.2017 | 23:28] Sender method: SavePoints # Points were saved successfully

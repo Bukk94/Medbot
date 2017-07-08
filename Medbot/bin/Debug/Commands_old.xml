@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Medbot>
+  <!-- Jméno bodů, množné číslo a jednotky (např.: 1 gold, 10 goldů) -->
+  <Currency name="med" plural="ml medu" units="ml" />
+  
+  <!-- Jednomu příkazu v AvailableCommands odpovídají dvě hlášky v Messages, které následují ihned za sebou ve stejném pořadí! -->
+  <!-- Tzn. prvnímu příkazu odpovídá první a druhý řádek v Messages, druhému příkazu třetí a čtvtý atd. -->
+  <!-- První hláška je úspšená informativní, druhá je chybová -->
+  <!-- Hodnoty jsou doplňovány místo znaků '{#}'. Jejich pořadí lze měnit. Nelze měnit jejich počet! -->
+  <Command Type="Points">
+		<AvailableCommands>
+			<!-- Struktura příkazů
+			Informativní (!points)
+			Přidání (!add 50 Bukk94)
+			Odebrání (!remove 50 Bukk94) -->
+			!med
+			<!-- !addhoney 50 Bukk94 -->
+			!addhoney {0} {1}
+			<!-- !removehoney 50 Bukk94 -->
+			!removehoney {0} {1}
+		</AvailableCommands>
+		<Messages>
+			<!-- Úspešná hláška: {0:Uživatel} nasbíral {1:počet} {2:plural} -->
+			{0} nasbíral {1} {2}
+			<!-- Chybová hláška: MedBot je bezradný! Nepodařilo se mu vypsat {0:Currency name} -->
+			MedBot je bezradný! Nepodařilo se mu vypsat {0}!
+			<!-- Úspešná hláška: {0:Uživatel} bylo připsáno {1:počet} {2:plural} -->
+			{0} bylo připsáno {1} {2}
+			<!-- Chybová hláška -->
+			MedBotovi se něco nepovedlo. Selhalo připsání bodů!
+			<!-- Úspešná hláška: {0:Uživatel} bylo odebráno {1:počet} {2:plural} -->
+			{0} bylo odebráno {1} {2}
+			<!-- Chybová hláška -->
+			MedBot je hodný. Zachránil někoho před odebráním bodů :)
+		</Messages>
+  </Command>
+</Medbot>

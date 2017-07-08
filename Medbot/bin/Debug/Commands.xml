@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Medbot>
+  <!-- Jméno bodů = name, množné číslo = plural, jednotky (např.: gold, ml) = units -->
+  <!-- <Currency name="med" plural="medu" units="ml" /> Údaje o bodech jsou načítány ze souboru Settings.xml -->
+  
+  <!-- Dostupné Handlery:
+     Info 		- žádný parametr
+     Add 		- dva parametry -> {0} - počet, {1} - uživatel
+     Remove		- dva parametry -> {0} - počet, {1} - uživatel
+	 
+	 Pokud je zadán neplatný handler, příkaz nebude zpracován!
+  -->
+  <!-- Hodnoty jsou doplňovány místo znaků '{#}'. Jejich pořadí lze měnit. Lze použít jen některé z nich. Nelze přidávat další! -->
+  <!-- BroadcasterOnly, ModPermissionRequired a SendWhisper je logický boolean typ. Může nabývat pouze hodnot: true, false, 0, 1 -->
+  <!-- Pokud je BroadcasterOnly true, nemůže ModPermissionRequired být také true. Je implicitně nastavena na false. -->
+  
+  <!-- 
+	Dostupné hodnoty pro příkazy:
+	{0} - číselná hodnota
+	{1} - řetězec
+  -->
+  <Commands Type="Points">
+		<!-- !med -->
+		<!-- About hláška, 3 parametry {0:Currency name} {1:plural} {2: units} -->
+		<!-- Úspešná hláška, 4 parametry: {0:Uživatel} {1:počet} {2:plural} {3:units} -->
+		<!-- Chybová hláška, 5 parametry: {0:Currency name} {1:plural} {2:units} {3:počet} {4:uživatel} -->
+		<Command 
+		Handler="Info" 
+		BroadcasterOnly="false" 
+		ModPermissionRequired="false"
+		SendWhisper="true"
+		AboutCommand="Vypíše počet {1} uživatele. Příklad: !med"
+		SuccessMessage="{0} nasbíral {1} {3} {2}"
+		FailMessage="MedBot je bezradný! Nepodařilo se mu vypsat {0}!"
+		>!med</Command>
+		
+		<!-- !addhoney {0:počet:numeric} {1:uživatel:string} -->
+		<!-- About hláška, 3 parametry {0:Currency name} {1:plural} {2: units} -->
+		<!-- Úspešná hláška, 4 parametry: {0:Uživatel} {1:počet} {2:plural} {3:units} -->
+		<!-- Chybová hláška, 5 parametry: {0:Currency name} {1:plural} {2:units} {3:počet} {4:uživatel} -->
+		<Command Handler="Add" 
+		BroadcasterOnly="false" 
+		ModPermissionRequired="true"
+		SendWhisper="false"
+		AboutCommand="Přidá uživateli zadaný počet {1}. Příklad: !addhoney 50 Bukk94"
+		SuccessMessage="Medvědovi {0} bylo připsáno {1} {3} {2}"
+		FailMessage="MedBotovi se něco nepovedlo. Selhalo připsání {1}!"
+		>!addhoney {0} {1}</Command>
+		
+		<!-- !removehoney {0:počet} {1:uživatel} -->
+		<!-- About hláška, 3 parametry {0:Currency name} {1:plural} {2: units} -->
+		<!-- Úspešná hláška, 4 parametry: {0:Uživatel} {1:počet} {2:plural} {3:units} -->
+		<!-- Chybová hláška, 5 parametry: {0:Currency name} {1:plural} {2:units} {3:počet} {4:uživatel} -->
+		<Command Handler="Remove" 
+		BroadcasterOnly="false" 
+		ModPermissionRequired="true"
+		SendWhisper="false"
+		AboutCommand="Odebere uživateli zadaný počet {1}. Příklad: !removehoney 50 Bukk94"
+		SuccessMessage="Medvědovi {0} bylo odebráno {1} {3} {2}"
+		FailMessage="MedBot je hodný. Zachránil někoho před odebráním {1} :)"
+		>!removehoney {0} {1}</Command>
+  </Commands>
+</Medbot>

@@ -1,0 +1,9 @@
+D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Medbot.exe.config
+D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Medbot.exe
+D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Medbot.pdb
+D:\Temp\Plocha\C# Projects\Medbot\Medbot\obj\Debug\Medbot.csprojResolveAssemblyReference.cache
+D:\Temp\Plocha\C# Projects\Medbot\Medbot\obj\Debug\Medbot.Properties.Resources.resources
+D:\Temp\Plocha\C# Projects\Medbot\Medbot\obj\Debug\Medbot.csproj.GenerateResource.Cache
+D:\Temp\Plocha\C# Projects\Medbot\Medbot\obj\Debug\Medbot.exe
+D:\Temp\Plocha\C# Projects\Medbot\Medbot\obj\Debug\Medbot.pdb
+D:\Temp\Plocha\C# Projects\Medbot\Medbot\obj\Debug\Medbot.MainFrame.resources
