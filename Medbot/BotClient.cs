@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using Medbot.Commands;
 
 namespace Medbot {
     internal class BotClient :IBotClient {
@@ -49,7 +50,7 @@ namespace Medbot {
             chatMessagePrefix = String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :", Login.BotName, Login.Channel);
             onlineUsers = new List<User>();
 
-            points = new Points(3000);
+            points = new Points(3000, true);
 
             CommandsHandler.Initialize(points);
             commands = CommandsHandler.LoadCommands();
@@ -67,29 +68,77 @@ namespace Medbot {
         /// Starts the bot. Auto-connects to bot's Twitch account
         /// </summary>
         public void Start() {
-            Thread.Sleep(3000); // REMOVE: Sleep timer
+            if (IsConnectionAlive) {
+                Console.WriteLine("Bot is already running");
+                return;
+            }
+
             Connect();
             // Immediatelly start the timer
             this.readingTimer.Change(0, 200);
+            if(!points.TimerRunning)
+                points.StartPointsTimer();
         }
 
+        /// <summary>
+        /// Stops the bot. Disconnects bot from his Twitch account and discarding TCP connection
+        /// </summary>
+        public void Stop() {
+            if (!IsConnectionAlive) {
+                Console.WriteLine("Bot is not running");
+                return;
+            }
+
+            this.readingTimer.Change(Timeout.Infinite, 200);
+            Disconnect();
+
+            if(points.TimerRunning)
+                points.StopPointsTimer();
+            Console.WriteLine("Bot has been stopped");
+        }
+
+        /// <summary>
+        /// Connects the bot to the Twitch account
+        /// </summary>
         public void Connect() {
-            var encoding = Encoding.GetEncoding(65001, new EncoderExceptionFallback(), new DecoderReplacementFallback(string.Empty));
-            tcpClient = new TcpClient("irc.chat.twitch.tv", 6667);
-            reader = new StreamReader(tcpClient.GetStream(), encoding);
-            writer = new StreamWriter(tcpClient.GetStream());
+            try {
+                var encoding = Encoding.GetEncoding(65001, new EncoderExceptionFallback(), new DecoderReplacementFallback(string.Empty));
+                tcpClient = new TcpClient("irc.chat.twitch.tv", 6667);
+                reader = new StreamReader(tcpClient.GetStream(), encoding);
+                writer = new StreamWriter(tcpClient.GetStream());
 
-            writer.WriteLine("PASS " + Login.BotPassword + Environment.NewLine +
-                             "NICK " + Login.BotName + Environment.NewLine +
-                             "USER " + Login.BotName + " 8 * :" + Login.BotName);
-            writer.WriteLine("CAP REQ :twitch.tv/membership");
-            //writer.WriteLine("CAP REQ :twitch.tv/commands");
-            writer.WriteLine("CAP REQ :twitch.tv/tags");
-            writer.WriteLine("JOIN #" + Login.Channel);
-            writer.Flush();
+                writer.WriteLine("PASS " + Login.BotPassword + Environment.NewLine +
+                                 "NICK " + Login.BotName + Environment.NewLine +
+                                 "USER " + Login.BotName + " 8 * :" + Login.BotName);
+                writer.WriteLine("CAP REQ :twitch.tv/membership");
+                //writer.WriteLine("CAP REQ :twitch.tv/commands");
+                writer.WriteLine("CAP REQ :twitch.tv/tags");
+                writer.WriteLine("JOIN #" + Login.Channel);
+                writer.Flush();
 
-            SendChatMessage("Medvedi Bot joined the chat");
-            Logging.LogEvent(System.Reflection.MethodBase.GetCurrentMethod(), "Bot has successfully connected to Twitch account and joined the channel " + Login.Channel);
+                // TODO: Load welcome message from settings.xml
+                SendChatMessage("MedBot joined the chat");
+                Logging.LogEvent(System.Reflection.MethodBase.GetCurrentMethod(), "Bot has successfully connected to Twitch account and joined the channel " + Login.Channel);
+            } catch (Exception ex) {
+                Console.WriteLine("Error occured during connecting");
+                Console.WriteLine(ex);
+                Logging.LogError(this, System.Reflection.MethodBase.GetCurrentMethod(), "Error occured during connecting: " + ex.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Disconnects the bot from the Twitch account, clean OnlineUsers list and closes TCP connection
+        /// </summary>
+        public void Disconnect() {
+            try {
+                points.SavePoints();
+                reader.Close();
+                writer.Close();
+                tcpClient.Close();
+                OnlineUsers.Clear();
+            } catch (Exception ex) {
+                Console.WriteLine(ex);
+            }
         }
 
         // TODO: Delete this after compiling API
@@ -147,7 +196,13 @@ namespace Medbot {
         /// <param name="sender">User who sent the command</param>
         /// <param name="message">String command message send by user</param>
         private void RespondToCommand(User sender, string message) {
-            var command = commands.FirstOrDefault(cmd => cmd.CommandFormat.Contains(message.Split(' ').FirstOrDefault()));
+            var command = commands.FirstOrDefault(cmd => {
+                                                  List<string> parsedMessageCommand = message.Split(' ').ToList();
+                                                  string messageCmdName = parsedMessageCommand.FirstOrDefault();
+                                                  int commandArgs = cmd.CommandFormat.Split(' ').Count();
+
+                                                  return cmd.CommandFormat.Contains(messageCmdName) && parsedMessageCommand.Count == commandArgs; });
+
             if (command != null) {
                 if (!command.VerifyFormat(message)) { // Check permission, if user doesn't have permission, don't send anything
                     DeliverCommandResults(command, command.CheckCommandPermissions(sender) ? command.GetAboutInfoMessage() : "", sender);
@@ -274,6 +329,13 @@ namespace Medbot {
             writer.WriteLine(String.Format("{0}/w {1} {2}", chatMessagePrefix, user.ToLower(), msg));
             writer.Flush();
             ConsoleAppendText(String.Format("{0}/w {1} {2}", chatMessagePrefix, user.ToLower(), msg));
+        }
+
+        /// <summary>
+        /// Saves all online users points
+        /// </summary>
+        public void SavePoints() {
+            points.SavePoints();
         }
     }
 }
