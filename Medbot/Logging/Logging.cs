@@ -12,12 +12,12 @@ namespace Medbot.LoggingNS {
         /// <summary>
         /// Full path to error log including the name
         /// </summary>
-        public static string ErrorLog { get { return LogFolderPath + Path.DirectorySeparatorChar + "ErrorLog.txt"; } }
+        public static string ErrorLogPath { get { return LogFolderPath + Path.DirectorySeparatorChar + "ErrorLog.txt"; } }
 
         /// <summary>
         /// Full path to event log including the name
         /// </summary>
-        public static string EventLog { get { return LogFolderPath + Path.DirectorySeparatorChar + "EventLog.txt"; } }
+        public static string EventLogPath { get { return LogFolderPath + Path.DirectorySeparatorChar + "EventLog.txt"; } }
 
         // Mutex locks
         private static Object errorLogLock = new Object();
@@ -44,7 +44,7 @@ namespace Medbot.LoggingNS {
 
             lock (errorLogLock) {
                 try {
-                    string fileContent = File.ReadAllText(ErrorLog);
+                    string fileContent = File.ReadAllText(ErrorLogPath);
 
                     fileContent += String.Format("{0}[{1} | {2}] Sender object: {3} # Sender method: {4} # Error log: {5}", Environment.NewLine, DateTime.Now.Date.ToShortDateString(),
                                                                              DateTime.Now.ToShortTimeString(),
@@ -52,7 +52,8 @@ namespace Medbot.LoggingNS {
                                                                              methodSender.Name,
                                                                              errorMessage);
                     fileContent = fileContent.Replace("\n\n", "\n");
-                    File.WriteAllText(ErrorLog, fileContent);
+                    File.WriteAllText(ErrorLogPath, fileContent);
+                    Console.WriteLine(errorMessage);
                 } catch (Exception ex) {
                     Console.WriteLine(ex);
                 }
@@ -68,13 +69,13 @@ namespace Medbot.LoggingNS {
 
             lock (eventLogLock) {
                 try {
-                    string fileContent = File.ReadAllText(EventLog);
+                    string fileContent = File.ReadAllText(EventLogPath);
 
                     fileContent += String.Format("{0}[{1} | {2}] Sender method: {3} # {4}", Environment.NewLine, DateTime.Now.Date.ToShortDateString(),
                                                                                            DateTime.Now.ToShortTimeString(), methodSender.Name, eventMessage);
 
                     fileContent = fileContent.Replace("\n\n", "\n");
-                    File.WriteAllText(EventLog, fileContent);
+                    File.WriteAllText(EventLogPath, fileContent);
                 } catch (Exception ex) {
                     Console.WriteLine(ex);
                 } 
@@ -88,11 +89,11 @@ namespace Medbot.LoggingNS {
             if(!Directory.Exists(LogFolderPath))
                 Directory.CreateDirectory(LogFolderPath);
 
-            if (!File.Exists(ErrorLog))
-                File.Create(ErrorLog);
+            if (!File.Exists(ErrorLogPath))
+                File.Create(ErrorLogPath);
 
-            if (!File.Exists(EventLog))
-                File.Create(EventLog);
+            if (!File.Exists(EventLogPath))
+                File.Create(EventLogPath);
         }
     }
 }
