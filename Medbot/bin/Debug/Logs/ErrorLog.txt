@@ -1,0 +1,9 @@
+
+[10.7.2017 | 1:45] Sender object: Medbot.CommandsHandler # Sender method: LoadCommands # Error log: FAILED to load commands. File not found
+[10.7.2017 | 16:04] Sender object: Medbot.Commands.CommandsHandler # Sender method: InternalHandler # Error log: System.Exception: Last follower has not been found
+   v Medbot.Commands.CommandsHandler.InternalHandler(User sender, Command cmd, List`1 args) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\Commands\CommandsHandler.cs:řádek 196
+[10.7.2017 | 22:49] Sender object: Medbot.Commands.CommandsHandler # Sender method: InternalHandler # Error log: System.FormatException: Index (od nuly) musí být větší nebo roven nule a menší než velikost seznamu argumentů.
+   v System.Text.StringBuilder.AppendFormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   v System.String.FormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   v System.String.Format(String format, Object arg0)
+   v Medbot.Commands.CommandsHandler.InternalHandler(User sender, Command cmd, List`1 args) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\Commands\CommandsHandler.cs:řádek 233

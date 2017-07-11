@@ -7,3 +7,4 @@ D:\Temp\Plocha\C# Projects\Medbot\Medbot\obj\Debug\Medbot.csproj.GenerateResourc
 D:\Temp\Plocha\C# Projects\Medbot\Medbot\obj\Debug\Medbot.exe
 D:\Temp\Plocha\C# Projects\Medbot\Medbot\obj\Debug\Medbot.pdb
 D:\Temp\Plocha\C# Projects\Medbot\Medbot\obj\Debug\Medbot.MainFrame.resources
+D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Newtonsoft.Json.dll
