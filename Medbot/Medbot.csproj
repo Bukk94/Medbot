@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,8 +47,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BotClient.cs" />
-    <Compile Include="Command.cs" />
-    <Compile Include="CommandsHandler.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CommandsHandler.cs" />
+    <Compile Include="ExpSystem\Rank.cs" />
+    <Compile Include="Followers\Follow.cs" />
+    <Compile Include="Followers\Follower.cs" />
+    <Compile Include="Followers\FollowersClass.cs" />
+    <Compile Include="Followers\FollowersInfo.cs" />
     <Compile Include="IBotClient.cs" />
     <Compile Include="Logging\Logging.cs" />
     <Compile Include="Login.cs" />
@@ -87,6 +93,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
