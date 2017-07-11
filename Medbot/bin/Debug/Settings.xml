@@ -3,6 +3,9 @@
   <!-- Jméno bodů, množné číslo a jednotky (např.: 1 gold, 10 goldů) -->
   <Currency name="med" plural="medu" units="ml" />
   
+  <!-- Interval - Interval získávání zkušeností v minutách -->
+  <Experience interval="1" idleExp="2" activeExp="5" />
+  
   <WelcomeMessage></WelcomeMessage>
   <GoodbyeMessage></GoodbyeMessage>
 </Medbot>
