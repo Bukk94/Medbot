@@ -11,6 +11,7 @@ using Medbot.LoggingNS;
 namespace Medbot {
     public class Points {
         private bool rewardIdles;
+        private bool timerRunning;
         private int interval; // ms
         private int amount;   // number
         private int idleTime; // s
@@ -48,6 +49,11 @@ namespace Medbot {
         public static string CurrencyUnits { get { return currencyUnits; } set { currencyUnits = value; } }
 
         /// <summary>
+        /// Gets bool if the Points timer is running
+        /// </summary>
+        public bool TimerRunning { get { return this.timerRunning; } }
+
+        /// <summary>
         /// Point class manages point awarding and timer ticking
         /// </summary>
         /// <param name="onlineUsers">Reference to List of online users</param>
@@ -55,16 +61,53 @@ namespace Medbot {
         /// <param name="rewardIdles">Bool if idle users should be rewarded</param>
         /// <param name="idleTime">Time after which the user will become idle (in seconds)</param>
         /// <param name="amount">Amount of points awarded to active users each tick</param>
-        internal Points(int interval, bool rewardIdles = false, int idleTime = 5, int amount = 1) {
+        internal Points(int interval, bool autostart = false, bool rewardIdles = false, int idleTime = 5, int amount = 1) {
             this.interval = interval;
             this.amount = amount;
             this.idleTime = idleTime;
             this.rewardIdles = rewardIdles;
+            this.timerRunning = false;
             this.pointsLocationPath = String.Format(@"{0}{1}{2}", Directory.GetCurrentDirectory(), Path.DirectorySeparatorChar, this.pointsFileName);
-            this.timer = new Timer(AwardPoints_TimerTick, null, 0, this.interval); // Timeout.Infinite ?
             this.fileLock = new Object();
 
+            if (autostart)
+                StartPointsTimer();
+            else
+                this.timer = new Timer(AwardPoints_TimerTick, null, Timeout.Infinite, this.interval);
+
             LoadCurrencyDetails();
+        }
+
+        /// <summary>
+        /// Starts points timer
+        /// </summary>
+        /// <param name="interval">Interval between ticks</param>
+        internal void StartPointsTimer() {
+            if (TimerRunning) {
+                Console.WriteLine("Points timer is already running");
+                return;
+            }
+
+            if(this.timer == null)
+                this.timer = new Timer(AwardPoints_TimerTick, null, 0, this.interval);
+            
+            this.timer.Change(0, this.interval);
+            this.timerRunning = true;
+            Console.WriteLine("Starting points timer");
+        }
+
+        /// <summary>
+        /// Stops points timer
+        /// </summary>
+        internal void StopPointsTimer() {
+            if (!TimerRunning) {
+                Console.WriteLine("Timer is not running");
+                return;
+            }
+
+            this.timer.Change(Timeout.Infinite, int.MaxValue);
+            this.timerRunning = false;
+            Console.WriteLine("Stopping points timer");
         }
 
         /// <summary>
@@ -90,8 +133,9 @@ namespace Medbot {
         /// </summary>
         internal void LoadCurrencyDetails() {
             if (!File.Exists(BotClient.SettingsPath)) {
-                Console.WriteLine("Currency failed to load");
-                Logging.LogError(this, System.Reflection.MethodBase.GetCurrentMethod(), "Currency failed to load. Missing Settings.xml");
+                Console.WriteLine("Currency failed to load, loading default currency details");
+                LoadDefaultCurrencyDetails();
+                Logging.LogError(this, System.Reflection.MethodBase.GetCurrentMethod(), "Currency failed to load. Missing Settings.xml. Loading default currency details.");
                 return;
             }
 
@@ -108,6 +152,15 @@ namespace Medbot {
                     Logging.LogError(this, System.Reflection.MethodBase.GetCurrentMethod(), ex.ToString());
                 }
             }
+        }
+
+        /// <summary>
+        /// Loads default currency details
+        /// </summary>
+        private void LoadDefaultCurrencyDetails() {
+            CurrencyName = "gold";
+            CurrencyNamePlural = "gold";
+            CurrencyUnits = "g";
         }
 
         /// <summary>
@@ -253,7 +306,7 @@ namespace Medbot {
                     if (userRecord != null) { // User exists in current XML, edit his value
                         userRecord.NextAttribute.Value = operation(long.Parse(userRecord.NextAttribute.Value), pointsToChange).ToString();
                     } else { // User doesn't exist, create a new record
-                        User newUser = new User(username.ToLower(), pointsToChange);
+                        User newUser = new User(username.ToLower(), operation(0, pointsToChange));
                         AddUserRecord(ref data, newUser);
                     }
 
