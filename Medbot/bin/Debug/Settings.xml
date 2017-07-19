@@ -1,11 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Medbot>
-  <!-- Jméno bodů, množné číslo a jednotky (např.: 1 gold, 10 goldů) -->
-  <Currency name="med" plural="medu" units="ml" />
-  
-  <!-- Interval - Interval získávání zkušeností v minutách -->
-  <Experience interval="1" idleExp="2" activeExp="5" />
-  
-  <WelcomeMessage></WelcomeMessage>
-  <GoodbyeMessage></GoodbyeMessage>
+	<!-- Jméno bodů, množné číslo a jednotky (např.: 1 gold, 10 goldů) -->
+	<!-- Interval - Interval získávání bodů v minutách -->
+	<!-- IdleTime je čas za který se divák stane neaktivním, v minutách -->
+	<!-- PointsPerTick je počet bodů, který divák dostane za sledování -->
+	<!-- RewardIdles má hodnotu 0 nebo 1. 0 znamená, že neaktivní diváci nedostanou odměnu. 1 naopak přidělí odměnu i neaktivním divákům -->
+	<Currency Name="med" Plural="medu" Units="ml" Interval="1" IdleTime="5" PointsPerTick="1" RewardIdles="0"/>
+	
+	<!-- Interval - Interval získávání zkušeností v minutách -->
+	<!-- IdleExp a ActiveExp je počet XP pro aktivní/pasivní diváky -->
+	<!-- IdleTime je čas za který se divák stane neaktivním, v minutách -->
+	<Experience Interval="1" IdleExp="1" ActiveExp="5" IdleTime="5"/>
+	
+	<Dictionary>
+	  <WelcomeMessage>MedBot se připojil do chatu</WelcomeMessage>
+	  <GoodbyeMessage>MedBot se loučí</GoodbyeMessage>
+	  <!-- Dostupné parametry:   {0:Uživatel} {1: Rank level} {2: Jméno ranku} -->
+	  <NewRankMessage>{0} získal nový rank: [{1}] {2}</NewRankMessage>
+	  
+	  <Yes>Ano</Yes>
+	  <No>Ne</No>
+	  
+	  <!-- Number of top people printed by !leaderboard command -->
+	  <LeaderboardTopNumber>4</LeaderboardTopNumber>
+	</Dictionary>
 </Medbot>
