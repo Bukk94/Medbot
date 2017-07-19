@@ -44,15 +44,13 @@ namespace Medbot.LoggingNS {
 
             lock (errorLogLock) {
                 try {
-                    string fileContent = File.ReadAllText(ErrorLogPath);
-
-                    fileContent += String.Format("{0}[{1} | {2}] Sender object: {3} # Sender method: {4} # Error log: {5}", Environment.NewLine, DateTime.Now.Date.ToShortDateString(),
+                    using (StreamWriter sw = File.AppendText(ErrorLogPath)) {
+                        sw.WriteLine(String.Format("[{0} | {1}] Sender object: {2} # Sender method: {3} # Error log: {4}", DateTime.Now.Date.ToShortDateString(),
                                                                              DateTime.Now.ToShortTimeString(),
                                                                              sender.FullName,
                                                                              methodSender.Name,
-                                                                             errorMessage);
-                    fileContent = fileContent.Replace("\n\n", "\n");
-                    File.WriteAllText(ErrorLogPath, fileContent);
+                                                                             errorMessage));
+                    }
                     Console.WriteLine(errorMessage);
                 } catch (Exception ex) {
                     Console.WriteLine(ex);
@@ -69,13 +67,10 @@ namespace Medbot.LoggingNS {
 
             lock (eventLogLock) {
                 try {
-                    string fileContent = File.ReadAllText(EventLogPath);
-
-                    fileContent += String.Format("{0}[{1} | {2}] Sender method: {3} # {4}", Environment.NewLine, DateTime.Now.Date.ToShortDateString(),
-                                                                                           DateTime.Now.ToShortTimeString(), methodSender.Name, eventMessage);
-
-                    fileContent = fileContent.Replace("\n\n", "\n");
-                    File.WriteAllText(EventLogPath, fileContent);
+                    using (StreamWriter sw = File.AppendText(EventLogPath)) {
+                        sw.WriteLine(String.Format("[{0} | {1}] Sender method: {2} # {3}", DateTime.Now.Date.ToShortDateString(),
+                                                                                           DateTime.Now.ToShortTimeString(), methodSender.Name, eventMessage));
+                    }
                 } catch (Exception ex) {
                     Console.WriteLine(ex);
                 } 
@@ -90,10 +85,10 @@ namespace Medbot.LoggingNS {
                 Directory.CreateDirectory(LogFolderPath);
 
             if (!File.Exists(ErrorLogPath))
-                File.Create(ErrorLogPath);
+                File.Create(ErrorLogPath).Dispose();
 
             if (!File.Exists(EventLogPath))
-                File.Create(EventLogPath);
+                File.Create(EventLogPath).Dispose();
         }
     }
 }
