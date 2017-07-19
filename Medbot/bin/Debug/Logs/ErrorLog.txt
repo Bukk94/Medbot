@@ -7,3 +7,130 @@
    v System.String.FormatHelper(IFormatProvider provider, String format, ParamsArray args)
    v System.String.Format(String format, Object arg0)
    v Medbot.Commands.CommandsHandler.InternalHandler(User sender, Command cmd, List`1 args) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\Commands\CommandsHandler.cs:řádek 233
+[12.7.2017 | 16:07] Sender object: Medbot.FileControl # Sender method: LoadUserData # Error log: Data loading of usermedvedibot FAILED. FILE NOT FOUND.
+[12.7.2017 | 16:08] Sender object: Medbot.FileControl # Sender method: LoadUserData # Error log: System.NullReferenceException: Odkaz na objekt není nastaven na instanci objektu.
+   v Medbot.FileControl.LoadUserData(User& user)
+[12.7.2017 | 16:08] Sender object: Medbot.FileControl # Sender method: SaveData # Error log: System.NullReferenceException: Odkaz na objekt není nastaven na instanci objektu.
+   v Medbot.FileControl.SaveData()
+[12.7.2017 | 16:08] Sender object: Medbot.FileControl # Sender method: SaveData # Error log: System.NullReferenceException: Odkaz na objekt není nastaven na instanci objektu.
+   v Medbot.FileControl.SaveData()
+[12.7.2017 | 16:09] Sender object: Medbot.FileControl # Sender method: SaveData # Error log: System.NullReferenceException: Odkaz na objekt není nastaven na instanci objektu.
+   v Medbot.FileControl.SaveData()
+[12.7.2017 | 16:09] Sender object: Medbot.FileControl # Sender method: SaveData # Error log: System.NullReferenceException: Odkaz na objekt není nastaven na instanci objektu.
+   v Medbot.FileControl.SaveData()
+[12.7.2017 | 16:11] Sender object: Medbot.FileControl # Sender method: SaveData # Error log: System.NullReferenceException: Odkaz na objekt není nastaven na instanci objektu.
+[12.7.2017 | 16:14] Sender object: Medbot.FileControl # Sender method: SaveData # Error log: System.NullReferenceException: Odkaz na objekt není nastaven na instanci objektu.
+   v Medbot.FileControl.SaveData() v d:\Temp\Plocha\C# Projects\Medbot\Medbot\FileControl.cs:řádek 64
+[13.7.2017 | 0:40] Sender object: Medbot.ExpSystem.Experiences # Sender method: LoadRanks # Error log: System.NullReferenceException: Odkaz na objekt není nastaven na instanci objektu.
+   v Medbot.ExpSystem.Experiences.LoadRanks() v d:\Temp\Plocha\C# Projects\Medbot\Medbot\ExpSystem\Experiences.cs:řádek 63
+[13.7.2017 | 0:40] Sender object: Medbot.ExpSystem.Experiences # Sender method: LoadRanks # Error log: System.NullReferenceException: Odkaz na objekt není nastaven na instanci objektu.
+   v Medbot.ExpSystem.Experiences.LoadRanks() v d:\Temp\Plocha\C# Projects\Medbot\Medbot\ExpSystem\Experiences.cs:řádek 63
+[13.7.2017 | 0:40] Sender object: Medbot.ExpSystem.Experiences # Sender method: LoadRanks # Error log: System.NullReferenceException: Odkaz na objekt není nastaven na instanci objektu.
+   v Medbot.ExpSystem.Experiences.LoadRanks() v d:\Temp\Plocha\C# Projects\Medbot\Medbot\ExpSystem\Experiences.cs:řádek 63
+[14.7.2017 | 16:06] Sender object: Medbot.FileControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user vetrik84 FAILED. User not found
+   v Medbot.FileControl.LoadUserData(User& user) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\FileControl.cs:řádek 36
+[14.7.2017 | 16:15] Sender object: Medbot.BotClient # Sender method: Reader_Timer_Tick # Error log: System.ArgumentException: Výstupní znaková vyrovnávací paměť je pro dekódované znaky příliš malá, kódování Unicode (UTF-8) záložní verze System.Text.DecoderReplacementFallback.
+Název parametru: chars
+   v System.Text.Encoding.ThrowCharsOverflow()
+   v System.Text.Encoding.ThrowCharsOverflow(DecoderNLS decoder, Boolean nothingDecoded)
+   v System.Text.UTF8Encoding.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, DecoderNLS baseDecoder)
+   v System.Text.DecoderNLS.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex)
+   v System.IO.StreamReader.ReadBuffer()
+   v System.IO.StreamReader.Peek()
+   v Medbot.BotClient.Reader_Timer_Tick(Object s) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\BotClient.cs:řádek 182
+[14.7.2017 | 17:11] Sender object: Medbot.BotClient # Sender method: Connect # Error log: Error occured during connecting: System.ArgumentException: An invalid URI string: irc.twitch.tv:6667
+Název parametru: url
+   v WebSocketSharp.WebSocket..ctor(String url, String[] protocols)
+   v Medbot.BotClient.Connect() v d:\Temp\Plocha\C# Projects\Medbot\Medbot\BotClient.cs:řádek 145
+[14.7.2017 | 17:12] Sender object: Medbot.BotClient # Sender method: Connect # Error log: Error occured during connecting: System.ArgumentException: The scheme part isn't 'ws' or 'wss': http://irc.twitch.tv:6667
+Název parametru: url
+   v WebSocketSharp.WebSocket..ctor(String url, String[] protocols)
+   v Medbot.BotClient.Connect() v d:\Temp\Plocha\C# Projects\Medbot\Medbot\BotClient.cs:řádek 145
+[15.7.2017 | 16:30] Sender object: Medbot.Commands.CommandsHandler # Sender method: PointsHandler # Error log: Medbot.Exceptions.PointsException: User can't trade this amount of points. User doesn't have enough points to trade.
+   v Medbot.User.Trade(Int64 points) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\User.cs:řádek 140
+   v Medbot.Commands.CommandsHandler.PointsHandler(User sender, Command cmd, List`1 args) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\Commands\CommandsHandler.cs:řádek 180
+[15.7.2017 | 17:12] Sender object: Medbot.Commands.CommandsHandler # Sender method: PointsHandler # Error log: Medbot.Exceptions.PointsException: User can't trade this amount of points. User doesn't have enough points to trade.
+   v Medbot.User.Trade(Int64 points, User target, String targetUsername) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\User.cs:řádek 147
+   v Medbot.Commands.CommandsHandler.PointsHandler(User sender, Command cmd, List`1 args) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\Commands\CommandsHandler.cs:řádek 184
+[15.7.2017 | 18:02] Sender object: Medbot.BotClient # Sender method: Reader_Timer_Tick # Error log: System.ArgumentException: Výstupní znaková vyrovnávací paměť je pro dekódované znaky příliš malá, kódování Unicode (UTF-8) záložní verze System.Text.DecoderReplacementFallback.
+Název parametru: chars
+   v System.Text.Encoding.ThrowCharsOverflow()
+   v System.Text.Encoding.ThrowCharsOverflow(DecoderNLS decoder, Boolean nothingDecoded)
+   v System.Text.UTF8Encoding.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, DecoderNLS baseDecoder)
+   v System.Text.DecoderNLS.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex)
+   v System.IO.StreamReader.ReadBuffer()
+   v System.IO.StreamReader.Peek()
+   v Medbot.BotClient.Reader_Timer_Tick(Object s) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\BotClient.cs:řádek 185
+[15.7.2017 | 19:08] Sender object: Medbot.FileControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user  FAILED. User not found
+   v Medbot.FileControl.LoadUserData(User& user) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\FileControl.cs:řádek 36
+[15.7.2017 | 19:09] Sender object: Medbot.BotClient # Sender method: Reader_Timer_Tick # Error log: System.ArgumentException: Výstupní znaková vyrovnávací paměť je pro dekódované znaky příliš malá, kódování Unicode (UTF-8) záložní verze System.Text.DecoderReplacementFallback.
+Název parametru: chars
+   v System.Text.Encoding.ThrowCharsOverflow()
+   v System.Text.Encoding.ThrowCharsOverflow(DecoderNLS decoder, Boolean nothingDecoded)
+   v System.Text.UTF8Encoding.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, DecoderNLS baseDecoder)
+   v System.Text.DecoderNLS.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex)
+   v System.IO.StreamReader.ReadBuffer()
+   v System.IO.StreamReader.Peek()
+   v Medbot.BotClient.Reader_Timer_Tick(Object s) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\BotClient.cs:řádek 191
+[15.7.2017 | 19:15] Sender object: Medbot.BotClient # Sender method: Reader_Timer_Tick # Error log: System.ArgumentException: Výstupní znaková vyrovnávací paměť je pro dekódované znaky příliš malá, kódování Unicode (UTF-8) záložní verze System.Text.DecoderReplacementFallback.
+Název parametru: chars
+   v System.Text.Encoding.ThrowCharsOverflow()
+   v System.Text.Encoding.ThrowCharsOverflow(DecoderNLS decoder, Boolean nothingDecoded)
+   v System.Text.UTF8Encoding.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, DecoderNLS baseDecoder)
+   v System.Text.DecoderNLS.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex)
+   v System.IO.StreamReader.ReadBuffer()
+   v System.IO.StreamReader.Peek()
+   v Medbot.BotClient.Reader_Timer_Tick(Object s) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\BotClient.cs:řádek 191
+[16.7.2017 | 2:31] Sender object: Medbot.BotClient # Sender method: Reader_Timer_Tick # Error log: System.ArgumentException: Výstupní znaková vyrovnávací paměť je pro dekódované znaky příliš malá, kódování Unicode (UTF-8) záložní verze System.Text.DecoderReplacementFallback.
+Název parametru: chars
+   v System.Text.Encoding.ThrowCharsOverflow()
+   v System.Text.Encoding.ThrowCharsOverflow(DecoderNLS decoder, Boolean nothingDecoded)
+   v System.Text.UTF8Encoding.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, DecoderNLS baseDecoder)
+   v System.Text.DecoderNLS.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex)
+   v System.IO.StreamReader.ReadBuffer()
+   v System.IO.StreamReader.Peek()
+   v Medbot.BotClient.Reader_Timer_Tick(Object s) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\BotClient.cs:řádek 197
+[16.7.2017 | 2:32] Sender object: Medbot.BotClient # Sender method: Reader_Timer_Tick # Error log: System.ArgumentException: Výstupní znaková vyrovnávací paměť je pro dekódované znaky příliš malá, kódování Unicode (UTF-8) záložní verze System.Text.DecoderReplacementFallback.
+Název parametru: chars
+   v System.Text.Encoding.ThrowCharsOverflow()
+   v System.Text.Encoding.ThrowCharsOverflow(DecoderNLS decoder, Boolean nothingDecoded)
+   v System.Text.UTF8Encoding.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, DecoderNLS baseDecoder)
+   v System.Text.DecoderNLS.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex)
+   v System.IO.StreamReader.ReadBuffer()
+   v System.IO.StreamReader.Peek()
+   v Medbot.BotClient.Reader_Timer_Tick(Object s) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\BotClient.cs:řádek 197
+[17.7.2017 | 2:43] Sender object: Medbot.Commands.CommandsHandler # Sender method: InternalHandler # Error log: ERROR while switching colors on/off. Arguments doesn't match
+[17.7.2017 | 17:47] Sender object: Medbot.BotClient # Sender method: Reader_Timer_Tick # Error log: System.ArgumentException: Výstupní znaková vyrovnávací paměť je pro dekódované znaky příliš malá, kódování Unicode (UTF-8) záložní verze System.Text.DecoderReplacementFallback.
+Název parametru: chars
+   v System.Text.Encoding.ThrowCharsOverflow()
+   v System.Text.Encoding.ThrowCharsOverflow(DecoderNLS decoder, Boolean nothingDecoded)
+   v System.Text.UTF8Encoding.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, DecoderNLS baseDecoder)
+   v System.Text.DecoderNLS.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex)
+   v System.IO.StreamReader.ReadBuffer()
+   v System.IO.StreamReader.Peek()
+   v Medbot.BotClient.Reader_Timer_Tick(Object s) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\BotClient.cs:řádek 203
+[17.7.2017 | 18:16] Sender object: Medbot.BotClient # Sender method: Reader_Timer_Tick # Error log: System.ArgumentException: Výstupní znaková vyrovnávací paměť je pro dekódované znaky příliš malá, kódování Unicode (UTF-8) záložní verze System.Text.DecoderReplacementFallback.
+Název parametru: chars
+   v System.Text.Encoding.ThrowCharsOverflow()
+   v System.Text.Encoding.ThrowCharsOverflow(DecoderNLS decoder, Boolean nothingDecoded)
+   v System.Text.UTF8Encoding.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, DecoderNLS baseDecoder)
+   v System.Text.DecoderNLS.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex)
+   v System.IO.StreamReader.ReadBuffer()
+   v System.IO.StreamReader.Peek()
+   v Medbot.BotClient.Reader_Timer_Tick(Object s) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\BotClient.cs:řádek 203

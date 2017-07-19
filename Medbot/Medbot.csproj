@@ -49,12 +49,19 @@
     <Compile Include="BotClient.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandsHandler.cs" />
+    <Compile Include="Exceptions\PointsException.cs" />
+    <Compile Include="Exceptions\RanksException.cs" />
+    <Compile Include="ExpSystem\Experiences.cs" />
     <Compile Include="ExpSystem\Rank.cs" />
+    <Compile Include="Internal\FileControl.cs" />
     <Compile Include="Followers\Follow.cs" />
     <Compile Include="Followers\Follower.cs" />
     <Compile Include="Followers\FollowersClass.cs" />
     <Compile Include="Followers\FollowersInfo.cs" />
     <Compile Include="IBotClient.cs" />
+    <Compile Include="Internal\CommandThrottling.cs" />
+    <Compile Include="Internal\BotDictionary.cs" />
+    <Compile Include="Internal\MessageThrottling.cs" />
     <Compile Include="Logging\Logging.cs" />
     <Compile Include="Login.cs" />
     <Compile Include="MainFrame.cs">
@@ -63,7 +70,7 @@
     <Compile Include="MainFrame.Designer.cs">
       <DependentUpon>MainFrame.cs</DependentUpon>
     </Compile>
-    <Compile Include="Parsing.cs" />
+    <Compile Include="Internal\Parsing.cs" />
     <Compile Include="Points.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
