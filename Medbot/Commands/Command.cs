@@ -4,18 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Medbot.Internal;
 
 namespace Medbot.Commands {
-    enum CommandType { Points, XP, Internal }
-    enum HandlerType { Info, Add, Remove, Leaderboard, LastFollower, Random }
+    enum CommandType { Points, EXP, Internal }
+    enum HandlerType { All, Info, InfoSecond, Add, Remove, Trade, Leaderboard, LastFollower, Random, Color, ChangeColor }
 
     internal class Command {
         private CommandType commandType;
         private HandlerType handlerType;
+        private TimeSpan cooldown;
+        private CommandThrottling throttler;
         private string commandFormat;
         private string aboutCommand;
         private string successMessage;
         private string failMessage;
+        private string errorMessage;
         private bool broadcasterOnly;
         private bool modRequired;
         private bool sendWhisper;
@@ -46,6 +50,11 @@ namespace Medbot.Commands {
         internal string FailMessage { get { return this.failMessage; } }
 
         /// <summary>
+        /// Gets command's error message 
+        /// </summary>
+        internal string ErrorMessage { get { return this.errorMessage; } }
+
+        /// <summary>
         /// Gets command's success message
         /// </summary>
         internal string SuccessMessage { get { return this.successMessage; } }
@@ -56,16 +65,19 @@ namespace Medbot.Commands {
         internal bool SendWhisper { get { return this.sendWhisper; } }
 
         internal Command(CommandType cmd, HandlerType handler, string commandFormat, string about, string successMessage, 
-                         string failMessage, bool broadcasterOnly, bool modPermission, bool sendWhisp) {
+                         string failMessage, string errorMessage, bool broadcasterOnly, bool modPermission, bool sendWhisp, TimeSpan cd) {
             this.handlerType = handler;
             this.commandFormat = commandFormat;
             this.aboutCommand = about;
             this.successMessage = successMessage;
             this.failMessage = failMessage;
+            this.errorMessage = errorMessage;
             this.commandType = cmd;
             this.broadcasterOnly = broadcasterOnly;
             this.modRequired = modPermission;
             this.sendWhisper = sendWhisp;
+            this.cooldown = cd;
+            this.throttler = new CommandThrottling(this.cooldown);
         }
 
         /// <summary>
@@ -75,10 +87,11 @@ namespace Medbot.Commands {
         /// <param name="command">Full name of the command</param>
         /// <returns>Informative string</returns>
         internal string Execute(User sender, List<string> args) {
-            if (CheckCommandPermissions(sender))
+            if (CheckCommandPermissions(sender) && throttler.AllowedToExecute())
                 return CommandsHandler.ExecuteMethod(commandType, this, sender, args);
-            else
-                return String.Format("Nemáš dostatečná práva abys provedl tento příkaz. MedBot ti nepomůže.");
+            //else
+            //    return String.Format("Nemáš dostatečná práva abys provedl tento příkaz. MedBot ti nepomůže.");
+            return "";
         }
 
         /// <summary>
@@ -110,6 +123,23 @@ namespace Medbot.Commands {
         internal string GetAboutInfoMessage() {
             // 3 params {0:Currency name} {1:plural} {2: units}
             return String.Format(aboutCommand, Points.CurrencyName, Points.CurrencyNamePlural, Points.CurrencyUnits);
+        }
+
+        /// <summary>
+        /// Resets command's cooldown
+        /// </summary>
+        internal void ResetCommandCooldown() {
+            throttler.ResetThrottlingTimer();
+        }
+
+        /// <summary>
+        /// Gets readable format of command's format
+        /// </summary>
+        /// <returns>String of readable command</returns>
+        internal string ToReadableFormat() {
+            string readable = this.commandFormat.Replace("{0}", "<0>");
+            readable = readable.Replace("{1}", "<text>");
+            return readable;
         }
     }
 }
