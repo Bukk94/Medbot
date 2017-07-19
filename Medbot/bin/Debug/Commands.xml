@@ -4,8 +4,10 @@
   <!-- <nazev bodu="med" množné číslo="medu" jednotky bodů="ml" /> Údaje o bodech jsou načítány ze souboru Settings.xml -->
   
   <!-- Hodnoty jsou doplňovány místo znaků '{#}'. Jejich pořadí lze měnit. Lze použít jen některé z nich. Nelze přidávat další! -->
-  <!-- BroadcasterOnly, ModPermissionRequired a SendWhisper je logický boolean typ. Může nabývat pouze hodnot: true, false, 0, 1 -->
+  <!-- BroadcasterOnly, ModPermissionRequired a SendWhisper je logický boolean typ. Může nabývat pouze hodnot: true, false -->
   <!-- Pokud je BroadcasterOnly true, nemůže ModPermissionRequired být také true. Je implicitně nastavena na false. -->
+  
+  <!-- Cooldown má vždy následující formát:   HH:MM:SS   Příklad na 5 minut:  0:5:0 nebo 00:5:00 nebo 00:05:00 -->
   
   <!-- 
 	Dostupné hodnoty pro příkazy:
@@ -17,6 +19,7 @@
 		  Info 		- žádný parametr
 		  Add 		- dva parametry -> {0} - počet, {1} - uživatel
 		  Remove	- dva parametry -> {0} - počet, {1} - uživatel
+		  Trade		- dva parametry -> {0} - počet, {1} - uživatel
 		 
 		  Pokud je zadán neplatný handler, příkaz nebude zpracován! -->
 		
@@ -28,10 +31,11 @@
 		Handler="Info" 
 		BroadcasterOnly="false" 
 		ModPermissionRequired="false"
-		SendWhisper="true"
+		SendWhisper="false"
 		AboutCommand="Vypíše počet {1} uživatele. Příklad: !med"
 		SuccessMessage="{0} nasbíral {1} {3} {2}"
 		FailMessage="MedBot je bezradný! Nepodařilo se mu vypsat {0}!"
+		Cooldown="00:00:5"
 		>!med</Command>
 		
 		<!-- !addhoney {0:počet:numeric} {1:uživatel:string} -->
@@ -45,12 +49,13 @@
 		AboutCommand="Přidá uživateli zadaný počet {1}. Příklad: !addhoney 50 Bukk94"
 		SuccessMessage="Medvědovi {0} bylo připsáno {1} {3} {2}"
 		FailMessage="MedBotovi se něco nepovedlo. Selhalo připsání {1}!"
+		Cooldown="00:00:00"
 		>!addhoney {0} {1}</Command>
 		
 		<!-- !removehoney {0:počet} {1:uživatel} -->
 		<!-- About hláška, 3 parametry {0:nazev bodu} {1:množné číslo} {2: jednotky bodů} -->
 		<!-- Úspešná hláška, 4 parametry: {0:Uživatel} {1:počet} {2:množné číslo} {3:jednotky bodů} -->
-		<!-- Chybová hláška, 5 parametry: {0:nazev bodu} {1:množné číslo} {2:jednotky bodů} {3:počet} {4:uživatel} -->
+		<!-- Chybová hláška, 5 parametrů: {0:nazev bodu} {1:množné číslo} {2:jednotky bodů} {3:počet} {4:uživatel} -->
 		<Command Handler="Remove" 
 		BroadcasterOnly="false" 
 		ModPermissionRequired="true"
@@ -58,12 +63,72 @@
 		AboutCommand="Odebere uživateli zadaný počet {1}. Příklad: !removehoney 50 Bukk94"
 		SuccessMessage="Medvědovi {0} bylo odebráno {1} {3} {2}"
 		FailMessage="MedBot je hodný. Zachránil někoho před odebráním {1} :)"
+		Cooldown="00:00:00"
 		>!removehoney {0} {1}</Command>
+		
+		<!-- !trade {0:počet} {1:cílový uživatel} -->
+		<!-- About hláška, 3 parametry {0:nazev bodu} {1:množné číslo} {2: jednotky bodů} -->
+		<!-- Úspešná hláška, 6 parametrů: {0:Uživatel} {1:cílový uživatel} {2:počet} {3:jednotky bodů} {4:jednotky bodů} {5:množné číslo} -->
+		<!-- Chybové hlášky, 5 parametry: {0:nazev bodu} {1:množné číslo} {2:jednotky bodů} {3:počet} {4:uživatel} -->
+		<Command Handler="Trade" 
+		BroadcasterOnly="false" 
+		ModPermissionRequired="false"
+		SendWhisper="false"
+		AboutCommand="Převede {0} jinému medvědovi. Příklad: !trade 50 Bukk94"
+		SuccessMessage="{0} poslal medvědovi {1} {2} {3} {5}"
+		FailMessage="Převod selhal. Nemáš dostatek {2} pro převod. Nezlob MedBota nebo ti ten zbytek sní :)"
+		ErrorMessage="Převod selhal. Med se musel po cestě někam ztratit. Nebo ho někdo snědl :o"
+		Cooldown="00:00:00"
+		>!trade {0} {1}</Command>
+  </Commands>
+  <Commands Type="EXP">
+		<!-- Dostupné Handlery:
+		  Info 		- žádný parametr
+		  InfoSecond- žádný parametr
+		  Add 		- dva parametry -> {0} - počet, {1} - uživatel
+		  Remove	- dva parametry -> {0} - počet, {1} - uživatel
+		 
+		  Pokud je zadán neplatný handler, příkaz nebude zpracován! -->
+		  
+		<!-- !rank -->
+		<!-- About hláška, žádný parametr -->
+		<!-- Úspešná hláška, 5 parametrů: {0:Uživatel} {1:level ranku} {2: jméno ranku} {3: XP uživatele} {4: XP potřeba na další level} -->
+		<!-- Chybová hláška, 4 parametry: {0:Uživatel} {1:level ranku} {2: jméno ranku} {3: XP uživatele} -->
+		<Command 
+		Handler="Info" 
+		BroadcasterOnly="false" 
+		ModPermissionRequired="false"
+		SendWhisper="false"
+		AboutCommand="Vypíše rank uživatele a jeho postup. Příklad: !rank"
+		SuccessMessage="Tvůj rank {0} je [Lvl {1}] {2} ({3}/{4})"
+		FailMessage="Zdá se, že {0} je tak megaskvělý medvěd, že i moje rankovací tabulky na to nestačí."
+		Cooldown="00:00:05"
+		>!rank</Command>  
+		
+		<!-- !nextrank -->
+		<!-- About hláška, žádný parametr -->
+		<!-- Úspešná hláška, 5 parametrů: {0:Uživatel} {1:level dalšího ranku} {2: jméno dalšího ranku} {3: XP do dalšího ranku} {4: počet hodin}-->
+		<!-- Chybové hlášky, 4 parametry: {0:Uživatel} {1:level dalšího ranku} {2: jméno dalšího ranku} {3: XP uživatele} -->
+		<Command 
+		Handler="InfoSecond" 
+		BroadcasterOnly="false" 
+		ModPermissionRequired="false"
+		SendWhisper="false"
+		AboutCommand="Vypíše další rank uživatele a kolik mu chybí zkušeností. Příklad: !nextrank"
+		SuccessMessage="{0} do dalšího ranku ([Level {1}] {2}) ti chybí ještě {3} zkušeností. To je {4} hodin aktivního sledování streamu."
+		FailMessage="Další rank neexistuje. Že by jsi byl až tak dobrý?"
+		ErrorMessage="Rank byl ztracen v kosmickém prachu po cestě k tobě {0}. Nikdo ho už nenajde."
+		Cooldown="00:00:05"
+		>!nextrank</Command> 
   </Commands>
   <Commands Type="Internal">
 		<!-- Dostupné Handlery:
+		  All 				- žádný nebo jeden parametr -> {1} mod/streamer
 		  LastFollower 		- žádný parametr
 		  Random			- žádný nebo jeden parametr -> {0} počet minut
+		  Color				- jeden parametr -> {1} on/off
+		  ChangeColor		- jeden parametr -> {1} barva
+		  Leaderboard		- žádný nebo jeden parametr -> {1} xp/med/level
 		 
 		  Pokud je zadán neplatný handler, příkaz nebude zpracován! -->
 		  
@@ -78,6 +143,7 @@
 		AboutCommand="Vypíše posledního followera. Příklad: !lastfollower"
 		SuccessMessage="Nejnovější follower je {0}, který hodil follow {1}. Notifikace streamu: {2}."
 		FailMessage="Kde nic, tu nic. Ani poslední follower nebyl nalezen."
+		Cooldown="00:00:10"
 		>!lastfollower</Command>  
 		
 		<!-- !random -->
@@ -91,6 +157,7 @@
 		AboutCommand="Vybere random online medvěda v chatu. Příklad: !random"
 		SuccessMessage="Vybírám z celkem {1} medvědů. Random šťastlivec je {0}!"
 		FailMessage="Oops, nenašel jsem žádného random tvora, kterého bych vybral."
+		Cooldown="00:00:00"
 		>!random</Command>
 		
 		<!-- !random {0:počet minut} -->
@@ -104,6 +171,83 @@
 		AboutCommand="Vybere random online medvěda v chatu, který byl aktivní za posledních X minut. Příklad: !random 10"
 		SuccessMessage="Vybírám z celkem {1} medvědů. Random aktivní šťastlivec je {0}!"
 		FailMessage="Oops. Žádný aktivní tvor nenalezen."
+		Cooldown="00:00:00"
 		>!random {0}</Command> 
+		
+		<!-- !color {1: state} -->
+		<!-- About hláška, žádný parametr -->
+		<!-- Úspešná hláška, žádný parametr -->
+		<!-- Chybová hláška, žádný parametr -->
+		<!-- Zde je SuccessMessage použito pro zapnutí, FailMessage pro vypnutí barev. ErrorMessage pro chybu -->
+		<Command Handler="Color" 
+		BroadcasterOnly="false" 
+		ModPermissionRequired="true"
+		SendWhisper="false"
+		AboutCommand="Zapne/vypne barevné zpráy bota. Příklad: !color off"
+		SuccessMessage="Zapínám barvy! Oh yeaaah! Chat je hned o něco veselejší!"
+		FailMessage="Ale neeee :( Moje barvičky :("
+		ErrorMessage="Hah ... barvy se pokazili. Co s tím?"
+		Cooldown="00:00:00"
+		>!color {1}</Command> 
+		
+		<!-- !medbot -->
+		<!-- About hláška, žádný parametr -->
+		<!-- Úspešná hláška, jeden parametr: {0: list příkazů}-->
+		<!-- Chybová hláška, žádný parametr -->
+		<Command Handler="All" 
+		BroadcasterOnly="false" 
+		ModPermissionRequired="false"
+		SendWhisper="false"
+		AboutCommand="Vypíše všechny dostupné příkazy pro diváky. Příklad: !medbot"
+		SuccessMessage="Dostupné příkazy: {0}"
+		FailMessage=""
+		ErrorMessage="Kam jsem dal svoje příkazy ... kde můžou být ..."
+		Cooldown="00:00:30"
+		>!medbot</Command> 
+		
+		<!-- !medbot {1} -->
+		<!-- About hláška, žádný parametr -->
+		<!-- Úspešná hláška, jeden parametr: {0: list příkazů}-->
+		<!-- Chybová hláška, žádný parametr -->
+		<Command Handler="All" 
+		BroadcasterOnly="false" 
+		ModPermissionRequired="false"
+		SendWhisper="false"
+		AboutCommand="Vypíše všechny dostupné příkazy pro moderátory nebo streamera. Příklad: !medbot streamer, !medbot mod"
+		SuccessMessage="Dostupné příkazy: {0}"
+		FailMessage="Neplatný argument. Dostupné argumenty jsou: streamer, broadcaster, mod a moderator"
+		ErrorMessage="Proč tu musí být takový bordel? Jak mám ty příkazy najít?!"
+		Cooldown="00:00:30"
+		>!medbot {1}</Command>
+		
+		<!-- !leaderboard -->
+		<!-- About hláška, 3 parametry: {0: currency name} {1:plural} {2: units} -->
+		<!-- Úspešná hláška, jeden parametr: {0: currency plural} {1: list top uživatelů medu} {2: list top uživatelů XP}-->
+		<!-- Chybová hláška, 1 parametr: {0: currency name} {1: currency plural} {2: currency units} {3: počet TOP lidí} -->
+		<Command Handler="Leaderboard" 
+		BroadcasterOnly="false" 
+		ModPermissionRequired="false"
+		SendWhisper="false"
+		AboutCommand="Vypíše TOP medvědy co mají nejvíce {0} a XP. Příklad: !leaderboard"
+		SuccessMessage="TOP {3} medvědi co mají nejvíc {0}: {1}. TOP {3} medvědi co mají nejvíce XP: {2}"
+		FailMessage=""
+		ErrorMessage="Pomíchaly se mi čísla. Nepodařilo se mi sestavit žebříček :("
+		Cooldown="00:00:50"
+		>!leaderboard</Command>
+		
+		<!-- !leaderboard {1: currency name / xp / exp / level} -->
+		<!-- About hláška, jeden parametr: {0: currency name} {1:plural} {2: units} -->
+		<!-- Úspešná hláška, jeden parametr: {0: currency plural / xp} {1: list top uživatelů} {2: počet TOP lidí} -->
+		<!-- Chybová hláška, 1 parametr: {0: currency name} {1: currency plural} {2: currency units} -->
+		<Command Handler="Leaderboard" 
+		BroadcasterOnly="false" 
+		ModPermissionRequired="false"
+		SendWhisper="false"
+		AboutCommand="Vypíše TOP medvědy co mají nejvíce {0} nebo XP. Příklad: !leaderboard med    !leaderboard level"
+		SuccessMessage="TOP {2} medvědi co mají nejvíc {0}: {1}"
+		FailMessage="Neplatný argument. Dostupné argumenty jsou: {0}, xp, exp, level"
+		ErrorMessage="Víte z kolika řádků kódu se skládám? Hodně! Když se něco pokazí tak to není moje chyba! Může za to počasí."
+		Cooldown="00:00:50"
+		>!leaderboard {1}</Command> 
   </Commands>
 </Medbot>
