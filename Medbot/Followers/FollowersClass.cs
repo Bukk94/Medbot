@@ -1,14 +1,12 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Medbot.LoggingNS;
 using Medbot.Commands;
-using Newtonsoft.Json.Linq;
 
 namespace Medbot.Followers {
     /// <summary>
