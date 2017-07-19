@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Medbot {
+namespace Medbot.Internal {
     public static class Parsing {
 
         /// <summary>
@@ -13,7 +13,7 @@ namespace Medbot {
         /// <returns>Username of user who sent the message in lovercase</returns>
         public static string ParseUsername(string chatLine) {
             string sub = chatLine.Substring(chatLine.IndexOf('!') + 1);
-            return sub.Substring(0, sub.IndexOf('@'));
+            return sub.Substring(0, sub.IndexOf('@')) != String.Empty ? sub.Substring(0, sub.IndexOf('@')) : ParseDisplayName(chatLine).ToLower();
         }
 
         /// <summary>
@@ -70,15 +70,39 @@ namespace Medbot {
         /// <summary>
         /// Parses boolean value from given attribute
         /// </summary>
-        /// <param name="el">XElement containing attribute to parse</param>
+        /// <param name="element">XElement containing attribute to parse</param>
         /// <param name="attribute">Name of the attribute to parse from</param>
         /// <returns>Boolean value of the attribute, false if not found</returns>
-        public static bool ParseBooleanFromAttribute(XElement el, string attribute) {
+        public static bool ParseBooleanFromAttribute(XElement element, string attribute) {
             bool parseBool;
-            if (!Boolean.TryParse(el.Attribute(attribute).Value, out parseBool))
+            if (!Boolean.TryParse(element.Attribute(attribute).Value, out parseBool))
                 parseBool = false;
 
             return parseBool;
         }
+
+        /// <summary>
+        /// Parses TimeSpan value from given attribute
+        /// </summary>
+        /// <param name="element">XElement containing attribute to parse</param>
+        /// <param name="attribute">Name of the attribute to parse from</param>
+        /// <returns>TimeSpan object of the attribute</returns>
+        public static TimeSpan ParseTimeSpanFromAttribute(XElement element, string attribute) {
+            TimeSpan parseTimespan;
+            if (!TimeSpan.TryParse(element.Attribute(attribute).Value, out parseTimespan))
+                parseTimespan = new TimeSpan();
+
+            return parseTimespan;
+        }
+    }
+
+    public class LeaderboardComparer : IComparer<TempUser> {
+        public int Compare(TempUser x, TempUser y) {
+            long longX = long.Parse(x.Data);
+            long longY = long.Parse(y.Data);
+
+            return longX.CompareTo(longY);
+        }
+
     }
 }
