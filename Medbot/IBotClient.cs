@@ -13,6 +13,6 @@ namespace Medbot {
         User GetUserFromChat(string chatLine);
         void SendChatMessage(string msg);
         void SendPrivateMessage(string msg, string user);
-        void SavePoints();
+        void SaveData();
     }
 }
