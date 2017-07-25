@@ -49,11 +49,16 @@
     <Compile Include="BotClient.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandsHandler.cs" />
+    <Compile Include="Events\OnCommandReceivedArgs.cs" />
+    <Compile Include="Events\OnCommandThrottledArgs.cs" />
+    <Compile Include="Events\OnMessageArgs.cs" />
+    <Compile Include="Events\OnMessageThrottledArgs.cs" />
+    <Compile Include="Events\OnUserArgs.cs" />
     <Compile Include="Exceptions\PointsException.cs" />
     <Compile Include="Exceptions\RanksException.cs" />
     <Compile Include="ExpSystem\Experiences.cs" />
     <Compile Include="ExpSystem\Rank.cs" />
-    <Compile Include="Internal\FileControl.cs" />
+    <Compile Include="Internal\FilesControl.cs" />
     <Compile Include="Followers\Follow.cs" />
     <Compile Include="Followers\Follower.cs" />
     <Compile Include="Followers\FollowersClass.cs" />
