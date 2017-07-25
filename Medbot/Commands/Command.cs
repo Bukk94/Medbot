@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Medbot.Internal;
 
 namespace Medbot.Commands {
-    enum CommandType { Points, EXP, Internal }
-    enum HandlerType { All, Info, InfoSecond, Add, Remove, Trade, Leaderboard, LastFollower, Random, Color, ChangeColor }
+    enum CommandType { Internal, EXP, Points }
+    enum HandlerType { Add, All, Color, ChangeColor, Gamble, Help, Info, InfoSecond, Leaderboard, LastFollower, Trade, Random, Remove }
 
     internal class Command {
         private CommandType commandType;
@@ -45,6 +42,11 @@ namespace Medbot.Commands {
         internal bool ModeratorPermissionRequired { get { return this.modRequired; } }
 
         /// <summary>
+        /// Gets command's info message as help
+        /// </summary>
+        internal string AboutMessage { get { return this.aboutCommand; } }
+
+        /// <summary>
         /// Gets command's fail message 
         /// </summary>
         internal string FailMessage { get { return this.failMessage; } }
@@ -77,7 +79,7 @@ namespace Medbot.Commands {
             this.modRequired = modPermission;
             this.sendWhisper = sendWhisp;
             this.cooldown = cd;
-            this.throttler = new CommandThrottling(this.cooldown);
+            this.throttler = new CommandThrottling(this.cooldown, this);
         }
 
         /// <summary>
@@ -114,15 +116,6 @@ namespace Medbot.Commands {
             Regex rgx = new Regex("^" + cmdFormat +"$", RegexOptions.IgnoreCase);
 
             return rgx.IsMatch(chatCommand);
-        }
-
-        /// <summary>
-        /// Returns command's info message as help
-        /// </summary>
-        /// <returns>String message</returns>
-        internal string GetAboutInfoMessage() {
-            // 3 params {0:Currency name} {1:plural} {2: units}
-            return String.Format(aboutCommand, Points.CurrencyName, Points.CurrencyNamePlural, Points.CurrencyUnits);
         }
 
         /// <summary>
