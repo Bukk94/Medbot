@@ -945,3 +945,1318 @@
 [18.7.2017 | 2:52] Sender method: LoadBotIntervals # Intervals were loaded successfully
 [18.7.2017 | 2:52] Sender method: LoadCommands # Commands Loaded
 [18.7.2017 | 2:52] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 1:56] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 1:56] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 1:56] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 1:56] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 1:56] Sender method: AllowToSendMessage # Message was THROTTLED. Message was empty or exceeds maximum character limit: 
+[21.7.2017 | 1:57] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 1:57] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 2:02] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 2:02] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 2:02] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 2:02] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 2:16] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 2:16] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 2:16] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 2:16] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 2:16] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 2:16] Sender method: ExperienceHandler # !addexp {0} {1}  Args: 300, Bukk94 - Experience successfully added
+[21.7.2017 | 2:17] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 2:17] Sender method: ExperienceHandler # !addexp {0} {1}  Args: 600, Bukk94 - Experience successfully added
+[21.7.2017 | 2:18] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 2:18] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 2:18] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 2:18] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 2:18] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 2:18] Sender method: ExperienceHandler # !addexp {0} {1}  Args: 600, Bukk94 - Experience successfully added
+[21.7.2017 | 2:21] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 2:21] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 2:21] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 2:21] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 2:21] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 2:21] Sender method: ExperienceHandler # !addexp {0} {1}  Args: 600, Bukk94 - Experience successfully added
+[21.7.2017 | 2:26] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 2:26] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 2:26] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 2:26] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 2:26] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 2:26] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 2:26] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 2:26] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 2:26] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 2:26] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 2:26] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 2:26] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 2:32] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 2:32] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 2:32] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 2:32] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 2:34] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 2:34] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 2:34] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 2:34] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 2:35] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 2:35] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 2:35] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 2:35] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 2:35] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 2:35] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 2:35] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 2:35] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 2:36] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 2:36] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 2:36] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 2:36] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 2:38] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 2:38] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 2:38] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 2:38] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 2:41] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 2:41] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 2:41] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 2:41] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 2:41] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 2:41] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 2:41] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 2:41] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 19:50] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 19:50] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 19:50] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 19:50] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[21.7.2017 | 19:50] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 19:50] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 19:50] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 19:50] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel bukk94
+[21.7.2017 | 19:51] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[21.7.2017 | 19:51] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[21.7.2017 | 19:51] Sender method: LoadCommands # Commands Loaded
+[21.7.2017 | 19:51] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel bukk94
+[21.7.2017 | 19:52] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 19:52] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 19:53] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 19:53] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 19:54] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 19:54] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 19:55] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 19:55] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 19:56] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 19:56] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 19:57] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 19:57] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 19:58] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 19:58] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 19:59] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 19:59] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 19:59] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:00] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:00] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:01] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:01] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:01] Sender method: PointsHandler # !med  Args: None # Points printed for user onterCZ # Value: 75
+[21.7.2017 | 20:02] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:02] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:02] Sender method: PointsHandler # !med  Args: None # Points printed for user cumlicek # Value: 186
+[21.7.2017 | 20:02] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:03] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:03] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:04] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:04] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:05] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:05] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:05] Sender method: AllowToSendMessage # Message was THROTTLED. Message was empty or exceeds maximum character limit: 
+[21.7.2017 | 20:06] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:06] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:07] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:07] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:08] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:08] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:09] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:09] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:10] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:10] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:11] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:11] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:12] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:12] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:13] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:13] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:14] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:14] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:15] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:15] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:16] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:16] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:17] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:17] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:18] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:18] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:18] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:19] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:19] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:20] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:20] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:21] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:21] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:22] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:22] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:23] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:23] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:24] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:24] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:25] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:25] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:26] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:26] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:27] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:27] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:28] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:28] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:29] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:29] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:30] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:30] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:31] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:31] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:32] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:32] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:33] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:33] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:34] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:34] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:35] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:35] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:36] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:36] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:37] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:37] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:38] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:38] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:39] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:39] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:40] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:40] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:41] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:41] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:42] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:42] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:43] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:43] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:44] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:44] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:44] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:45] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:45] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:46] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:46] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:47] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:47] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:47] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:48] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:48] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:49] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:49] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:50] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:50] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:51] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:51] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:52] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:52] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:52] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:53] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:53] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:54] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:54] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:55] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:55] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:56] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:56] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:57] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:57] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:58] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:58] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:59] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 20:59] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:00] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:00] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:01] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:01] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:02] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:02] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:03] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:03] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:04] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:04] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:05] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:05] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:06] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:06] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:07] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:07] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:08] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:08] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:09] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:09] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:10] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:10] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:11] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:11] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:11] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:12] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:12] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:13] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:13] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:14] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:14] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:14] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:15] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:15] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:16] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:16] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:17] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:17] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:18] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:18] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:18] Sender method: PointsHandler # !med  Args: None # Points printed for user cumlicek # Value: 255
+[21.7.2017 | 21:19] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:19] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:20] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:20] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:21] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:21] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:22] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:22] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:23] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:23] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:24] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:24] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:25] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:25] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:26] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:26] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:26] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:27] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:27] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:28] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:28] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:29] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:29] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:30] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:30] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:31] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:31] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:32] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:32] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:33] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:33] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:34] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:34] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:35] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:35] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:36] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:36] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:37] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:37] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:38] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:38] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:39] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:39] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:40] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:40] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:41] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:41] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:42] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:42] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:43] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:43] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:44] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:44] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:45] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:45] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:46] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:46] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:47] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:47] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:48] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:48] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:49] Sender method: PointsHandler # !med  Args: None # Points printed for user kralicek66 # Value: 0
+[21.7.2017 | 21:49] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:49] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:50] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:50] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:51] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:51] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:52] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:52] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:53] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:53] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:54] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:54] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:55] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:55] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:56] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:56] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:57] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:57] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:58] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:58] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:59] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 21:59] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:00] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:00] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:01] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:01] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:02] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:02] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:03] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:03] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:04] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:04] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:05] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:05] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:06] Sender method: PointsHandler # !med  Args: None # Points printed for user kralicek66 # Value: 14
+[21.7.2017 | 22:06] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:06] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:07] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:07] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:07] Sender method: PointsHandler # !med  Args: None # Points printed for user onterCZ # Value: 84
+[21.7.2017 | 22:08] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:08] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:09] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:09] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:10] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:10] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:11] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:11] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:12] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:12] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:13] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:13] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:14] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:14] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:15] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:15] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:16] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:16] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:17] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:17] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:18] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:18] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:19] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:19] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:20] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:20] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:21] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:21] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:22] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:22] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:23] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:23] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:24] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:24] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:25] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:25] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:26] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:26] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:27] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:27] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:28] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:28] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:28] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:29] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:29] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:30] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:30] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:31] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:31] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:32] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:32] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:33] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:33] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:33] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:34] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:34] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:35] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:35] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:36] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:36] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:37] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:37] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:38] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:38] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:39] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:39] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:40] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:40] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:41] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:41] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:42] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:42] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:43] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:43] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:44] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:44] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:45] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:45] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:45] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:46] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:46] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:47] Sender method: PointsHandler # !med  Args: None # Points printed for user kralicek66 # Value: 35
+[21.7.2017 | 22:47] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:47] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:47] Sender method: PointsHandler # !med  Args: None # Points printed for user toomiik65 # Value: 0
+[21.7.2017 | 22:47] Sender method: AllowToSendMessage # Message was THROTTLED. Message was empty or exceeds maximum character limit: 
+[21.7.2017 | 22:48] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:48] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:48] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:49] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:49] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:50] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:50] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:51] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:51] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:51] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:52] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:52] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:53] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:53] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:54] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:54] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:55] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:55] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:56] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:56] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:57] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:57] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:58] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:58] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:58] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:59] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 22:59] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:00] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:00] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:01] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:01] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:02] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:02] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:03] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:03] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:04] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:04] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:05] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:05] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:06] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:06] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:07] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:07] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:08] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:08] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:09] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:09] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:10] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:10] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:11] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:11] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:12] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:12] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:12] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:12] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:13] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:13] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:14] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:14] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:15] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:15] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:16] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:16] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:17] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:17] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:18] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:18] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:19] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:19] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:20] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:20] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:20] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:20] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:21] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:21] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:22] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:22] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:23] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:23] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:24] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:24] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:25] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:25] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:26] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:26] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:27] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:27] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:28] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:28] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:29] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:29] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:30] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:30] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:31] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:31] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:32] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:32] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:33] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:33] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:34] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:34] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:35] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:35] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:36] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:36] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:36] Sender method: PointsHandler # !med  Args: None # Points printed for user kralicek66 # Value: 58
+[21.7.2017 | 23:37] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:37] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:37] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:38] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:38] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:39] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:39] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:40] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:40] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:41] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:41] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:41] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:42] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:42] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:43] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:43] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:44] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:44] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:45] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:45] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:46] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:46] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:47] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:47] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:48] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:48] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:49] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:49] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:49] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:50] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:50] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:51] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:51] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:52] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:52] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:53] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:53] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:53] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:53] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:54] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:54] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:55] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:55] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:56] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:56] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:57] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:57] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:57] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:58] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:58] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:59] Sender method: SaveData # Points were saved successfully
+[21.7.2017 | 23:59] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:00] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:00] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:01] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:01] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:02] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:02] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:03] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:03] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:04] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:04] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:05] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:05] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:06] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:06] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:07] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:07] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:08] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:08] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:09] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:09] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:09] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:10] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:10] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:11] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:11] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:12] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:12] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:13] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:13] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:14] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:14] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:15] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:15] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:16] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:16] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:17] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:17] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:18] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:18] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:19] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:19] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:19] Sender method: PointsHandler # !med  Args: None # Points printed for user kralicek66 # Value: 78
+[22.7.2017 | 0:20] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:20] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:21] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:21] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:22] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:22] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:23] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:23] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:24] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:24] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:25] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:25] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:26] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:26] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:27] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:27] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:27] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:27] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:28] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 0:28] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 2:29] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[22.7.2017 | 2:29] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[22.7.2017 | 2:29] Sender method: LoadCommands # Commands Loaded
+[22.7.2017 | 2:29] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[22.7.2017 | 2:30] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 2:30] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 2:32] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[22.7.2017 | 2:32] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[22.7.2017 | 2:32] Sender method: LoadCommands # Commands Loaded
+[22.7.2017 | 2:32] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[22.7.2017 | 2:32] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[22.7.2017 | 2:32] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[22.7.2017 | 2:32] Sender method: LoadCommands # Commands Loaded
+[22.7.2017 | 2:32] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[22.7.2017 | 2:33] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[22.7.2017 | 2:33] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[22.7.2017 | 2:33] Sender method: LoadCommands # Commands Loaded
+[22.7.2017 | 2:33] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[22.7.2017 | 2:36] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[22.7.2017 | 2:36] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[22.7.2017 | 2:36] Sender method: LoadCommands # Commands Loaded
+[22.7.2017 | 2:36] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[22.7.2017 | 2:36] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 2:36] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[22.7.2017 | 2:36] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[22.7.2017 | 2:36] Sender method: LoadCommands # Commands Loaded
+[22.7.2017 | 2:36] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[22.7.2017 | 2:37] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 2:37] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[22.7.2017 | 2:37] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[22.7.2017 | 2:46] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[22.7.2017 | 2:46] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[22.7.2017 | 2:46] Sender method: LoadCommands # Commands Loaded
+[22.7.2017 | 2:46] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[22.7.2017 | 2:46] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 2:46] Sender method: LoadCommands # Commands Loaded
+[22.7.2017 | 2:46] Sender method: AllowToSendMessage # Message was THROTTLED. Message was empty or exceeds maximum character limit: 
+[22.7.2017 | 2:46] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[22.7.2017 | 2:46] Sender method: AllowToSendMessage # Message was THROTTLED. Message was empty or exceeds maximum character limit: 
+[22.7.2017 | 2:46] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 2:46] Sender method: LoadCommands # Commands Loaded
+[22.7.2017 | 2:46] Sender method: AllowToSendMessage # Message was THROTTLED. Message was empty or exceeds maximum character limit: 
+[22.7.2017 | 2:46] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[22.7.2017 | 2:47] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 2:47] Sender method: SaveData # Points were saved successfully
+[22.7.2017 | 2:49] Sender method: LoadCommands # Commands Loaded
+[22.7.2017 | 2:50] Sender method: LoadCommands # Commands Loaded
+[22.7.2017 | 2:50] Sender method: AllowToSendMessage # Message was THROTTLED. Message was empty or exceeds maximum character limit: 
+[22.7.2017 | 2:50] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[22.7.2017 | 2:51] Sender method: LoadCommands # Commands Loaded
+[22.7.2017 | 2:51] Sender method: AllowToSendMessage # Message was THROTTLED. Message was empty or exceeds maximum character limit: 
+[22.7.2017 | 2:51] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[22.7.2017 | 2:51] Sender method: AllowToSendMessage # Message was THROTTLED. Message was empty or exceeds maximum character limit: 
+[22.7.2017 | 2:51] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 0:59] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 0:59] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 0:59] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 0:59] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 0:59] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 1:00] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 1:00] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 1:00] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 1:00] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 1:01] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 1:01] Sender method: ExperienceHandler # !addexp {0} {1}  Args: 50, Bukk94 - Experience successfully added
+[24.7.2017 | 1:01] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 1:01] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 1:02] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 1:05] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 1:05] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 1:05] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 1:05] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 1:06] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 1:24] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 1:24] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 1:24] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 1:24] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 1:24] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 1:26] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 1:26] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 1:26] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 1:26] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 1:27] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 1:27] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 1:27] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 1:27] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 1:28] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 1:28] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 1:28] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 1:28] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 1:29] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 1:29] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 1:30] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 1:30] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 1:30] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 1:30] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 1:30] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 1:31] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 1:31] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 1:31] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 1:31] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 1:31] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:34] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 17:34] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 17:34] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 17:34] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 17:34] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 17:34] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 17:34] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 17:34] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 17:35] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 17:35] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 17:35] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 17:35] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 17:36] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 17:36] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 17:36] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 17:36] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 17:36] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:37] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 17:37] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 17:37] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 17:37] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 17:38] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:38] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:38] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 17:38] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 17:38] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 17:38] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 17:38] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 17:38] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 17:38] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 17:38] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 17:39] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 17:39] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 17:39] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 17:39] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 17:39] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:39] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 17:39] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 17:39] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 17:39] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 17:40] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 17:40] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 17:40] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 17:40] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 17:40] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:40] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 17:40] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 17:40] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 17:40] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 17:41] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 17:41] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 17:41] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 17:41] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 17:42] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 17:42] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 17:42] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 17:42] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 17:43] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 17:43] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 17:43] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 17:43] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel bukk94
+[24.7.2017 | 17:44] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:44] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:45] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:45] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:46] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:46] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:46] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:47] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:47] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:48] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:48] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:49] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:49] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:50] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:50] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:51] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:51] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:52] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:52] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:53] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:53] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:54] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:54] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:55] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:55] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:56] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:56] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:57] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:57] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:58] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:58] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:59] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 17:59] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:00] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:00] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:01] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:01] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:02] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:02] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:03] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:03] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:04] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:04] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:05] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:05] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:05] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:05] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:06] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:06] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:07] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:07] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:08] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:08] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:09] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:09] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:09] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:10] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:10] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:11] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:11] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:12] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:12] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:13] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:13] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:14] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:14] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:15] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:15] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:16] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:16] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:17] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:17] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:18] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:18] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:18] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:19] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:19] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:19] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:20] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:20] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:21] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:21] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:22] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:22] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:23] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:23] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:24] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:24] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:25] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:25] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:26] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:26] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:27] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:27] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:28] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:28] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:29] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:29] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:30] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:30] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:30] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:31] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:31] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:31] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:32] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:32] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:33] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:33] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:33] Sender method: PointsHandler # !med  Args: None # Points printed for user pita_okurka # Value: 7
+[24.7.2017 | 18:34] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:34] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:34] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:35] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:35] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:36] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:36] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:36] Sender method: PointsHandler # !med  Args: None # Points printed for user onterCZ # Value: 120
+[24.7.2017 | 18:36] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:37] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:37] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:38] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:38] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:38] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:38] Sender method: PointsHandler # !med  Args: None # Points printed for user pita_okurka # Value: 12
+[24.7.2017 | 18:39] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:39] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:40] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:40] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:41] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:41] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:42] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:42] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:43] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:43] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:44] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:44] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:45] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:45] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:45] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:46] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:46] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:47] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:47] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:48] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:48] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:49] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:49] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:49] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:50] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:50] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:51] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:51] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:51] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:52] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:52] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:52] Sender method: PointsHandler # !med  Args: None # Points printed for user pita_okurka # Value: 26
+[24.7.2017 | 18:52] Sender method: AllowToSendMessage # Message was THROTTLED. Message was empty or exceeds maximum character limit: 
+[24.7.2017 | 18:52] Sender method: PointsHandler # !med  Args: None # Points printed for user onterCZ # Value: 133
+[24.7.2017 | 18:53] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:53] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:54] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:54] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:55] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:55] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:55] Sender method: PointsHandler # !med  Args: None # Points printed for user kralicek66 # Value: 101
+[24.7.2017 | 18:56] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:56] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:56] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:57] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:57] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:58] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:58] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:58] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:58] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:59] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 18:59] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:00] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:00] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:01] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:01] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:02] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:02] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:03] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:03] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:04] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:04] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:05] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:05] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:06] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:06] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:07] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:07] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:07] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:08] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:08] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:09] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:09] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:10] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:10] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:11] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:11] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:12] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:12] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:13] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:13] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:13] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:14] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:14] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:15] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:15] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:16] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:16] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:17] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:17] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:18] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:18] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:19] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:19] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:20] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:20] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:21] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:21] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:22] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:22] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:23] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:23] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:24] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:24] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:25] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:25] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:26] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:26] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:27] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:27] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:28] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:28] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:29] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:29] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:30] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:30] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:31] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:31] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:32] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:32] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:33] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:33] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:34] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:34] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:35] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:35] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:36] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:36] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:37] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:37] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:38] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:38] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:38] Sender method: PointsHandler # !med  Args: None # Points printed for user kralicek66 # Value: 107
+[24.7.2017 | 19:39] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:39] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:40] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:40] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:41] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:41] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:42] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:42] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:42] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:42] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:43] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:43] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:44] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:44] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:45] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:45] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:46] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:46] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:47] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:47] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:48] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:48] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:49] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:49] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:50] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:50] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:51] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:51] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:52] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:52] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:53] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:53] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:54] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:54] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:54] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:55] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:55] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:56] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:56] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:56] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:57] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:57] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:57] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:57] Sender method: PointsHandler # !removehoney {0} {1}  Args: 20, onterCZ - Points successfully removed
+[24.7.2017 | 19:58] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:58] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:59] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 19:59] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:00] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:00] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:01] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:01] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:02] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:02] Sender method: PointsHandler # !addhoney {0} {1}  Args: 30, kralicek66 - Points successfully added
+[24.7.2017 | 20:02] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:02] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:03] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:03] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:04] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:04] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:05] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:05] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:06] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:06] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:07] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:07] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:08] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:08] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:09] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:09] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:10] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:10] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:11] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:11] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:12] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:12] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:13] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:13] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:13] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:13] Sender method: PointsHandler # !trade {0} {1}  Args: 20, ontercz - Points successfully traded
+[24.7.2017 | 20:14] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:14] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:15] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:15] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:15] Sender method: AllowToSendMessage # Message was THROTTLED. Message was empty or exceeds maximum character limit: 
+[24.7.2017 | 20:16] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:16] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:16] Sender method: AllowToSendMessage # Message was THROTTLED. Message was empty or exceeds maximum character limit: 
+[24.7.2017 | 20:16] Sender method: AllowToSendMessage # Message was THROTTLED. Message was empty or exceeds maximum character limit: 
+[24.7.2017 | 20:16] Sender method: AllowToSendMessage # Message was THROTTLED. Message was empty or exceeds maximum character limit: 
+[24.7.2017 | 20:17] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:17] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:17] Sender method: AllowToSendMessage # Message was THROTTLED. Message was empty or exceeds maximum character limit: 
+[24.7.2017 | 20:18] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:18] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:19] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:19] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:20] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:20] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:21] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:21] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:22] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:22] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:22] Sender method: PointsHandler # !med  Args: None # Points printed for user giothedrcz # Value: 24
+[24.7.2017 | 20:23] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:23] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:24] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:24] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:24] Sender method: PointsHandler # !med  Args: None # Points printed for user cumlicek # Value: 378
+[24.7.2017 | 20:24] Sender method: AllowToSendMessage # Message was THROTTLED. Message was empty or exceeds maximum character limit: 
+[24.7.2017 | 20:24] Sender method: PointsHandler # !med  Args: None # Points printed for user kralicek66 # Value: 139
+[24.7.2017 | 20:25] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:25] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:26] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:26] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:27] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:27] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:28] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:28] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:29] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:29] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:30] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:30] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:31] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:31] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:32] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:32] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:33] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:33] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:34] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:34] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:34] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:35] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:35] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:36] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:36] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:36] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:37] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:37] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:38] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:38] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:39] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:39] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:40] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:40] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:41] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:41] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:42] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:42] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:43] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:43] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:44] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:44] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:45] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:45] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:46] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:46] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:47] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:47] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:47] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:47] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 20:52] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 20:52] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 20:52] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 20:52] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 21:01] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 21:01] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 21:01] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 21:01] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 21:03] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 21:03] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 21:03] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 21:03] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 21:04] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 21:04] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 21:04] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 21:04] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 21:05] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 21:05] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 21:05] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 21:05] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 21:05] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 22:52] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 22:52] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 22:52] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 22:52] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 22:53] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 22:53] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 22:53] Sender method: LoadCommands # Commands Loaded
+[24.7.2017 | 22:53] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[24.7.2017 | 22:53] Sender method: SaveData # Points were saved successfully
+[24.7.2017 | 23:22] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[24.7.2017 | 23:22] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[24.7.2017 | 23:22] Sender method: LoadCommands # Commands Loaded
+[25.7.2017 | 1:57] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[25.7.2017 | 1:57] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[25.7.2017 | 1:57] Sender method: LoadCommands # Commands Loaded
+[25.7.2017 | 1:57] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[25.7.2017 | 1:58] Sender method: SaveData # Points were saved successfully
+[25.7.2017 | 1:58] Sender method: SaveData # Points were saved successfully
+[25.7.2017 | 1:59] Sender method: SaveData # Points were saved successfully
+[25.7.2017 | 2:13] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[25.7.2017 | 2:13] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[25.7.2017 | 2:13] Sender method: LoadCommands # Commands Loaded
+[25.7.2017 | 2:13] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[25.7.2017 | 2:14] Sender method: SaveData # Points were saved successfully
+[25.7.2017 | 2:16] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[25.7.2017 | 2:16] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[25.7.2017 | 2:16] Sender method: LoadCommands # Commands Loaded
+[25.7.2017 | 2:16] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot
+[25.7.2017 | 2:21] Sender method: LoadBotDictionary # Bot dictionary and currency details were load successfully
+[25.7.2017 | 2:21] Sender method: LoadBotIntervals # Intervals were loaded successfully
+[25.7.2017 | 2:21] Sender method: LoadCommands # Commands Loaded
+[25.7.2017 | 2:21] Sender method: Connect # Bot has successfully connected to Twitch account and joined the channel medvedibot

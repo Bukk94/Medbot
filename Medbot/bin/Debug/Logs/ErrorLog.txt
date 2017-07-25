@@ -133,4 +133,249 @@ Název parametru: chars
    v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex)
    v System.IO.StreamReader.ReadBuffer()
    v System.IO.StreamReader.Peek()
-   v Medbot.BotClient.Reader_Timer_Tick(Object s) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\BotClient.cs:řádek 203
+   v Medbot.BotClient.Reader_Timer_Tick(Object s) v d:\Temp\Plocha\C# Projects\Medbot\Medbot\BotClient.cs:řádek 203[21.7.2017 | 2:36] Sender object: Medbot.BotClient # Sender method: Reader_Timer_Tick # Error log: System.ArgumentException: Výstupní znaková vyrovnávací paměť je pro dekódované znaky příliš malá, kódování Unicode (UTF-8) záložní verze System.Text.DecoderReplacementFallback.
+Název parametru: chars
+   v System.Text.Encoding.ThrowCharsOverflow()
+   v System.Text.Encoding.ThrowCharsOverflow(DecoderNLS decoder, Boolean nothingDecoded)
+   v System.Text.UTF8Encoding.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, DecoderNLS baseDecoder)
+   v System.Text.DecoderNLS.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex)
+   v System.IO.StreamReader.ReadBuffer()
+   v System.IO.StreamReader.Peek()
+   v Medbot.BotClient.Reader_Timer_Tick(Object s) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\BotClient.cs:řádek 244
+[21.7.2017 | 19:57] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user trefto FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 19:59] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user croguncz FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 20:15] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user stelinatoris FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 20:44] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user martinzocek FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 20:49] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user zabry2015 FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 20:54] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user gvvindor FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 20:54] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user deadguard_cze FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 21:00] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user sonahcz FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 21:49] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user kralicek66 FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 22:10] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user diqzx FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 22:13] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user duk4972 FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 22:26] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user reduc_ FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 22:41] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user f1laz FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 22:47] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user toomiik65 FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 22:50] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user okurka_z_valhally FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 23:12] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user razersaw FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 23:33] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user akumamailo FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 23:35] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user kesamon FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 23:37] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user c4mbass FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 23:41] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user zendy444 FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[21.7.2017 | 23:49] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user kurtcodein51 FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[22.7.2017 | 0:07] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user kundirizek FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[22.7.2017 | 0:17] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user filipblesa183 FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 84
+[22.7.2017 | 2:46] Sender object: Medbot.BotClient # Sender method: Reader_Timer_Tick # Error log: System.ArgumentException: Výstupní znaková vyrovnávací paměť je pro dekódované znaky příliš malá, kódování Unicode (UTF-8) záložní verze System.Text.DecoderReplacementFallback.
+Název parametru: chars
+   v System.Text.Encoding.ThrowCharsOverflow()
+   v System.Text.Encoding.ThrowCharsOverflow(DecoderNLS decoder, Boolean nothingDecoded)
+   v System.Text.UTF8Encoding.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, DecoderNLS baseDecoder)
+   v System.Text.DecoderNLS.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex)
+   v System.IO.StreamReader.ReadBuffer()
+   v System.IO.StreamReader.Peek()
+   v Medbot.BotClient.Reader_Timer_Tick(Object s) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\BotClient.cs:řádek 243
+[22.7.2017 | 2:46] Sender object: Medbot.FilesControl # Sender method: LoadBotDictionary # Error log: System.IO.FileNotFoundException: Soubor D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Settings.xml nebyl nalezen.
+Název souboru: D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Settings.xml
+   v System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   v System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   v System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   v System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   v System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   v System.Xml.XmlTextReaderImpl.FinishInitUriString()
+   v System.Xml.XmlTextReaderImpl..ctor(String uriStr, XmlReaderSettings settings, XmlParserContext context, XmlResolver uriResolver)
+   v System.Xml.XmlReaderSettings.CreateReader(String inputUri, XmlParserContext inputContext)
+   v System.Xml.XmlReader.Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
+   v System.Xml.Linq.XDocument.Load(String uri, LoadOptions options)
+   v System.Xml.Linq.XDocument.Load(String uri)
+   v Medbot.FilesControl.LoadBotDictionary() v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 183
+[22.7.2017 | 2:46] Sender object: Medbot.FilesControl # Sender method: LoadBotIntervals # Error log: System.IO.FileNotFoundException: Soubor D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Settings.xml nebyl nalezen.
+Název souboru: D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Settings.xml
+   v System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   v System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   v System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   v System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   v System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   v System.Xml.XmlTextReaderImpl.FinishInitUriString()
+   v System.Xml.XmlTextReaderImpl..ctor(String uriStr, XmlReaderSettings settings, XmlParserContext context, XmlResolver uriResolver)
+   v System.Xml.XmlReaderSettings.CreateReader(String inputUri, XmlParserContext inputContext)
+   v System.Xml.XmlReader.Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
+   v System.Xml.Linq.XDocument.Load(String uri, LoadOptions options)
+   v System.Xml.Linq.XDocument.Load(String uri)
+   v Medbot.FilesControl.LoadBotIntervals() v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 222
+[22.7.2017 | 2:46] Sender object: Medbot.BotClient # Sender method: Reader_Timer_Tick # Error log: System.ArgumentException: Výstupní znaková vyrovnávací paměť je pro dekódované znaky příliš malá, kódování Unicode (UTF-8) záložní verze System.Text.DecoderReplacementFallback.
+Název parametru: chars
+   v System.Text.Encoding.ThrowCharsOverflow()
+   v System.Text.Encoding.ThrowCharsOverflow(DecoderNLS decoder, Boolean nothingDecoded)
+   v System.Text.UTF8Encoding.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, DecoderNLS baseDecoder)
+   v System.Text.DecoderNLS.GetChars(Byte* bytes, Int32 byteCount, Char* chars, Int32 charCount, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex)
+   v System.IO.StreamReader.ReadBuffer()
+   v System.IO.StreamReader.Peek()
+   v Medbot.BotClient.Reader_Timer_Tick(Object s) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\BotClient.cs:řádek 243
+[22.7.2017 | 2:46] Sender object: Medbot.FilesControl # Sender method: LoadBotDictionary # Error log: System.IO.FileNotFoundException: Soubor D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Settings.xml nebyl nalezen.
+Název souboru: D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Settings.xml
+   v System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   v System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   v System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   v System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   v System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   v System.Xml.XmlTextReaderImpl.FinishInitUriString()
+   v System.Xml.XmlTextReaderImpl..ctor(String uriStr, XmlReaderSettings settings, XmlParserContext context, XmlResolver uriResolver)
+   v System.Xml.XmlReaderSettings.CreateReader(String inputUri, XmlParserContext inputContext)
+   v System.Xml.XmlReader.Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
+   v System.Xml.Linq.XDocument.Load(String uri, LoadOptions options)
+   v System.Xml.Linq.XDocument.Load(String uri)
+   v Medbot.FilesControl.LoadBotDictionary() v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 183
+[22.7.2017 | 2:46] Sender object: Medbot.FilesControl # Sender method: LoadBotIntervals # Error log: System.IO.FileNotFoundException: Soubor D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Settings.xml nebyl nalezen.
+Název souboru: D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Settings.xml
+   v System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   v System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   v System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   v System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   v System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   v System.Xml.XmlTextReaderImpl.FinishInitUriString()
+   v System.Xml.XmlTextReaderImpl..ctor(String uriStr, XmlReaderSettings settings, XmlParserContext context, XmlResolver uriResolver)
+   v System.Xml.XmlReaderSettings.CreateReader(String inputUri, XmlParserContext inputContext)
+   v System.Xml.XmlReader.Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
+   v System.Xml.Linq.XDocument.Load(String uri, LoadOptions options)
+   v System.Xml.Linq.XDocument.Load(String uri)
+   v Medbot.FilesControl.LoadBotIntervals() v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 222
+[22.7.2017 | 2:48] Sender object: Medbot.FilesControl # Sender method: LoadBotDictionary # Error log: System.IO.FileNotFoundException: Soubor D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Settings.xml nebyl nalezen.
+Název souboru: D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Settings.xml
+   v System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   v System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   v System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   v System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   v System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   v System.Xml.XmlTextReaderImpl.FinishInitUriString()
+   v System.Xml.XmlTextReaderImpl..ctor(String uriStr, XmlReaderSettings settings, XmlParserContext context, XmlResolver uriResolver)
+   v System.Xml.XmlReaderSettings.CreateReader(String inputUri, XmlParserContext inputContext)
+   v System.Xml.XmlReader.Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
+   v System.Xml.Linq.XDocument.Load(String uri, LoadOptions options)
+   v System.Xml.Linq.XDocument.Load(String uri)
+   v Medbot.FilesControl.LoadBotDictionary() v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 183
+[22.7.2017 | 2:48] Sender object: Medbot.FilesControl # Sender method: LoadBotIntervals # Error log: System.IO.FileNotFoundException: Soubor D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Settings.xml nebyl nalezen.
+Název souboru: D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Settings.xml
+   v System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   v System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   v System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   v System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   v System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   v System.Xml.XmlTextReaderImpl.FinishInitUriString()
+   v System.Xml.XmlTextReaderImpl..ctor(String uriStr, XmlReaderSettings settings, XmlParserContext context, XmlResolver uriResolver)
+   v System.Xml.XmlReaderSettings.CreateReader(String inputUri, XmlParserContext inputContext)
+   v System.Xml.XmlReader.Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
+   v System.Xml.Linq.XDocument.Load(String uri, LoadOptions options)
+   v System.Xml.Linq.XDocument.Load(String uri)
+   v Medbot.FilesControl.LoadBotIntervals() v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 222
+[22.7.2017 | 2:50] Sender object: Medbot.FilesControl # Sender method: LoadBotDictionary # Error log: System.IO.FileNotFoundException: Soubor D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Settings.xml nebyl nalezen.
+Název souboru: D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Settings.xml
+   v System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   v System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   v System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   v System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   v System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   v System.Xml.XmlTextReaderImpl.FinishInitUriString()
+   v System.Xml.XmlTextReaderImpl..ctor(String uriStr, XmlReaderSettings settings, XmlParserContext context, XmlResolver uriResolver)
+   v System.Xml.XmlReaderSettings.CreateReader(String inputUri, XmlParserContext inputContext)
+   v System.Xml.XmlReader.Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
+   v System.Xml.Linq.XDocument.Load(String uri, LoadOptions options)
+   v System.Xml.Linq.XDocument.Load(String uri)
+   v Medbot.FilesControl.LoadBotDictionary() v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 189
+[22.7.2017 | 2:51] Sender object: Medbot.FilesControl # Sender method: LoadBotDictionary # Error log: System.IO.FileNotFoundException: Soubor D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Settings.xml nebyl nalezen.
+Název souboru: D:\Temp\Plocha\C# Projects\Medbot\Medbot\bin\Debug\Settings.xml
+   v System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   v System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   v System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   v System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   v System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   v System.Xml.XmlTextReaderImpl.FinishInitUriString()
+   v System.Xml.XmlTextReaderImpl..ctor(String uriStr, XmlReaderSettings settings, XmlParserContext context, XmlResolver uriResolver)
+   v System.Xml.XmlReaderSettings.CreateReader(String inputUri, XmlParserContext inputContext)
+   v System.Xml.XmlReader.Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
+   v System.Xml.Linq.XDocument.Load(String uri, LoadOptions options)
+   v System.Xml.Linq.XDocument.Load(String uri)
+   v Medbot.FilesControl.LoadBotDictionary() v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 189
+[24.7.2017 | 17:38] Sender object: Medbot.BotClient # Sender method: Reader_Timer_Tick # Error log: System.ArgumentOutOfRangeException: Index a čítač musí odkazovat na umístění v rámci vyrovnávací paměti.
+Název parametru: bytes
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex, Boolean flush)
+   v System.Text.DecoderNLS.GetChars(Byte[] bytes, Int32 byteIndex, Int32 byteCount, Char[] chars, Int32 charIndex)
+   v System.IO.StreamReader.ReadBuffer()
+   v System.IO.StreamReader.Peek()
+   v Medbot.BotClient.Reader_Timer_Tick(Object s) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\BotClient.cs:řádek 249
+[24.7.2017 | 17:43] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user pita_okurka FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 17:45] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user drugsbunnie FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 17:47] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user czwenca19 FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 17:57] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user zidllicka FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 18:10] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user giothedrcz FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 18:18] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user ditej FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 18:23] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user caspertenduch FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 18:30] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user pupek_1 FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 18:32] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user dilolawl FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 18:34] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user wokz3n FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 18:35] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user hoffynek FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 18:37] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user skogvold90 FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 18:50] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user stalinu FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 18:54] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user hyenlord FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 18:57] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user groscul123 FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 19:01] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user mateshrajegamesky FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 19:10] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user brutusv FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 19:40] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user tenhanicacek FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 19:42] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user bergeros FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 19:47] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user johnsonlederphh FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 20:16] Sender object: Medbot.Commands.CommandsHandler # Sender method: MoveNext # Error log: ERROR while switching colors on/off. Arguments doesn't match
+[24.7.2017 | 20:16] Sender object: Medbot.Commands.CommandsHandler # Sender method: MoveNext # Error log: ERROR while switching colors on/off. Arguments doesn't match
+[24.7.2017 | 20:28] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user kolumb111 FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[24.7.2017 | 20:44] Sender object: Medbot.FilesControl # Sender method: LoadUserData # Error log: System.Exception: Data loading of user flatiw FAILED. User not found
+   v Medbot.FilesControl.LoadUserData(User& user) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Internal\FilesControl.cs:řádek 85
+[25.7.2017 | 2:21] Sender object: Medbot.Commands.CommandsHandler # Sender method: PointsHandler # Error log: Medbot.Exceptions.PointsException: User doesn't have enough points
+   v Medbot.Commands.CommandsHandler.PointsHandler(User sender, Command cmd, List`1 args) v D:\Temp\Plocha\C# Projects\Medbot\Medbot\Commands\CommandsHandler.cs:řádek 181
