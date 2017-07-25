@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using Medbot.LoggingNS;
-using Medbot.Exceptions;
 
 namespace Medbot {
     public class Points {
@@ -118,13 +110,16 @@ namespace Medbot {
 
             Console.WriteLine("Timer Points ticked, Number of users: " + BotClient.OnlineUsers.Count);
             foreach (User u in BotClient.OnlineUsers) {
+                if (BotClient.UserBlacklist.Contains(u.Username)) // Skip blacklisted user
+                    continue;
+
                 if (u.LastMessage != null && (DateTime.Now - u.LastMessage < TimeSpan.FromMilliseconds(this.idleTime.TotalMilliseconds) || rewardIdles)) {
                     u.AddPoints(this.pointsPerTick);
                     Console.WriteLine("Rewarding " + u.Username + " for activity");
                 }
             }
 
-            FileControl.SaveData();
+            FilesControl.SaveData();
         }
 
         /// <summary>
