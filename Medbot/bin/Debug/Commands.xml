@@ -68,7 +68,7 @@
 		
 		<!-- !trade {0:počet} {1:cílový uživatel} -->
 		<!-- About hláška, 3 parametry {0:nazev bodu} {1:množné číslo} {2: jednotky bodů} -->
-		<!-- Úspešná hláška, 6 parametrů: {0:Uživatel} {1:cílový uživatel} {2:počet} {3:jednotky bodů} {4:jednotky bodů} {5:množné číslo} -->
+		<!-- Úspešná hláška, 6 parametrů: {0:Uživatel} {1:cílový uživatel} {2:počet} {3:jednotky bodů} {4:jméno bodů} {5:množné číslo} -->
 		<!-- Chybové hlášky, 5 parametry: {0:nazev bodu} {1:množné číslo} {2:jednotky bodů} {3:počet} {4:uživatel} -->
 		<Command Handler="Trade" 
 		BroadcasterOnly="false" 
@@ -78,18 +78,46 @@
 		SuccessMessage="{0} poslal medvědovi {1} {2} {3} {5}"
 		FailMessage="Převod selhal. Nemáš dostatek {2} pro převod. Nezlob MedBota nebo ti ten zbytek sní :)"
 		ErrorMessage="Převod selhal. Med se musel po cestě někam ztratit. Nebo ho někdo snědl :o"
-		Cooldown="00:00:00"
+		Cooldown="00:00:30"
 		>!trade {0} {1}</Command>
+		
+		<!-- !gamble {0:počet} -->
+		<!-- About hláška, 3 parametry {0:nazev bodu} {1:množné číslo} {2: jednotky bodů} -->
+		<!-- Úspešná hláška, 4 parametrů: {0:počet} {1:jednotky bodů} {2:jméno bodů} {3:množné číslo} -->
+		<!-- Chybové hlášky, 4 parametry: {0: počet} {1:nazev bodu} {2:množné číslo} {3:jednotky bodů} -->
+		<Command Handler="Gamble" 
+		BroadcasterOnly="false" 
+		ModPermissionRequired="false"
+		SendWhisper="false"
+		AboutCommand="Hazard s vaším medem! Máte 20% šanci na výhru dvojnásobného počtu medu a 2% šanci na dvojnásobek toho, co vsadíte! Příklad: !gamble 50"
+		SuccessMessage="Povedlo se! Vyhráváš {0} {1} {3}"
+		FailMessage="Ale ne! Přicházíš o {0} {3} {2}"
+		ErrorMessage="Nemáš dostatek {2} na gamble!"
+		Cooldown="00:00:00"
+		>!gamble {0}</Command>
   </Commands>
   <Commands Type="EXP">
 		<!-- Dostupné Handlery:
 		  Info 		- žádný parametr
 		  InfoSecond- žádný parametr
 		  Add 		- dva parametry -> {0} - počet, {1} - uživatel
-		  Remove	- dva parametry -> {0} - počet, {1} - uživatel
 		 
 		  Pokud je zadán neplatný handler, příkaz nebude zpracován! -->
-		  
+		
+		<!-- !addexp {0:počet:numeric} {1:uživatel:string} -->
+		<!-- About hláška, žádný parametr -->
+		<!-- Úspešná hláška, 2 parametry: {0:Uživatel} {1:počet} -->
+		<!-- Chybová hláška, 1 parametry: {0:Uživatel} -->
+		<Command Handler="Add" 
+		BroadcasterOnly="false" 
+		ModPermissionRequired="true"
+		SendWhisper="false"
+		AboutCommand="Přidá uživateli zadaný počet EXP. Příklad: !addexp 500 Bukk94"
+		SuccessMessage="Medvědovi {0} bylo přidáno {1} EXP!"
+		FailMessage="Ajejejej. Nastala chyba. Konec světa to bohužel nebude, ale {0} má po EXP."
+		Cooldown="00:00:00"
+		>!addexp {0} {1}</Command>
+		
 		<!-- !rank -->
 		<!-- About hláška, žádný parametr -->
 		<!-- Úspešná hláška, 5 parametrů: {0:Uživatel} {1:level ranku} {2: jméno ranku} {3: XP uživatele} {4: XP potřeba na další level} -->
@@ -107,7 +135,7 @@
 		
 		<!-- !nextrank -->
 		<!-- About hláška, žádný parametr -->
-		<!-- Úspešná hláška, 5 parametrů: {0:Uživatel} {1:level dalšího ranku} {2: jméno dalšího ranku} {3: XP do dalšího ranku} {4: počet hodin}-->
+		<!-- Úspešná hláška, 5 parametrů: {0:Uživatel} {1:level dalšího ranku} {2: jméno dalšího ranku} {3: XP do dalšího ranku} {4: cas do dalsiho ranku}-->
 		<!-- Chybové hlášky, 4 parametry: {0:Uživatel} {1:level dalšího ranku} {2: jméno dalšího ranku} {3: XP uživatele} -->
 		<Command 
 		Handler="InfoSecond" 
@@ -115,7 +143,7 @@
 		ModPermissionRequired="false"
 		SendWhisper="false"
 		AboutCommand="Vypíše další rank uživatele a kolik mu chybí zkušeností. Příklad: !nextrank"
-		SuccessMessage="{0} do dalšího ranku ([Level {1}] {2}) ti chybí ještě {3} zkušeností. To je {4} hodin aktivního sledování streamu."
+		SuccessMessage="{0} do dalšího ranku ([Level {1}] {2}) ti chybí ještě {3} zkušeností. To je {4} aktivního sledování streamu."
 		FailMessage="Další rank neexistuje. Že by jsi byl až tak dobrý?"
 		ErrorMessage="Rank byl ztracen v kosmickém prachu po cestě k tobě {0}. Nikdo ho už nenajde."
 		Cooldown="00:00:05"
@@ -129,6 +157,7 @@
 		  Color				- jeden parametr -> {1} on/off
 		  ChangeColor		- jeden parametr -> {1} barva
 		  Leaderboard		- žádný nebo jeden parametr -> {1} xp/med/level
+		  Help				- jeden parametr -> {1} příkaz
 		 
 		  Pokud je zadán neplatný handler, příkaz nebude zpracován! -->
 		  
@@ -190,6 +219,21 @@
 		Cooldown="00:00:00"
 		>!color {1}</Command> 
 		
+		<!-- !changecolor {1: barva} -->
+		<!-- About hláška, žádný parametr -->
+		<!-- Úspešná hláška, žádný parametr -->
+		<!-- Chybová hláška, žádný parametr -->
+		<Command Handler="ChangeColor" 
+		BroadcasterOnly="false" 
+		ModPermissionRequired="true"
+		SendWhisper="false"
+		AboutCommand="Nastaví barvu bota. Příklad: !changecolor red. Dostupné barvy: Blue, Coral, DodgerBlue, SpringGreen, YellowGreen, Green, OrangeRed, Red, GoldenRod, HotPink, CadetBlue, SeaGreen, Chocolate, BlueViolet, Firebrick"
+		SuccessMessage="Provádím změnu barvy :)"
+		FailMessage=""
+		ErrorMessage=""
+		Cooldown="00:00:00"
+		>!changecolor {1}</Command>
+		
 		<!-- !medbot -->
 		<!-- About hláška, žádný parametr -->
 		<!-- Úspešná hláška, jeden parametr: {0: list příkazů}-->
@@ -221,7 +265,7 @@
 		>!medbot {1}</Command>
 		
 		<!-- !leaderboard -->
-		<!-- About hláška, 3 parametry: {0: currency name} {1:plural} {2: units} -->
+		<!-- About hláška, 3 parametry: {0:nazev bodu} {1:množné číslo} {2: jednotky bodů} -->
 		<!-- Úspešná hláška, jeden parametr: {0: currency plural} {1: list top uživatelů medu} {2: list top uživatelů XP}-->
 		<!-- Chybová hláška, 1 parametr: {0: currency name} {1: currency plural} {2: currency units} {3: počet TOP lidí} -->
 		<Command Handler="Leaderboard" 
@@ -236,7 +280,7 @@
 		>!leaderboard</Command>
 		
 		<!-- !leaderboard {1: currency name / xp / exp / level} -->
-		<!-- About hláška, jeden parametr: {0: currency name} {1:plural} {2: units} -->
+		<!-- About hláška, 3 parametry: {0:nazev bodu} {1:množné číslo} {2: jednotky bodů} -->
 		<!-- Úspešná hláška, jeden parametr: {0: currency plural / xp} {1: list top uživatelů} {2: počet TOP lidí} -->
 		<!-- Chybová hláška, 1 parametr: {0: currency name} {1: currency plural} {2: currency units} -->
 		<Command Handler="Leaderboard" 
@@ -248,6 +292,21 @@
 		FailMessage="Neplatný argument. Dostupné argumenty jsou: {0}, xp, exp, level"
 		ErrorMessage="Víte z kolika řádků kódu se skládám? Hodně! Když se něco pokazí tak to není moje chyba! Může za to počasí."
 		Cooldown="00:00:50"
-		>!leaderboard {1}</Command> 
+		>!leaderboard {1}</Command>
+		
+		<!-- !help {1: název příkazu} -->
+		<!-- About hláška, žádný parametr -->
+		<!-- Úspešná hláška, jeden parametr: {0: about hláška} -->
+		<!-- Chybová hláška, žádný parametr: -->
+		<Command Handler="Help" 
+		BroadcasterOnly="false" 
+		ModPermissionRequired="false"
+		SendWhisper="false"
+		AboutCommand="Vypíše nápovědu o příkazu. Příklad:  !help rank"
+		SuccessMessage="{0}"
+		FailMessage=""
+		ErrorMessage=""
+		Cooldown="00:00:30"
+		>!help {1}</Command> 
   </Commands>
 </Medbot>
