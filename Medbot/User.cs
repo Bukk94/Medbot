@@ -8,7 +8,7 @@ namespace Medbot {
     public class User {
         private readonly string nickname;
         private string displayName;
-        private Nullable<DateTime> lastMessage;
+        private DateTime? lastMessage;
         private long points;
         private bool mod;
         private bool broadcaster;
@@ -29,7 +29,7 @@ namespace Medbot {
         /// <summary>
         /// Date and Time of last message user sent. Can be null.
         /// </summary>
-        public Nullable<DateTime> LastMessage { get { return this.lastMessage; } set { this.lastMessage = value; } }
+        public DateTime? LastMessage { get { return this.lastMessage; } set { this.lastMessage = value; } }
 
         /// <summary>
         /// User's watching points
@@ -149,10 +149,10 @@ namespace Medbot {
                 RemovePoints(points);
 
                 if (target == null) { // Target is not online, trade into file
-                    FileControl.AddUserPointsToFile(targetUsername, points);
+                    FilesControl.AddUserPointsToFile(targetUsername, points);
                 } else { // User is online
                     target.AddPoints(points);
-                    FileControl.SaveData();
+                    FilesControl.SaveData();
                 }
             } else {
                 throw new PointsException("User can't trade this amount of points. User doesn't have enough points to trade.");
@@ -197,18 +197,25 @@ namespace Medbot {
         }
 
         /// <summary>
-        /// Gets hours needed for rankup
+        /// Gets time needed for rankup
         /// </summary>
         /// <param name="xpRate">Rate of gaining experiences</param>
         /// <param name="interval">Experience timer interval</param>
         /// <returns>Returns double value with 2 decimal places</returns>
-        public double HoursToNextRank(int xpRate, TimeSpan interval) {
+        public string TimeToNextRank(int xpRate, TimeSpan interval) {
             //  exp / activeExp / (60/intervalMinutes) -> hours
             //  exp / activeExp / (60/intervalMinutes) * 60 -> minutes
 
             long nextRank = ToNextRank();
-            var val = Math.Round((double)this.ToNextRank() / xpRate / (60 / interval.TotalMinutes), 2);
-            return Math.Round((double) this.ToNextRank() / xpRate / (60 / interval.TotalMinutes), 2);
+            double hours = Math.Round((double)this.ToNextRank() / xpRate / (60 / interval.TotalMinutes), 0);
+            double minutes = Math.Round((double)this.ToNextRank() / xpRate / (60 / interval.TotalMinutes) * 60, 0) - (hours * 60);
+
+            if (hours <= 0)
+                return minutes + " min";
+            else if (minutes <= 0)
+                return hours + " h";
+
+            return String.Format("{0} h {1} min", hours, minutes);
         }
 
         /// <summary>
