@@ -27,11 +27,6 @@ namespace Medbot.ExpSystem {
         internal bool TimerRunning { get { return this.timerRunning; } }
 
         /// <summary>
-        /// Gets full path to ranks file
-        /// </summary>
-        internal string RanksPath { get { return String.Format("{0}{1}{2}", Directory.GetCurrentDirectory(), Path.DirectorySeparatorChar, "Ranks.txt"); } }
-
-        /// <summary>
         /// Gets experience timer tick interval
         /// </summary>
         internal TimeSpan ExperienceInterval { get { return this.interval; } }
@@ -44,7 +39,7 @@ namespace Medbot.ExpSystem {
         /// <summary>
         /// Experiences class manages exp awarding and timer ticking
         /// </summary>
-        /// <param name="interval">The time interval between each tick in minutes </param>
+        /// <param name="interval">The time interval between each tick in minutes</param>
         /// <param name="activeExp">Number of experience gained by active users</param>
         /// <param name="idleExp">Number of experience gained by idle users</param>
         /// <param name="idleTime">Time after which user will become idle (in minutes)</param>
@@ -70,12 +65,12 @@ namespace Medbot.ExpSystem {
         /// Loads ranks from txt file
         /// </summary>
         internal void LoadRanks() {
-            if (!File.Exists(RanksPath)) {
+            if (!File.Exists(BotClient.RanksPath)) {
                 Logging.LogError(this, System.Reflection.MethodBase.GetCurrentMethod(), "FAILED to load ranks. File not found.");
                 return;
             }
 
-            string[] dataRaw = File.ReadAllText(RanksPath).Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            string[] dataRaw = File.ReadAllText(BotClient.RanksPath).Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             int level = 1;
 
             foreach (string data in dataRaw) {
@@ -134,6 +129,10 @@ namespace Medbot.ExpSystem {
                 if (u.LastMessage == null) // Skip users who never wrote anything in chat
                     continue;
 
+                // Skip blacklisted user
+                if (BotClient.UserBlacklist.Contains(u.Username))
+                    continue;
+
                 // Reward active
                 if (DateTime.Now - u.LastMessage < TimeSpan.FromMilliseconds(this.idleTime.TotalMilliseconds))
                     u.AddExperience(this.activeExp);
@@ -147,7 +146,7 @@ namespace Medbot.ExpSystem {
                 Console.WriteLine(u.DisplayName + " gained experience");
             }
             
-            FileControl.SaveData();
+            FilesControl.SaveData();
         }
     }
 }
