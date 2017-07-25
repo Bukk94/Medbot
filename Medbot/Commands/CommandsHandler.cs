@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using System.Reflection;
 using Medbot.LoggingNS;
 using Medbot.Followers;
@@ -13,11 +10,11 @@ using Medbot.Exceptions;
 using Medbot.Internal;
 
 namespace Medbot.Commands {
+    internal enum BotChatColors { Blue, Coral, DodgerBlue, SpringGreen, YellowGreen, Green, OrangeRed, Red, GoldenRod, HotPink, CadetBlue, SeaGreen, Chocolate, BlueViolet, Firebrick }
+
     internal static class CommandsHandler {
-        private static string commandsFilePath = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Commands.xml";
         private static Experiences expObject;
         private static BotClient botClient;
-        // TODO: !info <command name>
 
         /// <summary>
         /// Initializes Commands Handler, passing XP object
@@ -26,51 +23,6 @@ namespace Medbot.Commands {
         internal static void Initialize(Experiences exp, BotClient bot) {
             expObject = exp;
             botClient = bot;
-        }
-
-        internal static List<Command> LoadCommands() {
-            if (!File.Exists(commandsFilePath)) {
-                Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), "FAILED to load commands. File not found");
-                return null;
-            }
-
-            List<Command> commandsList = new List<Command>();
-            try {
-                XDocument data = XDocument.Load(commandsFilePath);
-                var commandsTypeGroups = data.Element("Medbot").Elements("Commands");
-
-                foreach (var cmdGroup in commandsTypeGroups) {
-                    CommandType cmdType = (CommandType)Enum.Parse(typeof(CommandType), cmdGroup.Attribute("Type").Value);
-                    var commands = cmdGroup.Elements("Command");
-
-                    foreach (var cmd in commands) {
-                        HandlerType handler; 
-                        if(!Enum.TryParse<HandlerType>(cmd.Attribute("Handler").Value, out handler))
-                            continue;
-
-                        bool broadcasterOnly = Parsing.ParseBooleanFromAttribute(cmd, "BroadcasterOnly");
-
-                        Command newCmd = new Command(cmdType, handler, cmd.Value.ToLower(), 
-                                                     cmd.Attribute("AboutCommand").Value, 
-                                                     cmd.Attribute("SuccessMessage").Value, 
-                                                     cmd.Attribute("FailMessage").Value,
-                                                     cmd.Attribute("ErrorMessage") != null ? cmd.Attribute("ErrorMessage").Value : "",
-                                                     broadcasterOnly,
-                                                     broadcasterOnly ? false : Parsing.ParseBooleanFromAttribute(cmd, "ModPermissionRequired"),
-                                                     Parsing.ParseBooleanFromAttribute(cmd, "SendWhisper"),
-                                                     Parsing.ParseTimeSpanFromAttribute(cmd, "Cooldown")
-                                                     );
-                        commandsList.Add(newCmd);
-                    }
-                }
-
-                Logging.LogEvent(MethodBase.GetCurrentMethod(), "Commands Loaded");
-            } catch (Exception ex) {
-                Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
-                return null;
-            }
-
-            return commandsList;
         }
 
         /// <summary>
@@ -135,10 +87,10 @@ namespace Medbot.Commands {
 
                         receiver = BotClient.FindOnlineUser(args[1]);
                         if (receiver == null) { // user is not online
-                            FileControl.AddUserPointsToFile(args[1], long.Parse(args[0]));
+                            FilesControl.AddUserPointsToFile(args[1], long.Parse(args[0]));
                         } else {
                             receiver.AddPoints(long.Parse(args[0]));
-                            FileControl.SaveData();
+                            FilesControl.SaveData();
                         }
                         Logging.LogEvent(MethodBase.GetCurrentMethod(), 
                                                  String.Format("{0}  Args: {1}, {2} - Points successfully added", cmd.CommandFormat, args[0], args[1]));
@@ -167,10 +119,10 @@ namespace Medbot.Commands {
 
                         targetUser = BotClient.FindOnlineUser(args[1]);
                         if (targetUser == null) { // user is not online
-                            FileControl.RemoveUserPointsFromFile(args[1], long.Parse(args[0]));
+                            FilesControl.RemoveUserPointsFromFile(args[1], long.Parse(args[0]));
                         } else {
                             targetUser.RemovePoints(long.Parse(args[0]));
-                            FileControl.SaveData();
+                            FilesControl.SaveData();
                         }
 
                         Logging.LogEvent(MethodBase.GetCurrentMethod(), 
@@ -190,7 +142,6 @@ namespace Medbot.Commands {
                     try {
                         if (args.Count < 2)
                             throw new IndexOutOfRangeException("Command " + cmd.CommandFormat + "should contain some arguments. Found " + args.Count);
-
                         if (sender == null)
                             throw new NullReferenceException("Something went wrong, sender is null");
 
@@ -209,13 +160,51 @@ namespace Medbot.Commands {
                         return String.Format(cmd.SuccessMessage, sender.DisplayName, target != null ? target.DisplayName : args[1], 
                                              args[0], Points.CurrencyUnits, Points.CurrencyName, Points.CurrencyNamePlural);
                     } catch (PointsException ex) {
-                        // Fail 5 parametry: {0:Currency name} {1:Currency plural} {2:Currency units} {3:Number of points} {4:User to which remove points} 
+                        // Fail 5 params: {0:Currency name} {1:Currency plural} {2:Currency units} {3:Number of points} {4:User to which remove points} 
                         Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
                         return String.Format(cmd.FailMessage, Points.CurrencyName, Points.CurrencyNamePlural, Points.CurrencyUnits, args[0], args[1]);
                     } catch (Exception ex) {
-                        // Fail 5 parametry: {0:Currency name} {1:Currency plural} {2:Currency units} {3:Number of points} {4:User to which remove points} 
+                        // Fail 5 params: {0:Currency name} {1:Currency plural} {2:Currency units} {3:Number of points} {4:User to which remove points} 
                         Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
                         return String.Format(cmd.ErrorMessage, Points.CurrencyName, Points.CurrencyNamePlural, Points.CurrencyUnits, args[0], args[1]);
+                    }
+
+                case HandlerType.Gamble:
+                    try {
+                        if (args.Count < 1)
+                            throw new IndexOutOfRangeException("Command " + cmd.CommandFormat + "should contain some arguments. Found " + args.Count);
+                        if (sender == null)
+                            throw new NullReferenceException("Something went wrong, sender is null");
+
+                        int gambleValue = int.Parse(args[0]);
+                        if (gambleValue > sender.Points)
+                            throw new PointsException("User doesn't have enough points");
+
+                        Random rand = new Random(Guid.NewGuid().GetHashCode());
+                        int random = rand.Next(1, 100);
+
+                        // 99-100 - triple reward
+                        if(random > 100 - BotDictionary.GambleBonusWinPercentage) {
+                            sender.AddPoints(gambleValue * 3);
+                            FilesControl.SaveData();
+                            return String.Format(cmd.SuccessMessage, gambleValue * 3, Points.CurrencyUnits, Points.CurrencyName, Points.CurrencyNamePlural);
+                        } else if (random > 100 - BotDictionary.GambleWinPercentage - BotDictionary.GambleBonusWinPercentage) { // 79-98 - double reward
+                            sender.AddPoints(gambleValue * 2);
+                            FilesControl.SaveData();
+                            return String.Format(cmd.SuccessMessage, gambleValue * 2, Points.CurrencyUnits, Points.CurrencyName, Points.CurrencyNamePlural);
+                        }
+
+                        // User lost
+                        sender.RemovePoints(gambleValue);
+                        FilesControl.SaveData();
+                        return String.Format(cmd.FailMessage, args[0], Points.CurrencyName, Points.CurrencyNamePlural, Points.CurrencyUnits);
+                    } catch (PointsException ex) {
+                        // Fail 4 params: {0: Number of points} {1:Currency Name} {2:Currency plural} {3:Currency units}
+                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
+                        return String.Format(cmd.ErrorMessage, args[0], Points.CurrencyName, Points.CurrencyNamePlural, Points.CurrencyUnits);
+                    } catch (Exception ex) {
+                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
+                        return "";
                     }
             }
 
@@ -252,12 +241,12 @@ namespace Medbot.Commands {
                         if (nextRank == null)
                             throw new RanksException("User's next rank is null");
 
-                        // Success: 5 params: {0:User} {1:next rank level} {2:next rank name} {3: XP needed to next level} {4: number of hours to reach that rank}
+                        // Success: 5 params: {0:User} {1:next rank level} {2:next rank name} {3: XP needed to next level} {4: time to next rank}
                         return String.Format(cmd.SuccessMessage, sender.DisplayName, 
                                             nextRank.RankLevel,
                                             nextRank.RankName,
                                             sender.ToNextRank(), 
-                                            sender.HoursToNextRank(expObject.ActiveExperience, expObject.ExperienceInterval));
+                                            sender.TimeToNextRank(expObject.ActiveExperience, expObject.ExperienceInterval));
                     } catch(RanksException ex) {
                         // Fail: 4 params: {0:User} {1:next rank level} {2:next rank name} {3: user's XP}
                         Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
@@ -279,7 +268,42 @@ namespace Medbot.Commands {
                                              nextRank != null ? nextRank.RankLevel.ToString() : "N/A", 
                                              nextRank != null ? nextRank.RankName : "N/A", sender.Experience);
                     }
-                    break;
+
+                case HandlerType.Add:
+                    // Add experience,  !addexp 500 Bukk94 |  2 input args {0:Number of points} {1:User to which add points}
+                    User receiver = null;
+                    try {
+                        if (args.Count < 2)
+                            throw new IndexOutOfRangeException("Command " + cmd.CommandFormat + "should contain some arguments. Found " + args.Count);
+
+                        if (long.Parse(args[0]) <= 0) { // Can't add 0 or negative amount
+                            cmd.ResetCommandCooldown();
+                            return "";
+                        }
+
+                        receiver = BotClient.FindOnlineUser(args[1]);
+                        if (receiver == null) { // user is not online
+                            FilesControl.AddUserExperienceToFile(args[1], long.Parse(args[0]));
+                        } else {
+                            receiver.AddExperience(long.Parse(args[0]));
+                            bool newRank = receiver.CheckRankUp();
+                            if (newRank && !String.IsNullOrEmpty(BotDictionary.NewRankMessage))
+                                botClient.SendChatMessage(String.Format(BotDictionary.NewRankMessage, receiver.DisplayName,
+                                                                receiver.UserRank.RankLevel, receiver.UserRank.RankName));
+
+                            FilesControl.SaveData();
+                        }
+                        Logging.LogEvent(MethodBase.GetCurrentMethod(),
+                                                 String.Format("{0}  Args: {1}, {2} - Experience successfully added", cmd.CommandFormat, args[0], args[1]));
+
+                        // Success: 2 params: {0:User} {1:Number of points}
+                        return String.Format(cmd.SuccessMessage, args[1], args[0]);
+                    } catch (Exception ex) {
+                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
+
+                        // Fail: 1 param: {:User to which add points} 
+                        return String.Format(receiver != null ? receiver.DisplayName : args[1]);
+                    }
             }
 
 
@@ -371,11 +395,13 @@ namespace Medbot.Commands {
                     }
 
                 case HandlerType.ChangeColor:
-                    // TODO: !changecolor {1: color}
-                    // /color <name> Blue, Coral, DodgerBlue, SpringGreen, YellowGreen, Green, OrangeRed, Red, GoldenRod, HotPink, CadetBlue, SeaGreen, Chocolate, BlueViolet, and Firebrick.
+                    // !color <name>
+                    var match = Enum.GetNames(typeof(BotChatColors)).FirstOrDefault(color => color.ToLower().Equals(args[0].ToLower()));
+                    if (match == null)
+                        return "";
 
-
-                    break;
+                    botClient.SendChatMessage($".color {match}", true);
+                    return cmd.SuccessMessage;
                 case HandlerType.All:
                     // !medbot   !medbot mod  !medbot streamer         |  0 or 1 input args {1: mod/streamer}
                     if (args.Count == 0) {
@@ -420,8 +446,8 @@ namespace Medbot.Commands {
                             throw new IndexOutOfRangeException("Command " + cmd.CommandFormat + "shouldn't containg more than 1 argument. Found " + args.Count);
 
                         if (args.Count == 0) { // Form leaderboard with top 3 with points & XP
-                            List<TempUser> fullPointsLeaderboard = await FileControl.GetPointsLeaderboard();
-                            List<TempUser> fullXPLeaderboard = await FileControl.GetExperienceLeaderboard();
+                            List<TempUser> fullPointsLeaderboard = await FilesControl.GetPointsLeaderboard();
+                            List<TempUser> fullXPLeaderboard = await FilesControl.GetExperienceLeaderboard();
 
                             if (fullPointsLeaderboard.Count <= 0 || fullXPLeaderboard.Count <= 0)
                                 throw new PointsException("Leaderboard doesn't contain any records");
@@ -433,14 +459,14 @@ namespace Medbot.Commands {
                                                  BotDictionary.LeaderboardTopNumber);
                         } else { // Form specific leaderboard
                             if (args[0].ToLower().Equals(Points.CurrencyName.ToLower()) || args[0].ToLower().Equals("points")) {
-                                List<TempUser> fullLeaderboard = await FileControl.GetPointsLeaderboard();
+                                List<TempUser> fullLeaderboard = await FilesControl.GetPointsLeaderboard();
                                 if (fullLeaderboard.Count <= 0)
                                     throw new PointsException("Leaderboard doesn't contain any records");
 
                                 // Success 2 params - {0: currency plural} {1: list of top users} 
                                 return String.Format(cmd.SuccessMessage, Points.CurrencyNamePlural, String.Join(", ", FormLeaderboard(fullLeaderboard)), BotDictionary.LeaderboardTopNumber);
                             } else if (args[0].ToLower().Equals("xp") || args[0].ToLower().Equals("exp") || args[0].ToLower().Equals("level")) {
-                                List<TempUser> fullLeaderboard = await FileControl.GetExperienceLeaderboard();
+                                List<TempUser> fullLeaderboard = await FilesControl.GetExperienceLeaderboard();
                                 if (fullLeaderboard.Count <= 0)
                                     throw new PointsException("Leaderboard doesn't contain any records");
 
@@ -456,7 +482,14 @@ namespace Medbot.Commands {
                         Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), "ERROR while forming leaderboard!\n" + ex.ToString());
                         return cmd.ErrorMessage;
                     }
-                    break;
+
+                case HandlerType.Help:
+                    Command matchedCommand = botClient.CommandsList.FirstOrDefault(c => c.CommandFormat.Contains(args[0]));
+                    if(matchedCommand == null)
+                        return "";
+
+                    // {0: Points name} {1: Points plural} {2: Points units}
+                    return String.Format(matchedCommand.AboutMessage, Points.CurrencyName, Points.CurrencyNamePlural, Points.CurrencyUnits);
             }
 
             return "Unknown internal handler";
