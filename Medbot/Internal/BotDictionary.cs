@@ -23,6 +23,16 @@ namespace Medbot.Internal {
         internal static string NewRankMessage { get; set; }
 
         /// <summary>
+        /// Gets/Sets message to announce failing commands loading
+        /// </summary>
+        internal static string CommandsNotFound { get; set; }
+
+        /// <summary>
+        /// Gets/Sets message to announce zero loaded commands
+        /// </summary>
+        internal static string ZeroCommands { get; set; }
+
+        /// <summary>
         /// Gets/Sets string for 'yes' word
         /// </summary>
         internal static string Yes { get; set; }
@@ -36,5 +46,15 @@ namespace Medbot.Internal {
         /// Gets/Sets number of top people printed in !leaderboard command
         /// </summary>
         internal static int LeaderboardTopNumber { get; set; }
+
+        /// <summary>
+        /// Gets/Sets percentage of winning triple bonus in the gamble
+        /// </summary>
+        internal static int GambleBonusWinPercentage { get; set; }
+
+        /// <summary>
+        /// Gets/Sets percentage of winning the gamble
+        /// </summary>
+        internal static int GambleWinPercentage { get; set; }
     }
 }
