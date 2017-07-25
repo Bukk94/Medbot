@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Medbot.Commands;
+using Medbot.Events;
+using System;
 using System.Timers;
 
 namespace Medbot.Internal {
     internal class CommandThrottling {
+        private Command command;
         private Timer throttlingTimer;
         private TimeSpan throttlingInterval;
         private bool noCooldown;
         private bool cooldownActive;
+
+        internal event EventHandler<OnCommandThrottledArgs> OnCommandThrottled;
 
         /// <summary>
         /// Gets throttling interval
@@ -20,8 +21,9 @@ namespace Medbot.Internal {
         /// <summary>
         /// Creates an instance of Command throttler which can check if the command is allowed to be executed
         /// </summary>
-        internal CommandThrottling(TimeSpan interval) {
+        internal CommandThrottling(TimeSpan interval, Command cmd) {
             throttlingInterval = interval;
+            this.command = cmd;
 
             if (interval == null || interval.TotalMilliseconds <= 0) {
                 this.noCooldown = true;
@@ -46,8 +48,10 @@ namespace Medbot.Internal {
             if (!throttlingTimer.Enabled)
                 throttlingTimer.Start();
 
-            if (this.cooldownActive)
+            if (this.cooldownActive) {
+                OnCommandThrottled?.Invoke(this, new OnCommandThrottledArgs { Command = command, Interval = ThrottlingInterval });
                 return false;
+            }
 
             this.cooldownActive = true;
             return true;

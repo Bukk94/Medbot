@@ -1,11 +1,19 @@
-﻿using Medbot.LoggingNS;
+﻿using Medbot.Events;
+using Medbot.LoggingNS;
 using System;
 using System.Timers;
 
 namespace Medbot.Internal {
+    public enum ThrottleViolation { MessageEmpty, MessageLimitExceeded, ExcessiveSending }
+
     internal class MessageThrottling {
         private Timer throttlingTimer;
         private int messagesSent;
+
+        /// <summary>
+        /// Activates when message is throttled
+        /// </summary>
+        internal event EventHandler<OnMessageThrottledArgs> OnMessageThrottled;
 
         /// <summary>
         /// Gets maximum character limit to be send
@@ -49,12 +57,18 @@ namespace Medbot.Internal {
             // Message is empty or exceeds maximum characater limit
             if (String.IsNullOrEmpty(message) || message.Length >= MaxCharacterLimit) {
                 Logging.LogEvent(System.Reflection.MethodBase.GetCurrentMethod(), "Message was THROTTLED. Message was empty or exceeds maximum character limit: " + message);
+
+                OnMessageThrottled?.Invoke(this, new OnMessageThrottledArgs { Interval = ThrottlingInterval, Message = message,
+                                                                            Violation = String.IsNullOrEmpty(message) ? ThrottleViolation.MessageEmpty : ThrottleViolation.MessageLimitExceeded });
                 return false;
             }
 
             // Check messages limit
             if ((BotClient.BotModeratorPermission && messagesSent >= MaxModeratorMessagesLimit) || (!BotClient.BotModeratorPermission && messagesSent >= MaxMessagesLimit)) {
                 Logging.LogEvent(System.Reflection.MethodBase.GetCurrentMethod(), "Message was THROTTLED: " + message);
+                OnMessageThrottled?.Invoke(this, new OnMessageThrottledArgs {
+                                                Interval = ThrottlingInterval, Message = message,
+                                                Violation = ThrottleViolation.ExcessiveSending  });
                 return false;
             }
 
