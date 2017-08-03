@@ -7,13 +7,14 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Medbot.LoggingNS;
 using Medbot.Commands;
+using Medbot.Internal;
 
 namespace Medbot.Followers {
     /// <summary>
     /// Order of followers list - Ascended or Descended
     /// </summary>
-    enum ListDirection { asc, desc }
-    internal static class FollowersClass {
+    public enum ListDirection { asc, desc }
+    public static class FollowersClass {
 
         /// <summary>
         /// Gets a newest follower
@@ -58,54 +59,32 @@ namespace Medbot.Followers {
                 limit = 100;
 
             if(clientID == null)
-                clientID = await GetClientID(Login.BotOauth);
+                clientID = await Requests.GetClientID(Login.BotOauth);
 
             string url = String.Format(@"https://api.twitch.tv/kraken/channels/{0}/follows?client_id={1}&limit={2}&direction={3}", 
                                         channel.ToLower(), clientID, limit, dir);
 
 
-            return JsonConvert.DeserializeObject<FollowersInfo>(await TwitchJsonRequest(url, "GET"));
+            return JsonConvert.DeserializeObject<FollowersInfo>(await Requests.TwitchJsonRequest(url, "GET"));
         }
 
         /// <summary>
-        /// Gets a Client ID from oAuth token
+        /// Gets single follower's info
         /// </summary>
-        /// <param name="token">oAuth token</param>
-        /// <returns>Returns string client ID</returns>
-        public async static Task<string> GetClientID(string token) {
-            if (String.IsNullOrEmpty(token)) {
-                Logging.LogError(typeof(CommandsHandler), System.Reflection.MethodBase.GetCurrentMethod(), "Token was null or empty");
+        /// <param name="followerUsername">Name of follower to look at</param>
+        /// <param name="clientID">Bot's client ID, if null it will be calculated from oAuth</param>
+        /// <returns>Return Follower object containing all info about follower</returns>
+        public async static Task<Follower> GetFollowerFollowsInfo(string channel, string followerUsername, string clientID = null) {
+            if (channel.Equals(followerUsername, StringComparison.InvariantCultureIgnoreCase)) // return if owner is trying to get info about himself
                 return null;
-            }
-            if (token.Contains("oauth:"))
-                token = token.Replace("oauth:", "");
 
-            string url = String.Format("https://api.twitch.tv/kraken?oauth_token={0}", token);
-            var serverResponse = JsonConvert.DeserializeObject(await TwitchJsonRequest(url, "GET"));
-            dynamic parsedJson = JObject.Parse(serverResponse.ToString());
-            return parsedJson.token.client_id.Value;
-        }
+            if (clientID == null)
+                clientID = await Requests.GetClientID(Login.BotOauth);
 
-        /// <summary>
-        /// Gets JSON response of the given url
-        /// </summary>
-        /// <param name="url">URL to request JSON file</param>
-        /// <param name="method">POST/GET HTTP method</param>
-        /// <returns></returns>
-        private async static Task<string> TwitchJsonRequest(string url, string method) {
-            var request = WebRequest.CreateHttp(url);
-            request.Method = method;
-            request.ContentType = "application/json";
+            // https://api.twitch.tv/kraken/users/<user ID>/follows/channels/<channel id>?client_id=<client id>
+            string url = String.Format(@"https://api.twitch.tv/kraken/users/{0}/follows/channels/{1}?client_id={2}", followerUsername.ToLower(), channel.ToLower(), clientID);
 
-            try {
-                WebResponse response = request.GetResponse();
-                StreamReader reader = new StreamReader(response.GetResponseStream());
-                var data = await reader.ReadToEndAsync();
-                return data;
-            } catch (Exception ex) {
-                Logging.LogError(typeof(CommandsHandler), System.Reflection.MethodBase.GetCurrentMethod(), ex.ToString());
-                return null;
-            }
+            return JsonConvert.DeserializeObject<Follower>(await Requests.TwitchJsonRequest(url, "GET"));
         }
     }
 }

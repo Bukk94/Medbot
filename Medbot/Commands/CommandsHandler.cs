@@ -16,6 +16,8 @@ namespace Medbot.Commands {
         private static Experiences expObject;
         private static BotClient botClient;
 
+        // TODO: !Followerinfo (or smth)
+
         /// <summary>
         /// Initializes Commands Handler, passing XP object
         /// </summary>
@@ -480,6 +482,31 @@ namespace Medbot.Commands {
                         }
                     } catch (Exception ex) {
                         Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), "ERROR while forming leaderboard!\n" + ex.ToString());
+                        return cmd.ErrorMessage;
+                    }
+                case HandlerType.FollowAge:
+                    // !followage    | input args 0
+                    try {
+                        if (sender == null)
+                            throw new NullReferenceException("Something went wrong, sender is null");
+
+                        Follower followerData = await FollowersClass.GetFollowerFollowsInfo(Login.Channel, "bukk94", Login.ClientID);
+                        if (followerData == null)
+                            return "";
+
+                        TimeSpan age = DateTime.Now - followerData.CreatedAt;
+                        //TimeSpan age = DateTime.Now - new DateTime(2017, 3, 1, 5, 30, 20, 1);
+
+                        // Success 2 params - {0: user/sender} {1: number of days} 
+                        string ageFormatting = String.Empty;
+                        if (age.TotalDays > 365)
+                            ageFormatting += Math.Round(age.TotalDays / 365) + "Y ";
+
+                        ageFormatting += Math.Round(age.TotalDays) + "D";
+
+                        return String.Format(cmd.SuccessMessage, sender.Username, ageFormatting);
+                    } catch(Exception ex) {
+                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), "ERROR while getting follower's age\n" + ex.ToString());
                         return cmd.ErrorMessage;
                     }
 

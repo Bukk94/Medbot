@@ -201,7 +201,7 @@ namespace Medbot {
 
             // Generate ClientID if it's not set, causing a few sec freeze during waiting on server response
             if(String.IsNullOrEmpty(Login.ClientID))
-                Login.ClientID = await FollowersClass.GetClientID(Login.BotOauth);
+                Login.ClientID = await Requests.GetClientID(Login.BotOauth);
 
             return Login.ValidLoginCredentials;
         }

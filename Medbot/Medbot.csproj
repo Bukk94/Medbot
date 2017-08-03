@@ -67,6 +67,7 @@
     <Compile Include="Internal\CommandThrottling.cs" />
     <Compile Include="Internal\BotDictionary.cs" />
     <Compile Include="Internal\MessageThrottling.cs" />
+    <Compile Include="Internal\Requests.cs" />
     <Compile Include="Logging\Logging.cs" />
     <Compile Include="Login.cs" />
     <Compile Include="MainFrame.cs">

@@ -294,6 +294,21 @@
 		Cooldown="00:00:50"
 		>!leaderboard {1}</Command>
 		
+		<!-- !followage -->
+		<!-- About hláška, žádný parametr -->
+		<!-- Úspešná hláška, dva parametry: {0: Uživatel}} {1: čas} -->
+		<!-- Chybová hláška, žádný parametr: -->
+		<Command Handler="FollowAge" 
+		BroadcasterOnly="false" 
+		ModPermissionRequired="false"
+		SendWhisper="false"
+		AboutCommand="Vypíše čas od followu. Příklad:  !followage"
+		SuccessMessage="Už nás sleduješ po dobu {1}. Jen tak dál! :)"
+		FailMessage=""
+		ErrorMessage="Nepodařilo se získat čas followu. Něco je špatně."
+		Cooldown="00:00:30"
+		>!followage</Command> 
+		
 		<!-- !help {1: název příkazu} -->
 		<!-- About hláška, žádný parametr -->
 		<!-- Úspešná hláška, jeden parametr: {0: about hláška} -->
