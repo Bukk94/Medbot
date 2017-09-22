@@ -11,6 +11,7 @@ using Medbot.ExpSystem;
 using Medbot.LoggingNS;
 using Medbot.Internal;
 using Medbot.Events;
+using System.Threading.Tasks;
 
 namespace Medbot {
     internal class BotClient : IBotClient {
@@ -138,7 +139,6 @@ namespace Medbot {
             else if (commands.Count <= 0)
                 SendChatMessage(BotDictionary.ZeroCommands);
 
-            
             this.readingTimer = new Timer(Reader_Timer_Tick, null, Timeout.Infinite, 200);
         }
 
