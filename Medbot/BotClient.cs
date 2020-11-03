@@ -31,13 +31,11 @@ namespace Medbot {
         private List<Command> commands;
         private MessageThrottling throttler;
 
-        // REMOVE: After compiling API
-        private MainFrame main;
-        
+        #region Properties
         /// <summary>
         /// Gets list of currently online users
         /// </summary>
-        public static List<User> OnlineUsers { get { return onlineUsers; } }
+        public static List<User> OnlineUsers => onlineUsers;
 
         /// <summary>
         /// Gets/Sets list of usernames that are blacklisted from receiveing points, EXP and ranks
@@ -47,32 +45,32 @@ namespace Medbot {
         /// <summary>
         /// Gets full path to settings XML file
         /// </summary>
-        public static string SettingsPath { get { return Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Settings.xml"; } }
+        public static string SettingsPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Settings.xml"; 
 
         /// <summary>
         /// Gets full path to file where are all users data stored
         /// </summary>
-        public static string DataPath { get { return Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Users_data.xml"; } }
+        public static string DataPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Users_data.xml";
 
         /// <summary>
         /// Gets full path to file where are all users data stored
         /// </summary>
-        public static string CommandsPath { get { return Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Commands.xml"; } }
+        public static string CommandsPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Commands.xml";
 
         /// <summary>
         /// Gets full path to ranks file
         /// </summary>
-        public static string RanksPath { get { return Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Ranks.txt"; } }
+        public static string RanksPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Ranks.txt";
 
         /// <summary>
         /// Gets bool if bot has moderator permissions
         /// </summary>
-        public static bool BotModeratorPermission { get { return botMod; } }
+        public static bool BotModeratorPermission => botMod;
 
         /// <summary>
         /// Gets channel on which bot is deployed on
         /// </summary>
-        public string DeployedChannel { get { return Login.Channel; } }
+        public string DeployedChannel => Login.Channel;
 
         /// <summary>
         /// Gets bool if the bot is running
@@ -92,8 +90,10 @@ namespace Medbot {
         /// <summary>
         /// Gets list of bot's commands
         /// </summary>
-        public List<Command> CommandsList { get { return this.commands; } }
+        public List<Command> CommandsList => this.commands;
+        #endregion
 
+        #region Events
         /// <summary>
         /// Activates when command is received
         /// </summary>
@@ -124,12 +124,11 @@ namespace Medbot {
         /// </summary>
         public event EventHandler<TimeSpan> OnUptimeTick;
 
-        // TODO: Consider backup uploading
-        public BotClient(MainFrame main) {
-            // REMOVE: After compiling API
-            this.main = main;
-            /////////////////
+        public event EventHandler<OnMessageArgs> OnConsoleOuput;
+        #endregion
 
+        // TODO: Consider backup uploading
+        public BotClient() {
             useColor = true;
             botMod = false;
             throttler = new MessageThrottling();
@@ -247,6 +246,9 @@ namespace Medbot {
         /// Disconnects the bot from the Twitch account, clean OnlineUsers list and closes TCP connection
         /// </summary>
         public void Disconnect() {
+            if (!IsBotRunning)
+                return;
+
             try {
                 SendChatMessage(BotDictionary.GoodbyeMessage);
 
@@ -260,13 +262,13 @@ namespace Medbot {
             }
         }
 
-        // TODO: Change this to console output after compiling API
         private void ConsoleAppendText(string text) {
-            main.ConsoleAppendText(text);
+            Console.WriteLine(text);
+            OnConsoleOuput?.Invoke(this, new OnMessageArgs { Message = text });
         }
 
         /// <summary>
-        /// Main bot's 'hearth'. Timer tick event
+        /// Main bot's 'heart'. Timer tick event
         /// </summary>
         private void Reader_Timer_Tick(Object s) {
             if (!IsConnectionAlive)
@@ -363,7 +365,7 @@ namespace Medbot {
         /// </summary>
         /// <param name="chatLine">Full chat line</param>
         /// <returns>Sender user</returns>
-        public User GetUserFromChat(string chatLine) {
+        private User GetUserFromChat(string chatLine) {
             User sender = TryUserJoin(chatLine);
             ApplyUserBadges(sender, Parsing.ParseBadges(chatLine));
             return sender;

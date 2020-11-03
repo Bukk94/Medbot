@@ -11,6 +11,7 @@ namespace Medbot {
         event EventHandler<OnUserArgs> OnUserJoined;
         event EventHandler<OnUserArgs> OnUserDisconnected;
         event EventHandler<TimeSpan> OnUptimeTick;
+        event EventHandler<OnMessageArgs> OnConsoleOuput;
 
         List<Command> CommandsList { get; }
         bool IsConnectionAlive { get; }
@@ -21,7 +22,6 @@ namespace Medbot {
         void Stop();
         void Connect();
         void Disconnect();
-        User GetUserFromChat(string chatLine);
         void SendChatMessage(string msg);
         void SendChatMessage(string msg, bool isCommand);
         void SendPrivateMessage(string msg, string user);

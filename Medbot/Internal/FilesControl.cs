@@ -203,7 +203,7 @@ namespace Medbot {
             if(String.IsNullOrEmpty(Login.ClientID))
                 Login.ClientID = await Requests.GetClientID(Login.BotOauth);
 
-            return Login.ValidLoginCredentials;
+            return Login.IsLoginCredentialsValid;
         }
 
         /// <summary>
