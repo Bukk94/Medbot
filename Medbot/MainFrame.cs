@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Threading;
+using System.Drawing;
 
 namespace Medbot {
     public partial class MainFrame : Form {
         IBotClient bot;
+        System.Timers.Timer timer;
 
         /// <summary>
         /// _Test interface for API
@@ -13,10 +15,18 @@ namespace Medbot {
             InitializeComponent();
 
             bot = new BotClient(this);
-            Thread thread = new Thread(new ThreadStart(bot.Start));
-            thread.Start();
-
             bot.OnMessageReceived += Bot_OnMessageReceived;
+            bot.OnUptimeTick += Bot_OnUptimeTick;
+            timer = new System.Timers.Timer();
+        }
+
+        public delegate void UpdateLabelDelegate(object sender, TimeSpan e);
+        private void Bot_OnUptimeTick(object sender, TimeSpan e) {
+            if (messageBox.InvokeRequired) {
+                messageBox.BeginInvoke(new UpdateLabelDelegate(Bot_OnUptimeTick), sender, e);
+            } else {
+                uptimeLabel.Text = ToHumanReadableString(e);
+            }
         }
 
         public delegate void UpdateMessageBoxDelegate(object sender, Events.OnMessageArgs e);
@@ -42,6 +52,43 @@ namespace Medbot {
 
         private void MainFrame_FormClosing(object sender, FormClosingEventArgs e) {
             bot.Disconnect();
+        }
+
+        private void StartStopButton_Click(object sender, EventArgs e) {
+            if (!bot.IsBotRunning) {
+                bot.Start();
+                startStopButton.Text = "Stop";
+                botInfoStatus.Text = "Bot is LIVE";
+                colorPanel.BackColor = Color.Green;
+                timer.Start();
+
+                infoLabelChannel.Text = bot.DeployedChannel;
+            } else {
+                startStopButton.Text = "Start";
+                botInfoStatus.Text = "Bot is IDLE";
+                colorPanel.BackColor = Color.Red;
+
+                infoLabelChannel.Text = "--NONE--";
+                uptimeLabel.Text = "---";
+                bot.Stop();
+            }
+        }
+
+        public string ToHumanReadableString(TimeSpan t) {
+            if (t.TotalSeconds <= 1) {
+                return $@"{t:s\.ff} seconds";
+            }
+            if (t.TotalMinutes <= 1) {
+                return $@"{t:%s} seconds";
+            }
+            if (t.TotalHours <= 1) {
+                return $@"{t:%m} minutes";
+            }
+            if (t.TotalDays <= 1) {
+                return $@"{t:%h} hours";
+            }
+
+            return $@"{t:%d} days";
         }
     }
 }

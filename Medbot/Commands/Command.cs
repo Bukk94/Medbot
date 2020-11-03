@@ -7,7 +7,7 @@ namespace Medbot.Commands {
     enum CommandType { Internal, EXP, Points }
     enum HandlerType { Add, All, Color, ChangeColor, FollowAge, Gamble, Help, Info, InfoSecond, Leaderboard, LastFollower, Trade, Random, Remove }
 
-    internal class Command {
+    public class Command {
         private CommandType commandType;
         private HandlerType handlerType;
         private TimeSpan cooldown;

@@ -12,9 +12,10 @@ using Medbot.LoggingNS;
 using Medbot.Internal;
 using Medbot.Events;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Medbot {
-    internal class BotClient : IBotClient {
+    public class BotClient : IBotClient {
         private static bool botMod;
         private static List<User> onlineUsers;
         private readonly string chatMessagePrefix;
@@ -23,6 +24,8 @@ namespace Medbot {
         private StreamWriter writer;
         private StreamReader reader;
         private Timer readingTimer;
+        private Timer uptimeTimer;
+        private Stopwatch uptime;
         private Points points;
         private Experiences experience;
         private List<Command> commands;
@@ -67,6 +70,16 @@ namespace Medbot {
         public static bool BotModeratorPermission { get { return botMod; } }
 
         /// <summary>
+        /// Gets channel on which bot is deployed on
+        /// </summary>
+        public string DeployedChannel { get { return Login.Channel; } }
+
+        /// <summary>
+        /// Gets bool if the bot is running
+        /// </summary>
+        public bool IsBotRunning { get; private set; }
+
+        /// <summary>
         /// Gets bool if the connection of the bot is alive
         /// </summary>
         public bool IsConnectionAlive { get { return tcpClient != null ? tcpClient.Connected : false; } }
@@ -106,6 +119,11 @@ namespace Medbot {
         /// </summary>
         public event EventHandler<OnUserArgs> OnUserDisconnected;
 
+        /// <summary>
+        /// Activates when uptime timer ticks
+        /// </summary>
+        public event EventHandler<TimeSpan> OnUptimeTick;
+
         // TODO: Consider backup uploading
         public BotClient(MainFrame main) {
             // REMOVE: After compiling API
@@ -126,11 +144,11 @@ namespace Medbot {
             chatMessagePrefix = String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :", Login.BotName, Login.Channel);
             points = new Points(new TimeSpan(0, intervals["PointsInterval"], 0), new TimeSpan(0, 
                                                 intervals["PointsIdleTime"], 0), Convert.ToBoolean(intervals["PointsRewardIdles"]), 
-                                                intervals["PointsPerTick"], true);
+                                                intervals["PointsPerTick"], false);
 
             experience = new Experiences(this, new TimeSpan(0, intervals["ExperienceInterval"], 0), 
                                                intervals["ExperienceActiveExp"],
-                                               intervals["ExperienceIdleExp"], new TimeSpan(0, intervals["ExperienceIdleTime"], 0), true);
+                                               intervals["ExperienceIdleExp"], new TimeSpan(0, intervals["ExperienceIdleTime"], 0), false);
             CommandsHandler.Initialize(experience, this);
             commands = FilesControl.LoadCommands();
 
@@ -140,6 +158,8 @@ namespace Medbot {
                 SendChatMessage(BotDictionary.ZeroCommands);
 
             this.readingTimer = new Timer(Reader_Timer_Tick, null, Timeout.Infinite, 200);
+            this.uptimeTimer = new Timer(Uptime_Timer_Tick, null, Timeout.Infinite, 1000);
+            this.uptime = new Stopwatch();
         }
 
         /// <summary>
@@ -163,6 +183,9 @@ namespace Medbot {
             if (!experience.TimerRunning)
                 experience.StartExperienceTimer();
 
+            this.uptime.Start();
+            this.uptimeTimer.Change(0, 1000);
+            IsBotRunning = true;
             Console.WriteLine("Bot started");
         }
 
@@ -185,6 +208,10 @@ namespace Medbot {
             // Shutdown experience timer
             if (experience.TimerRunning)
                 experience.StopExperienceTimer();
+
+            IsBotRunning = false;
+            this.uptime.Stop();
+            this.uptimeTimer.Change(Timeout.Infinite, 0);
             Console.WriteLine("Bot has been stopped");
         }
 
@@ -478,6 +505,10 @@ namespace Medbot {
                 return;
             
             botMod = botObject.Moderator;
+        }
+
+        private void Uptime_Timer_Tick(Object sender) {
+            OnUptimeTick?.Invoke(this, uptime.Elapsed);
         }
     }
 }

@@ -2,9 +2,9 @@
 using Medbot.Commands;
 
 namespace Medbot.Events {
-    internal class OnCommandReceivedArgs : EventArgs {
+    public class OnCommandReceivedArgs : EventArgs {
 
-        internal Command Command { get; set; }
+        public Command Command { get; set; }
 
     }
 }
