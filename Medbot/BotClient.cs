@@ -170,7 +170,10 @@ namespace Medbot {
                 return;
             }
 
-            Connect();
+            var connected = Connect();
+            if (!connected)
+                return;
+
             // Immediatelly start primary timer
             this.readingTimer.Change(0, 200);
 
@@ -217,8 +220,16 @@ namespace Medbot {
         /// <summary>
         /// Connects the bot to the Twitch account
         /// </summary>
-        public void Connect() {
-            try {
+        public bool Connect() 
+        {
+            if (!Login.IsLoginCredentialsValid)
+            {
+                Console.Error.WriteLine("Can't connect the bot - Invalid credentials!");
+                return false;
+            }
+
+            try 
+            {
                 var encoding = Encoding.GetEncoding(65001, new EncoderExceptionFallback(), new DecoderReplacementFallback(string.Empty));
                 tcpClient = new TcpClient("irc.chat.twitch.tv", 6667);
                 reader = new StreamReader(tcpClient.GetStream(), encoding);
@@ -235,11 +246,17 @@ namespace Medbot {
 
                 SendChatMessage(BotDictionary.WelcomeMessage);
                 Logging.LogEvent(MethodBase.GetCurrentMethod(), "Bot has successfully connected to Twitch account and joined the channel " + Login.Channel);
-            } catch (Exception ex) {
+
+                return true;
+            } 
+            catch (Exception ex) 
+            {
                 Console.WriteLine("Error occured during connecting");
                 Console.WriteLine(ex);
                 Logging.LogError(this, MethodBase.GetCurrentMethod(), "Error occured during connecting: " + ex.ToString());
             }
+
+            return false;
         }
 
         /// <summary>

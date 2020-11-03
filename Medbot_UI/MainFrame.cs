@@ -2,13 +2,14 @@
 using System.Windows.Forms;
 using System.Drawing;
 using Medbot;
+using SystemTimer = System.Timers.Timer;
 
 namespace Medbot_UI
 {
     public partial class MainFrame : Form
     {
-        private IBotClient _bot;
-        private System.Timers.Timer _timer;
+        private readonly IBotClient _bot;
+        private readonly SystemTimer _timer;
 
         public delegate void UpdateLabelDelegate(object sender, TimeSpan e);
         public delegate void UpdateMessageBoxDelegate(object sender, Medbot.Events.OnMessageArgs e);
@@ -22,7 +23,7 @@ namespace Medbot_UI
             _bot.OnMessageReceived += Bot_OnMessageReceived;
             _bot.OnConsoleOuput += Bot_OnConsoleOuput;
             _bot.OnUptimeTick += Bot_OnUptimeTick;
-            _timer = new System.Timers.Timer();
+            _timer = new SystemTimer();
         }
 
         private void Bot_OnConsoleOuput(object sender, Medbot.Events.OnMessageArgs e)
@@ -30,7 +31,6 @@ namespace Medbot_UI
             ConsoleAppendText(e.Message);
         }
 
-        
         private void Bot_OnUptimeTick(object sender, TimeSpan e)
         {
             if (messageBox.InvokeRequired)
@@ -71,7 +71,7 @@ namespace Medbot_UI
 
         private void MainFrame_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _bot.Disconnect();
+            _bot?.Disconnect();
         }
 
         private void StartStopButton_Click(object sender, EventArgs e)

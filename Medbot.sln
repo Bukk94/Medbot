@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medbot", "Medbot\Medbot.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medbot_UI", "Medbot_UI\Medbot_UI.csproj", "{D012C868-69F1-4A3E-8A4E-C402A673456B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medbot_CLI", "Medbot_CLI\Medbot_CLI.csproj", "{629980FC-F780-449C-B561-49CFCEB20C09}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D012C868-69F1-4A3E-8A4E-C402A673456B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D012C868-69F1-4A3E-8A4E-C402A673456B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D012C868-69F1-4A3E-8A4E-C402A673456B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{629980FC-F780-449C-B561-49CFCEB20C09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{629980FC-F780-449C-B561-49CFCEB20C09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{629980FC-F780-449C-B561-49CFCEB20C09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{629980FC-F780-449C-B561-49CFCEB20C09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

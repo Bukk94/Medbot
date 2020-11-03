@@ -20,7 +20,7 @@ namespace Medbot {
 
         void Start();
         void Stop();
-        void Connect();
+        bool Connect();
         void Disconnect();
         void SendChatMessage(string msg);
         void SendChatMessage(string msg, bool isCommand);
