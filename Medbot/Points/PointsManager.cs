@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 
-namespace Medbot {
-    public class Points {
+namespace Medbot.Points {
+    public class PointsManager {
         private bool rewardIdles;
         private bool timerRunning;
         private TimeSpan interval;
@@ -57,7 +57,7 @@ namespace Medbot {
         /// <param name="idleTime">Time after which the user will become idle</param>
         /// <param name="pointsPerTick">Amount of points awarded to active users each tick</param>
         /// <param name="autostart">Bool value if the time should start immediately</param>
-        internal Points(TimeSpan interval, TimeSpan idleTime, bool rewardIdles, int pointsPerTick, bool autostart = false) {
+        internal PointsManager(TimeSpan interval, TimeSpan idleTime, bool rewardIdles, int pointsPerTick, bool autostart = false) {
             this.interval = interval;
             this.pointsPerTick = pointsPerTick;
             this.idleTime = idleTime;

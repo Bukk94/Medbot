@@ -9,6 +9,7 @@ using Medbot.Internal;
 using Medbot.Commands;
 using System.Reflection;
 using Medbot.Followers;
+using Medbot.Points;
 
 namespace Medbot {
     internal enum DataType { Points, Experience }
@@ -176,7 +177,7 @@ namespace Medbot {
         internal async static Task<bool> LoadLoginCredentials() {
             lock (settingsLock) {
                 if (!File.Exists(BotClient.SettingsPath)) {
-                    Points.LoadDefaultCurrencyDetails();
+                    PointsManager.LoadDefaultCurrencyDetails();
                     LoadDefaultDictionary();
                     return false;
                 }
@@ -213,7 +214,7 @@ namespace Medbot {
         internal static bool LoadBotDictionary() {
             lock (settingsLock) {
                 if (!File.Exists(BotClient.SettingsPath)) {
-                    Points.LoadDefaultCurrencyDetails();
+                    PointsManager.LoadDefaultCurrencyDetails();
                     LoadDefaultDictionary();
                     return false;
                 }
@@ -243,14 +244,14 @@ namespace Medbot {
 
                     // Load currency details
                     var currency = dataRaw.Element("Medbot").Element("Currency");
-                    Points.CurrencyName = currency.Attribute("Name") != null ? currency.Attribute("Name").Value : "gold";
-                    Points.CurrencyNamePlural = currency.Attribute("Plural") != null ? currency.Attribute("Plural").Value : "golds";
-                    Points.CurrencyUnits = currency.Attribute("Units") != null ? currency.Attribute("Units").Value : "g";
+                    PointsManager.CurrencyName = currency.Attribute("Name") != null ? currency.Attribute("Name").Value : "gold";
+                    PointsManager.CurrencyNamePlural = currency.Attribute("Plural") != null ? currency.Attribute("Plural").Value : "golds";
+                    PointsManager.CurrencyUnits = currency.Attribute("Units") != null ? currency.Attribute("Units").Value : "g";
 
                     Logging.LogEvent(MethodBase.GetCurrentMethod(), "Bot dictionary and currency details were load successfully");
                 } catch (Exception ex) {
                     Logging.LogError(typeof(FilesControl), MethodBase.GetCurrentMethod(), ex.ToString());
-                    Points.LoadDefaultCurrencyDetails();
+                    PointsManager.LoadDefaultCurrencyDetails();
                     LoadDefaultDictionary();
                     return false;
                 }

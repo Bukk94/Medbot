@@ -6,7 +6,7 @@ using Medbot.LoggingNS;
 using Medbot.Internal;
 
 namespace Medbot.ExpSystem {
-    internal class Experiences {
+    internal class ExperienceManager {
         private static List<Rank> rankList;
         private bool timerRunning;
         private int activeExp; // Exp value
@@ -44,7 +44,7 @@ namespace Medbot.ExpSystem {
         /// <param name="idleExp">Number of experience gained by idle users</param>
         /// <param name="idleTime">Time after which user will become idle (in minutes)</param>
         /// <param name="autostart">Bool value if timer should start immediately</param>
-        internal Experiences(BotClient bot, TimeSpan interval, int activeExp, int idleExp, TimeSpan idleTime, bool autostart = false) {
+        internal ExperienceManager(BotClient bot, TimeSpan interval, int activeExp, int idleExp, TimeSpan idleTime, bool autostart = false) {
             this.bot = bot;
             this.interval = interval;
             this.timerRunning = false;

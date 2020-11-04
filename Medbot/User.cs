@@ -173,7 +173,7 @@ namespace Medbot {
         /// <returns>Return bool if user got new rank up</returns>
         public bool CheckRankUp() {
             bool nullRank = this.rank == null;
-            Rank matchRank = Experiences.RankList.Last(r => r.ExpRequired <= this.Experience);
+            Rank matchRank = ExperienceManager.RankList.Last(r => r.ExpRequired <= this.Experience);
             
             if (matchRank != this.rank) { // Gain new rank
                 this.rank = matchRank;
@@ -223,8 +223,8 @@ namespace Medbot {
         /// </summary>
         /// <returns>Return user's next rank as Rank object</returns>
         public Rank NextRank() {
-            var rankIndex = Experiences.RankList.IndexOf(this.rank);
-            return rankIndex + 1 < Experiences.RankList.Count - 1 ? Experiences.RankList[rankIndex + 1] : null;
+            var rankIndex = ExperienceManager.RankList.IndexOf(this.rank);
+            return rankIndex + 1 < ExperienceManager.RankList.Count - 1 ? ExperienceManager.RankList[rankIndex + 1] : null;
         }
     }
 

@@ -14,7 +14,7 @@ namespace Medbot.Followers {
     /// Order of followers list - Ascended or Descended
     /// </summary>
     public enum ListDirection { asc, desc }
-    public static class FollowersClass {
+    public static class FollowersManager {
 
         /// <summary>
         /// Gets a newest follower
