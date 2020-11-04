@@ -1,9 +1,10 @@
 ﻿using System;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
-namespace Medbot.Followers {
-    public class Follower {
+namespace Medbot.Followers
+{
+    public class Follower
+    {
         [JsonProperty(PropertyName = "type")]
         public string Type { get; internal set; }
 

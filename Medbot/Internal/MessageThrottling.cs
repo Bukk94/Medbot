@@ -3,10 +3,12 @@ using Medbot.LoggingNS;
 using System;
 using System.Timers;
 
-namespace Medbot.Internal {
+namespace Medbot.Internal
+{
     public enum ThrottleViolation { MessageEmpty, MessageLimitExceeded, ExcessiveSending }
 
-    internal class MessageThrottling {
+    internal class MessageThrottling
+    {
         private Timer throttlingTimer;
         private int messagesSent;
 
@@ -38,7 +40,8 @@ namespace Medbot.Internal {
         /// <summary>
         /// Creates an instance of Message throttler which can check if the message is allowed to be send
         /// </summary>
-        internal MessageThrottling() {
+        internal MessageThrottling()
+        {
             throttlingTimer = new Timer();
             messagesSent = 0;
             throttlingTimer.Interval = ThrottlingInterval.TotalMilliseconds;
@@ -50,25 +53,35 @@ namespace Medbot.Internal {
         /// </summary>
         /// <param name="message"></param>
         /// <returns>Bool if message is allowed to send</returns>
-        internal bool AllowToSendMessage(string message) {
+        internal bool AllowToSendMessage(string message)
+        {
             if (!throttlingTimer.Enabled)
                 throttlingTimer.Start();
 
             // Message is empty or exceeds maximum characater limit
-            if (String.IsNullOrEmpty(message) || message.Length >= MaxCharacterLimit) {
+            if (String.IsNullOrEmpty(message) || message.Length >= MaxCharacterLimit)
+            {
                 Logging.LogEvent(System.Reflection.MethodBase.GetCurrentMethod(), "Message was THROTTLED. Message was empty or exceeds maximum character limit: " + message);
 
-                OnMessageThrottled?.Invoke(this, new OnMessageThrottledArgs { Interval = ThrottlingInterval, Message = message,
-                                                                            Violation = String.IsNullOrEmpty(message) ? ThrottleViolation.MessageEmpty : ThrottleViolation.MessageLimitExceeded });
+                OnMessageThrottled?.Invoke(this, new OnMessageThrottledArgs
+                {
+                    Interval = ThrottlingInterval,
+                    Message = message,
+                    Violation = String.IsNullOrEmpty(message) ? ThrottleViolation.MessageEmpty : ThrottleViolation.MessageLimitExceeded
+                });
                 return false;
             }
 
             // Check messages limit
-            if ((BotClient.BotModeratorPermission && messagesSent >= MaxModeratorMessagesLimit) || (!BotClient.BotModeratorPermission && messagesSent >= MaxMessagesLimit)) {
+            if ((BotClient.BotModeratorPermission && messagesSent >= MaxModeratorMessagesLimit) || (!BotClient.BotModeratorPermission && messagesSent >= MaxMessagesLimit))
+            {
                 Logging.LogEvent(System.Reflection.MethodBase.GetCurrentMethod(), "Message was THROTTLED: " + message);
-                OnMessageThrottled?.Invoke(this, new OnMessageThrottledArgs {
-                                                Interval = ThrottlingInterval, Message = message,
-                                                Violation = ThrottleViolation.ExcessiveSending  });
+                OnMessageThrottled?.Invoke(this, new OnMessageThrottledArgs
+                {
+                    Interval = ThrottlingInterval,
+                    Message = message,
+                    Violation = ThrottleViolation.ExcessiveSending
+                });
                 return false;
             }
 
@@ -79,7 +92,8 @@ namespace Medbot.Internal {
         /// <summary>
         /// Throttling timer tick method, resetting timer and throttler
         /// </summary>
-        void ThrottlingTimer_Tick(object sender, ElapsedEventArgs e) {
+        void ThrottlingTimer_Tick(object sender, ElapsedEventArgs e)
+        {
             throttlingTimer.Stop();
             messagesSent = 0;
         }

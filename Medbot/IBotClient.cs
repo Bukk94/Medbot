@@ -3,8 +3,10 @@ using Medbot.Events;
 using System;
 using System.Collections.Generic;
 
-namespace Medbot {
-    public interface IBotClient {
+namespace Medbot
+{
+    public interface IBotClient
+    {
         event EventHandler<OnCommandReceivedArgs> OnCommandReceived;
         event EventHandler<OnMessageArgs> OnMessageReceived;
         event EventHandler<OnMessageArgs> OnMessageSent;

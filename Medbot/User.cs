@@ -4,8 +4,10 @@ using System.Linq;
 using Medbot.ExpSystem;
 using Medbot.Exceptions;
 
-namespace Medbot {
-    public class User {
+namespace Medbot
+{
+    public class User
+    {
         private readonly string nickname;
         private string displayName;
         private DateTime? lastMessage;
@@ -66,7 +68,8 @@ namespace Medbot {
         /// Data structure containing information about User such as username, points, experience, rank and time of last sent message
         /// </summary>
         /// <param name="nickname">Username of the User</param>
-        public User(string nickname, Rank rank = null, bool mod = false, bool subscriber = false, bool owner = false) {
+        public User(string nickname, Rank rank = null, bool mod = false, bool subscriber = false, bool owner = false)
+        {
             this.nickname = nickname;
             this.displayName = nickname;
             this.rank = rank;
@@ -84,7 +87,8 @@ namespace Medbot {
         /// <param name="nickname">Username of the User</param>
         /// <param name="points">Number of user's points</param>
         /// <param name="experience">Number of user's experience</param>
-        public User(string nickname, long points, long experience) {
+        public User(string nickname, long points, long experience)
+        {
             this.nickname = nickname;
             this.displayName = nickname;
             this.points = points;
@@ -96,7 +100,8 @@ namespace Medbot {
         /// </summary>
         /// <param name="nickname">Username of the User</param>
         /// <param name="points">Number of user's points</param>
-        public User(string nickname, long points) {
+        public User(string nickname, long points)
+        {
             this.nickname = nickname;
             this.displayName = nickname;
             this.points = points;
@@ -106,7 +111,8 @@ namespace Medbot {
         /// Applies all given badges to user
         /// </summary>
         /// <param name="badges">List of badges</param>
-        public void ApplyBadges(List<string> badges) {
+        public void ApplyBadges(List<string> badges)
+        {
             if (badges == null)
                 return;
 
@@ -124,7 +130,8 @@ namespace Medbot {
         /// Adds number of points to total of user's points
         /// </summary>
         /// <param name="value">Long - number of points to be added</param>
-        public void AddPoints(long value) {
+        public void AddPoints(long value)
+        {
             this.points += value;
         }
 
@@ -132,7 +139,8 @@ namespace Medbot {
         /// Removes number of points from user's points
         /// </summary>
         /// <param name="value">Long - number of points to be removed</param>
-        public void RemovePoints(long value) {
+        public void RemovePoints(long value)
+        {
             if (this.points - value >= 0)
                 this.points -= value;
             else
@@ -144,17 +152,24 @@ namespace Medbot {
         /// </summary>
         /// <param name="points"></param>
         /// <exception cref="PointsException">When user doesn'T have enough points</exception>
-        public void Trade(long points, User target, string targetUsername) {
-            if (this.Points - points >= 0) { // User is able to trade
+        public void Trade(long points, User target, string targetUsername)
+        {
+            if (this.Points - points >= 0)
+            { // User is able to trade
                 RemovePoints(points);
 
-                if (target == null) { // Target is not online, trade into file
+                if (target == null)
+                { // Target is not online, trade into file
                     FilesControl.AddUserPointsToFile(targetUsername, points);
-                } else { // User is online
+                }
+                else
+                { // User is online
                     target.AddPoints(points);
                     FilesControl.SaveData();
                 }
-            } else {
+            }
+            else
+            {
                 throw new PointsException("User can't trade this amount of points. User doesn't have enough points to trade.");
             }
         }
@@ -163,23 +178,26 @@ namespace Medbot {
         /// Adds number of experince to user's total
         /// </summary>
         /// <param name="value">Long - number of exp to add</param>
-        public void AddExperience(long value) {
+        public void AddExperience(long value)
+        {
             this.experience += value;
         }
-         
+
         /// <summary>
         /// Checks if the user is able to rank up, if yes, promote him to next rank
         /// </summary>
         /// <returns>Return bool if user got new rank up</returns>
-        public bool CheckRankUp() {
+        public bool CheckRankUp()
+        {
             bool nullRank = this.rank == null;
             Rank matchRank = ExperienceManager.RankList.Last(r => r.ExpRequired <= this.Experience);
-            
-            if (matchRank != this.rank) { // Gain new rank
+
+            if (matchRank != this.rank)
+            { // Gain new rank
                 this.rank = matchRank;
 
                 if (!nullRank) // Skip initiate null value (loading data from file)
-                    return true;    
+                    return true;
             }
             return false;
         }
@@ -188,7 +206,8 @@ namespace Medbot {
         /// Returns how much experience user need to gain new rank
         /// </summary>
         /// <returns>long value</returns>
-        public long ToNextRank() {
+        public long ToNextRank()
+        {
             if (this.rank == null)
                 return 0;
 
@@ -202,7 +221,8 @@ namespace Medbot {
         /// <param name="xpRate">Rate of gaining experiences</param>
         /// <param name="interval">Experience timer interval</param>
         /// <returns>Returns double value with 2 decimal places</returns>
-        public string TimeToNextRank(int xpRate, TimeSpan interval) {
+        public string TimeToNextRank(int xpRate, TimeSpan interval)
+        {
             //  exp / activeExp / (60/intervalMinutes) -> hours
             //  exp / activeExp / (60/intervalMinutes) * 60 -> minutes
 
@@ -222,13 +242,15 @@ namespace Medbot {
         /// Gets user's next rank
         /// </summary>
         /// <returns>Return user's next rank as Rank object</returns>
-        public Rank NextRank() {
+        public Rank NextRank()
+        {
             var rankIndex = ExperienceManager.RankList.IndexOf(this.rank);
             return rankIndex + 1 < ExperienceManager.RankList.Count - 1 ? ExperienceManager.RankList[rankIndex + 1] : null;
         }
     }
 
-    public class TempUser {
+    public class TempUser
+    {
         public string Username { get; set; }
         public string Data { get; set; }
 
@@ -237,7 +259,8 @@ namespace Medbot {
         /// </summary>
         /// <param name="name">User's nickname</param>
         /// <param name="data">XML data</param>
-        public TempUser(string name, string data) {
+        public TempUser(string name, string data)
+        {
             this.Username = name;
             Data = data;
         }

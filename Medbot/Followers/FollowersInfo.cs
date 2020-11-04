@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace Medbot.Followers {
-    public class FollowersInfo {
+namespace Medbot.Followers
+{
+    public class FollowersInfo
+    {
         /// <summary>
         /// Gets total number of followers
         /// </summary>

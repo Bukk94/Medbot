@@ -1,8 +1,9 @@
 ﻿using System;
 
-namespace Medbot.Exceptions {
-    public class RanksException : Exception {
-
+namespace Medbot.Exceptions
+{
+    public class RanksException : Exception
+    {
         /// <summary>
         /// Initializes a new PointsCommndException instance
         /// </summary>
@@ -13,6 +14,5 @@ namespace Medbot.Exceptions {
         /// </summary>
         /// <param name="message">Message that describes the error</param>
         public RanksException(string message) : base(message) { }
-
     }
 }

@@ -1,25 +1,21 @@
-﻿using System;
-
-namespace Medbot.ExpSystem {
-    public class Rank {
-        private string rankName;
-        private long expRequired;
-        private int rankLevel;
-
+﻿namespace Medbot.ExpSystem
+{
+    public class Rank
+    {
         /// <summary>
         /// Gets a rank name
         /// </summary>
-        public string RankName { get { return this.rankName; } }
+        public string RankName { get; private set; }
 
         /// <summary>
         /// Gets a rank level
         /// </summary>
-        public int RankLevel { get { return this.rankLevel; } }
+        public int RankLevel { get; private set; }
 
         /// <summary>
         /// Gets experience required to gain this level
         /// </summary>
-        public long ExpRequired { get { return this.expRequired; } }
+        public long ExpRequired { get; private set; }
 
         /// <summary>
         /// Rank structure containing rank name, rank level and experience required to gain this rank
@@ -27,10 +23,11 @@ namespace Medbot.ExpSystem {
         /// <param name="name">Name of the rank</param>
         /// <param name="level">Level of the rank</param>
         /// <param name="exp">Experience required to gain rank</param>
-        public Rank(string name, int level, long exp) {
-            this.rankName = name;
-            this.rankLevel = level;
-            this.expRequired = exp;
+        public Rank(string name, int level, long exp)
+        {
+            this.RankName = name;
+            this.RankLevel = level;
+            this.ExpRequired = exp;
         }
     }
 }

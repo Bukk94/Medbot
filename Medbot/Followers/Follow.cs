@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace Medbot.Followers {
-    public class Follow {
+namespace Medbot.Followers
+{
+    public class Follow
+    {
         /// <summary>
         /// Gets information about DateTime of follow creation
         /// </summary>

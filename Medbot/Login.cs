@@ -54,7 +54,7 @@ namespace Medbot
         /// <summary>
         /// Gets bool if login credentials are valid
         /// </summary>
-        internal static bool IsLoginCredentialsValid => 
+        internal static bool IsLoginCredentialsValid =>
                         !String.IsNullOrEmpty(BotName) &&
                         !String.IsNullOrEmpty(BotOauthWithPrefix) &&
                         !String.IsNullOrEmpty(Channel);

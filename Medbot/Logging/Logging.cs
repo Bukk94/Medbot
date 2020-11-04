@@ -2,8 +2,10 @@
 using System.IO;
 using System.Reflection;
 
-namespace Medbot.LoggingNS {
-    public static class Logging {
+namespace Medbot.LoggingNS
+{
+    public static class Logging
+    {
         /// <summary>
         /// Path to Log folder where are all logs stored
         /// </summary>
@@ -29,7 +31,8 @@ namespace Medbot.LoggingNS {
         /// <param name="sender">Object which sent the log</param>
         /// <param name="methodSender">Method which sent the log request</param>
         /// <param name="errorMessage">Error message</param>
-        public static void LogError(object sender, MethodBase methodSender, string errorMessage) {
+        public static void LogError(object sender, MethodBase methodSender, string errorMessage)
+        {
             LogError(sender.GetType(), methodSender, errorMessage);
         }
 
@@ -39,12 +42,16 @@ namespace Medbot.LoggingNS {
         /// <param name="sender">Type of object which sent the log</param>
         /// <param name="methodSender">Method which sent the log request</param>
         /// <param name="errorMessage">Error message</param>
-        public static void LogError(Type sender, MethodBase methodSender, string errorMessage) {
+        public static void LogError(Type sender, MethodBase methodSender, string errorMessage)
+        {
             CheckLoggingFilesExistence();
 
-            lock (errorLogLock) {
-                try {
-                    using (StreamWriter sw = File.AppendText(ErrorLogPath)) {
+            lock (errorLogLock)
+            {
+                try
+                {
+                    using (StreamWriter sw = File.AppendText(ErrorLogPath))
+                    {
                         sw.WriteLine(String.Format("[{0} | {1}] Sender object: {2} # Sender method: {3} # Error log: {4}", DateTime.Now.Date.ToShortDateString(),
                                                                              DateTime.Now.ToShortTimeString(),
                                                                              sender.FullName,
@@ -52,7 +59,9 @@ namespace Medbot.LoggingNS {
                                                                              errorMessage));
                     }
                     Console.WriteLine(errorMessage);
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     Console.WriteLine(ex);
                 }
             }
@@ -62,26 +71,33 @@ namespace Medbot.LoggingNS {
         /// Logs successfull event into file
         /// </summary>
         /// <param name="eventMessage">Event message to log</param>
-        public static void LogEvent(MethodBase methodSender, string eventMessage) {
+        public static void LogEvent(MethodBase methodSender, string eventMessage)
+        {
             CheckLoggingFilesExistence();
 
-            lock (eventLogLock) {
-                try {
-                    using (StreamWriter sw = File.AppendText(EventLogPath)) {
+            lock (eventLogLock)
+            {
+                try
+                {
+                    using (StreamWriter sw = File.AppendText(EventLogPath))
+                    {
                         sw.WriteLine(String.Format("[{0} | {1}] Sender method: {2} # {3}", DateTime.Now.Date.ToShortDateString(),
                                                                                            DateTime.Now.ToShortTimeString(), methodSender.Name, eventMessage));
                     }
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     Console.WriteLine(ex);
-                } 
+                }
             }
         }
 
         /// <summary>
         /// Checks loggin files existence, creates a new folder and files if missing
         /// </summary>
-        private static void CheckLoggingFilesExistence() {
-            if(!Directory.Exists(LogFolderPath))
+        private static void CheckLoggingFilesExistence()
+        {
+            if (!Directory.Exists(LogFolderPath))
                 Directory.CreateDirectory(LogFolderPath);
 
             if (!File.Exists(ErrorLogPath))

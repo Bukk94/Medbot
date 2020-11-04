@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace Medbot.Events {
-    public class OnUserArgs : EventArgs {
-
+namespace Medbot.Events
+{
+    public class OnUserArgs : EventArgs
+    {
         public User User { get; set; }
-
     }
 }

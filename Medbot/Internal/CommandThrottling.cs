@@ -3,8 +3,10 @@ using Medbot.Events;
 using System;
 using System.Timers;
 
-namespace Medbot.Internal {
-    internal class CommandThrottling {
+namespace Medbot.Internal
+{
+    internal class CommandThrottling
+    {
         private Command command;
         private Timer throttlingTimer;
         private TimeSpan throttlingInterval;
@@ -21,11 +23,13 @@ namespace Medbot.Internal {
         /// <summary>
         /// Creates an instance of Command throttler which can check if the command is allowed to be executed
         /// </summary>
-        internal CommandThrottling(TimeSpan interval, Command cmd) {
+        internal CommandThrottling(TimeSpan interval, Command cmd)
+        {
             throttlingInterval = interval;
             this.command = cmd;
 
-            if (interval == null || interval.TotalMilliseconds <= 0) {
+            if (interval == null || interval.TotalMilliseconds <= 0)
+            {
                 this.noCooldown = true;
                 return;
             }
@@ -41,14 +45,16 @@ namespace Medbot.Internal {
         /// Determines if the command is allowed to be executed
         /// </summary>
         /// <returns>Bool if command is allowed to execute</returns>
-        internal bool AllowedToExecute() {
+        internal bool AllowedToExecute()
+        {
             if (this.noCooldown)
                 return true;
 
             if (!throttlingTimer.Enabled)
                 throttlingTimer.Start();
 
-            if (this.cooldownActive) {
+            if (this.cooldownActive)
+            {
                 OnCommandThrottled?.Invoke(this, new OnCommandThrottledArgs { Command = command, Interval = ThrottlingInterval });
                 return false;
             }
@@ -60,7 +66,8 @@ namespace Medbot.Internal {
         /// <summary>
         /// Resets command's cooldown
         /// </summary>
-        internal void ThrottlingTimer_Tick(object sender, ElapsedEventArgs e) {
+        internal void ThrottlingTimer_Tick(object sender, ElapsedEventArgs e)
+        {
             throttlingTimer.Stop();
             this.cooldownActive = false;
         }
@@ -68,7 +75,8 @@ namespace Medbot.Internal {
         /// <summary>
         /// Resets throttling timer and bool throttler
         /// </summary>
-        internal void ResetThrottlingTimer() {
+        internal void ResetThrottlingTimer()
+        {
             this.cooldownActive = false;
 
             if (throttlingTimer != null)

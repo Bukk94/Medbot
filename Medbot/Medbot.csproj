@@ -64,12 +64,12 @@
     <Compile Include="Events\OnUserArgs.cs" />
     <Compile Include="Exceptions\PointsException.cs" />
     <Compile Include="Exceptions\RanksException.cs" />
-    <Compile Include="ExpSystem\Experiences.cs" />
+    <Compile Include="ExpSystem\ExperienceManager.cs" />
     <Compile Include="ExpSystem\Rank.cs" />
     <Compile Include="Internal\FilesControl.cs" />
     <Compile Include="Followers\Follow.cs" />
     <Compile Include="Followers\Follower.cs" />
-    <Compile Include="Followers\FollowersClass.cs" />
+    <Compile Include="Followers\FollowersManager.cs" />
     <Compile Include="Followers\FollowersInfo.cs" />
     <Compile Include="IBotClient.cs" />
     <Compile Include="Internal\CommandThrottling.cs" />
@@ -79,7 +79,7 @@
     <Compile Include="Logging\Logging.cs" />
     <Compile Include="Login.cs" />
     <Compile Include="Internal\Parsing.cs" />
-    <Compile Include="Points.cs" />
+    <Compile Include="Points\PointsManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
