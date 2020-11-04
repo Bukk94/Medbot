@@ -5,10 +5,11 @@ using System.Threading;
 using Medbot.LoggingNS;
 using Medbot.Internal;
 
-namespace Medbot.ExpSystem {
-    internal class ExperienceManager {
-        private static List<Rank> rankList;
-        private bool timerRunning;
+namespace Medbot.ExpSystem
+{
+    // TODO: Implement event notification instead of passing BotClient object
+    internal class ExperienceManager
+    {
         private int activeExp; // Exp value
         private int idleExp; // Exp value
         private TimeSpan interval;
@@ -19,22 +20,22 @@ namespace Medbot.ExpSystem {
         /// <summary>
         /// Gets a Rank List
         /// </summary>
-        internal static List<Rank> RankList { get { return rankList; } } 
+        internal static List<Rank> RankList { get; private set; }
 
         /// <summary>
         /// Gets bool if the Experience timer is running
         /// </summary>
-        internal bool TimerRunning { get { return this.timerRunning; } }
+        internal bool TimerRunning { get; private set; }
 
         /// <summary>
         /// Gets experience timer tick interval
         /// </summary>
-        internal TimeSpan ExperienceInterval { get { return this.interval; } }
+        internal TimeSpan ExperienceInterval => this.interval;
 
         /// <summary>
         /// Gets value of experience for active users
         /// </summary>
-        internal int ActiveExperience { get { return this.activeExp; } }
+        internal int ActiveExperience => this.activeExp;
 
         /// <summary>
         /// Experiences class manages exp awarding and timer ticking
@@ -44,14 +45,15 @@ namespace Medbot.ExpSystem {
         /// <param name="idleExp">Number of experience gained by idle users</param>
         /// <param name="idleTime">Time after which user will become idle (in minutes)</param>
         /// <param name="autostart">Bool value if timer should start immediately</param>
-        internal ExperienceManager(BotClient bot, TimeSpan interval, int activeExp, int idleExp, TimeSpan idleTime, bool autostart = false) {
+        internal ExperienceManager(BotClient bot, TimeSpan interval, int activeExp, int idleExp, TimeSpan idleTime, bool autostart = false)
+        {
             this.bot = bot;
             this.interval = interval;
-            this.timerRunning = false;
+            this.TimerRunning = false;
             this.activeExp = activeExp;
             this.idleExp = idleExp;
             this.idleTime = idleTime;
-            rankList = new List<Rank>();
+            RankList = new List<Rank>();
 
             if (autostart)
                 StartExperienceTimer();
@@ -64,8 +66,10 @@ namespace Medbot.ExpSystem {
         /// <summary>
         /// Loads ranks from txt file
         /// </summary>
-        internal void LoadRanks() {
-            if (!File.Exists(BotClient.RanksPath)) {
+        internal void LoadRanks()
+        {
+            if (!File.Exists(BotClient.RanksPath))
+            {
                 Logging.LogError(this, System.Reflection.MethodBase.GetCurrentMethod(), "FAILED to load ranks. File not found.");
                 return;
             }
@@ -73,12 +77,16 @@ namespace Medbot.ExpSystem {
             string[] dataRaw = File.ReadAllText(BotClient.RanksPath).Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             int level = 1;
 
-            foreach (string data in dataRaw) {
+            foreach (string data in dataRaw)
+            {
                 // Format Exp (space) rankname:  500 RankName
-                try {
+                try
+                {
                     var rankData = data.Split(new string[] { "\t" }, StringSplitOptions.RemoveEmptyEntries);
-                    rankList.Add(new Rank(rankData[1], level++, long.Parse(rankData[0])));
-                } catch(Exception ex) {
+                    RankList.Add(new Rank(rankData[1], level++, long.Parse(rankData[0])));
+                }
+                catch (Exception ex)
+                {
                     Logging.LogError(this, System.Reflection.MethodBase.GetCurrentMethod(), ex.ToString());
                     continue;
                 }
@@ -88,8 +96,10 @@ namespace Medbot.ExpSystem {
         /// <summary>
         /// Starts experience timer
         /// </summary>
-        internal void StartExperienceTimer() {
-            if (TimerRunning) {
+        internal void StartExperienceTimer()
+        {
+            if (TimerRunning)
+            {
                 Console.WriteLine("Experience timer is already running");
                 return;
             }
@@ -98,54 +108,58 @@ namespace Medbot.ExpSystem {
                 this.timer = new Timer(AwardExperience_TimerTick, null, 0, (int)this.interval.TotalMilliseconds);
 
             this.timer.Change(0, (int)this.interval.TotalMilliseconds);
-            this.timerRunning = true;
+            this.TimerRunning = true;
             Console.WriteLine("Starting experience timer");
         }
 
         /// <summary>
         /// Stops experience timer
         /// </summary>
-        internal void StopExperienceTimer() {
-            if (!TimerRunning) {
+        internal void StopExperienceTimer()
+        {
+            if (!TimerRunning)
+            {
                 Console.WriteLine("Timer is not running");
                 return;
             }
 
             this.timer.Change(Timeout.Infinite, int.MaxValue);
-            this.timerRunning = false;
+            this.TimerRunning = false;
             Console.WriteLine("Stopping experience timer");
         }
 
         /// <summary>
         /// Award experience to users
         /// </summary>
-        private void AwardExperience_TimerTick(Object state) {
+        private void AwardExperience_TimerTick(Object state)
+        {
             if (BotClient.OnlineUsers == null || BotClient.OnlineUsers.Count <= 0)
                 return;
 
             Console.WriteLine("Timer Experience ticked for " + BotClient.OnlineUsers.Count + " users");
 
-            foreach (User u in BotClient.OnlineUsers) {
-                if (u.LastMessage == null) // Skip users who never wrote anything in chat
+            foreach (User user in BotClient.OnlineUsers)
+            {
+                if (user.LastMessage == null) // Skip users who never wrote anything in chat
                     continue;
 
                 // Skip blacklisted user
-                if (BotClient.UserBlacklist.Contains(u.Username))
+                if (BotClient.UserBlacklist.Contains(user.Username))
                     continue;
 
                 // Reward active
-                if (DateTime.Now - u.LastMessage < TimeSpan.FromMilliseconds(this.idleTime.TotalMilliseconds))
-                    u.AddExperience(this.activeExp);
+                if (DateTime.Now - user.LastMessage < TimeSpan.FromMilliseconds(this.idleTime.TotalMilliseconds))
+                    user.AddExperience(this.activeExp);
                 else // Reward idle
-                    u.AddExperience(this.idleExp);
+                    user.AddExperience(this.idleExp);
 
-                bool newRank = u.CheckRankUp();
+                bool newRank = user.CheckRankUp();
                 if (newRank && !String.IsNullOrEmpty(BotDictionary.NewRankMessage))
-                    this.bot.SendChatMessage(String.Format(BotDictionary.NewRankMessage, u.DisplayName, u.UserRank.RankLevel, u.UserRank.RankName));
+                    this.bot.SendChatMessage(String.Format(BotDictionary.NewRankMessage, user.DisplayName, user.UserRank.RankLevel, user.UserRank.RankName));
 
-                Console.WriteLine(u.DisplayName + " gained experience");
+                Console.WriteLine(user.DisplayName + " gained experience");
             }
-            
+
             FilesControl.SaveData();
         }
     }
