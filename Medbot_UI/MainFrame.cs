@@ -24,6 +24,9 @@ namespace Medbot_UI
             _bot.OnConsoleOuput += Bot_OnConsoleOuput;
             _bot.OnUptimeTick += Bot_OnUptimeTick;
             _timer = new SystemTimer();
+
+            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
         }
 
         private void Bot_OnConsoleOuput(object sender, Medbot.Events.OnMessageArgs e)

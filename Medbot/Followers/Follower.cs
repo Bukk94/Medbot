@@ -15,7 +15,7 @@ namespace Medbot.Followers
         public string Logo { get; internal set; }
 
         /// <summary>
-        /// Gets Display name of the follower
+        /// Display name of the follower
         /// </summary>
         [JsonProperty(PropertyName = "display_name")]
         public string DisplayName { get; internal set; }
@@ -27,7 +27,7 @@ namespace Medbot.Followers
         public DateTime UpdatedAt { get; internal set; }
 
         /// <summary>
-        /// Gets ID of the follower
+        /// ID of the follower
         /// </summary>
         [JsonProperty(PropertyName = "_id")]
         public string ID { get; internal set; }

@@ -94,6 +94,7 @@ namespace Medbot
                 {
                     XAttribute userRecord = data.Element("Medbot").Elements("User").Attributes("Username").FirstOrDefault(att => att.Value == username);
 
+                    // TODO: Is it really necessary to throw exception here??
                     if (userRecord == null)
                         throw new Exception("Data loading of user " + user.DisplayName + " FAILED. User not found");
 

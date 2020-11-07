@@ -6,19 +6,19 @@ namespace Medbot.Followers
     public class FollowersInfo
     {
         /// <summary>
-        /// Gets total number of followers
+        /// Total number of followers
         /// </summary>
         [JsonProperty(PropertyName = "_total")]
         public int Total { get; internal set; }
 
         /// <summary>
-        /// Gets string ID of cursor
+        /// String ID of cursor
         /// </summary>
         [JsonProperty(PropertyName = "_cursor")]
         public string Cursor { get; internal set; }
 
         /// <summary>
-        /// Gets list of followers
+        /// List of followers
         /// </summary>
         [JsonProperty(PropertyName = "follows")]
         public List<Follow> FollowersList { get; internal set; }

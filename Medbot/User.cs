@@ -116,6 +116,7 @@ namespace Medbot
             if (badges == null)
                 return;
 
+            // TODO: Improve this to use enums or even better, flags
             if (badges.SingleOrDefault(b => b.Contains("broadcaster")) != null)
                 this.broadcaster = true;
 
@@ -226,6 +227,7 @@ namespace Medbot
             //  exp / activeExp / (60/intervalMinutes) -> hours
             //  exp / activeExp / (60/intervalMinutes) * 60 -> minutes
 
+            // TODO: Cleanup - wth is this?
             long nextRank = ToNextRank();
             double hours = Math.Round((double)this.ToNextRank() / xpRate / (60 / interval.TotalMinutes), 0);
             double minutes = Math.Round((double)this.ToNextRank() / xpRate / (60 / interval.TotalMinutes) * 60, 0) - (hours * 60);

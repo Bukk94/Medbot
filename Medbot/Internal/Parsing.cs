@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace Medbot.Internal
@@ -49,19 +50,22 @@ namespace Medbot.Internal
 
         /// <summary>
         /// Parses user's badges such as broadcaster, moderator, turbo, subscriber.
+        /// Each badge has a name and version identifier (e.g. broadcaster/1 or moderator/1)
         /// </summary>
-        /// <param name="chatLine">Full chat line</param>
+        /// <param name="chatLine">Full chat line with possible badges inside (badges=broadcaster/1,global_mod/1,turbo/6;)</param>
         /// <returns>Returns List of strings containing all user's badges </returns>
         public static List<string> ParseBadges(string chatLine)
         {
-            if (!chatLine.Contains("@badges"))
+            var regexPattern = @"badges=(?<list>.+)\/\d;";
+            var match = Regex.Match(chatLine, regexPattern);
+
+            if (!match.Success)
                 return null;
 
-            // TEST: Test correct parsing of multiple badges
-            string parse = chatLine.Substring(chatLine.IndexOf("@badges=") + 8, chatLine.IndexOf(';') - 8);
-            parse = parse.Replace("1", "");
-            List<string> badges = parse.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-            return badges;
+            // broadcaster/1,global_mod/1,turbo
+            var badgesRawList = match.Groups["list"].Value;
+
+            return Regex.Split(badgesRawList, @"\/\d,?").ToList();
         }
 
         /// <summary>
@@ -82,8 +86,7 @@ namespace Medbot.Internal
         /// <returns>Boolean value of the attribute, false if not found</returns>
         public static bool ParseBooleanFromAttribute(XElement element, string attribute)
         {
-            bool parseBool;
-            if (!Boolean.TryParse(element.Attribute(attribute).Value, out parseBool))
+            if (!Boolean.TryParse(element.Attribute(attribute).Value, out bool parseBool))
                 parseBool = false;
 
             return parseBool;
@@ -97,8 +100,7 @@ namespace Medbot.Internal
         /// <returns>TimeSpan object of the attribute</returns>
         public static TimeSpan ParseTimeSpanFromAttribute(XElement element, string attribute)
         {
-            TimeSpan parseTimespan;
-            if (!TimeSpan.TryParse(element.Attribute(attribute).Value, out parseTimespan))
+            if (!TimeSpan.TryParse(element.Attribute(attribute).Value, out TimeSpan parseTimespan))
                 parseTimespan = new TimeSpan();
 
             return parseTimespan;
@@ -114,6 +116,5 @@ namespace Medbot.Internal
 
             return longX.CompareTo(longY);
         }
-
     }
 }

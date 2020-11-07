@@ -7,7 +7,7 @@ using Medbot.Internal;
 namespace Medbot.Followers
 {
     /// <summary>
-    /// Order of followers list - Ascended or Descended
+    /// Order of followers list - Ascending or Descending
     /// </summary>
     public enum ListDirection { asc, desc }
     public static class FollowersManager
@@ -51,6 +51,9 @@ namespace Medbot.Followers
         /// <returns>Returns FollowersInfo structure containing information about channel's followers and list of followers</returns>
         public async static Task<FollowersInfo> GetFollowersInfo(string channel, int limit, string clientID = null, ListDirection dir = ListDirection.desc)
         {
+            // TODO: Check v5 kraken API endpoint is gone. Replace it with new helix endpoint with client-id header
+            // https://api.twitch.tv/helix/users/follows?to_id=24395849&first=1
+
             //string url = @"https://api.twitch.tv/kraken/channels/bukk94/follows?client_id=q6batx0epp608isickayubi39itsckt&limit=5&direction=desc";
             channel = channel.ToLower();
 

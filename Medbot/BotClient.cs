@@ -237,9 +237,9 @@ namespace Medbot
 
             try
             {
-                var encoding = Encoding.GetEncoding(65001, new EncoderExceptionFallback(), new DecoderReplacementFallback(string.Empty));
+                //var encoding = Encoding.GetEncoding(65001, new EncoderExceptionFallback(), new DecoderReplacementFallback(string.Empty));
                 tcpClient = new TcpClient("irc.chat.twitch.tv", 6667);
-                reader = new StreamReader(tcpClient.GetStream(), encoding);
+                reader = new StreamReader(tcpClient.GetStream(), Encoding.UTF8);
                 writer = new StreamWriter(tcpClient.GetStream());
 
                 writer.WriteLine("PASS " + Login.BotOauthWithPrefix + Environment.NewLine +
@@ -251,7 +251,8 @@ namespace Medbot
                 writer.WriteLine("JOIN #" + Login.Channel);
                 writer.Flush();
 
-                SendChatMessage(BotDictionary.WelcomeMessage);
+                // TODO: Make welcome message optional
+                //SendChatMessage(BotDictionary.WelcomeMessage);
                 Logging.LogEvent(MethodBase.GetCurrentMethod(), "Bot has successfully connected to Twitch account and joined the channel " + Login.Channel);
 
                 return true;
@@ -276,7 +277,8 @@ namespace Medbot
 
             try
             {
-                SendChatMessage(BotDictionary.GoodbyeMessage);
+                // TODO: Make goodbye message optional
+                // SendChatMessage(BotDictionary.GoodbyeMessage);
 
                 FilesControl.SaveData();
                 reader.Close();
@@ -314,7 +316,6 @@ namespace Medbot
                     // User sent a message
                     if (chatLine.Contains("PRIVMSG"))
                     {
-
                         // Get user, add him in OnlineUsers
                         User sender = GetUserFromChat(chatLine);
 
@@ -528,8 +529,6 @@ namespace Medbot
             ConsoleAppendText(chatMessagePrefix + msg);
             OnMessageSent?.Invoke(this, new OnMessageArgs { Message = msg });
         }
-
-
 
         /// <summary>
         /// Sends whisper to user via bot
