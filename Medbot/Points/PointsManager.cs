@@ -6,10 +6,12 @@ namespace Medbot.Points
 {
     public class PointsManager
     {
+        private readonly UsersManager _usersManager;
         private readonly bool rewardIdles;
         private TimeSpan idleTime;
         private Timer timer;
 
+        #region Properties
         /// <summary>
         /// Amount added to users each tick
         /// </summary>
@@ -50,6 +52,7 @@ namespace Medbot.Points
         public TimeSpan TimerInterval { get; private set; }
 
         public int TimerIntervalMs => (int)TimerInterval.TotalMilliseconds;
+        #endregion
 
         /// <summary>
         /// Point class manages point awarding and timer ticking
@@ -60,8 +63,9 @@ namespace Medbot.Points
         /// <param name="idleTime">Time after which the user will become idle</param>
         /// <param name="pointsPerTick">Amount of points awarded to active users each tick</param>
         /// <param name="autostart">Bool value if the time should start immediately</param>
-        internal PointsManager(TimeSpan interval, TimeSpan idleTime, bool rewardIdles, int pointsPerTick, bool autostart = false)
+        internal PointsManager(UsersManager usersManager, TimeSpan interval, TimeSpan idleTime, bool rewardIdles, int pointsPerTick, bool autostart = false)
         {
+            _usersManager = usersManager;
             this.TimerInterval = interval;
             this.PointsPerTick = pointsPerTick;
             this.idleTime = idleTime;
@@ -114,11 +118,11 @@ namespace Medbot.Points
         /// </summary>
         private void AwardPoints_TimerTick(Object state)
         {
-            if (BotClient.OnlineUsers == null || BotClient.OnlineUsers.Count <= 0)
+            if (!_usersManager.IsAnyUserOnline)
                 return;
 
-            Console.WriteLine("Timer Points ticked, Number of users: " + BotClient.OnlineUsers.Count);
-            foreach (var user in BotClient.OnlineUsers)
+            Console.WriteLine("Timer Points ticked, Number of users: " + _usersManager.TotalUsersOnline);
+            foreach (var user in _usersManager.OnlineUsers)
             {
                 if (BotClient.UserBlacklist.Contains(user.Username)) // Skip blacklisted user
                     continue;

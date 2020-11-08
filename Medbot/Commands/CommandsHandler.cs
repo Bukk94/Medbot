@@ -19,6 +19,7 @@ namespace Medbot.Commands
     {
         private static ExperienceManager expObject;
         private static BotClient botClient;
+        private static UsersManager _usersManager;
 
         // TODO: !Followerinfo (or smth)
 
@@ -26,10 +27,12 @@ namespace Medbot.Commands
         /// Initializes Commands Handler, passing XP object
         /// </summary>
         /// <param name="exp">Object of Experiences class</param>
-        internal static void Initialize(ExperienceManager exp, BotClient bot)
+        internal static void Initialize(UsersManager usersManager, ExperienceManager exp, BotClient bot)
         {
+            // TODO: Change this to regular constructor
             expObject = exp;
             botClient = bot;
+            _usersManager = usersManager;
         }
 
         /// <summary>
@@ -99,7 +102,7 @@ namespace Medbot.Commands
                             return "";
                         }
 
-                        receiver = BotClient.FindOnlineUser(args[1]);
+                        receiver = _usersManager.FindOnlineUser(args[1]);
                         if (receiver == null)
                         { // user is not online
                             FilesControl.AddUserPointsToFile(args[1], long.Parse(args[0]));
@@ -138,7 +141,7 @@ namespace Medbot.Commands
                             return "";
                         }
 
-                        targetUser = BotClient.FindOnlineUser(args[1]);
+                        targetUser = _usersManager.FindOnlineUser(args[1]);
                         if (targetUser == null)
                         { // user is not online
                             FilesControl.RemoveUserPointsFromFile(args[1], long.Parse(args[0]));
@@ -172,7 +175,7 @@ namespace Medbot.Commands
                         if (sender == null)
                             throw new NullReferenceException("Something went wrong, sender is null");
 
-                        User target = BotClient.FindOnlineUser(args[1]);
+                        var target = _usersManager.FindOnlineUser(args[1]);
                         if (sender.Username.Equals(target.Username))
                         { // User is trying to send points to himself
                             cmd.ResetCommandCooldown();
@@ -333,7 +336,7 @@ namespace Medbot.Commands
                             return "";
                         }
 
-                        receiver = BotClient.FindOnlineUser(args[1]);
+                        receiver = _usersManager.FindOnlineUser(args[1]);
                         if (receiver == null)
                         { // user is not online
                             FilesControl.AddUserExperienceToFile(args[1], long.Parse(args[0]));
@@ -404,8 +407,8 @@ namespace Medbot.Commands
                         if (args.Count == 0)
                         {
                             // Regular random
-                            randomUser = SelectRandomUser(BotClient.OnlineUsers);
-                            totalUsers = BotClient.OnlineUsers.Count;
+                            randomUser = _usersManager.SelectRandomUser();
+                            totalUsers = _usersManager.TotalUsersOnline;
                         }
                         else
                         {
@@ -413,11 +416,9 @@ namespace Medbot.Commands
                             if (args.Count <= 0)
                                 throw new IndexOutOfRangeException("Command " + cmd.CommandFormat + "should contain some arguments. Found " + args.Count);
 
-                            List<User> users = BotClient.OnlineUsers.Where(u =>
-                                                            u.LastMessage != null &&
-                                                            DateTime.Now - u.LastMessage < TimeSpan.FromMinutes(int.Parse(args[0]))).ToList();
-                            totalUsers = users.Count;
-                            randomUser = SelectRandomUser(users);
+                            var minutes = int.Parse(args[0]);
+                            randomUser = _usersManager.SelectActiveRandomUser(int.Parse(args[0]));
+                            totalUsers = _usersManager.GetActiveUsers(minutes).Count;
                         }
 
                         if (randomUser == null)
@@ -631,23 +632,6 @@ namespace Medbot.Commands
             }
 
             return leaderboard;
-        }
-
-        /// <summary>
-        /// Selects random user from the list
-        /// </summary>
-        /// <param name="usersList">List of users</param>
-        /// <returns>Returns random user</returns>
-        private static User SelectRandomUser(List<User> usersList)
-        {
-            if (usersList.Count <= 0)
-                return null;
-            else if (usersList.Count == 1)
-                return usersList[0];
-
-            Random rand = new Random(Guid.NewGuid().GetHashCode());
-            int random = rand.Next(0, usersList.Count);
-            return usersList[random];
         }
     }
 }

@@ -23,10 +23,22 @@ namespace Medbot_UI
             _bot.OnMessageReceived += Bot_OnMessageReceived;
             _bot.OnConsoleOuput += Bot_OnConsoleOuput;
             _bot.OnUptimeTick += Bot_OnUptimeTick;
+            _bot.OnUserJoined += Bot_OnUserJoined;
+            _bot.OnUserDisconnected += Bot_OnUserDisconnected;
             _timer = new SystemTimer();
 
             System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
+        }
+
+        private void Bot_OnUserDisconnected(object sender, Medbot.Events.OnUserArgs e)
+        {
+            ConsoleAppendText("USER PARTED: " + e.User.DisplayName);
+        }
+
+        private void Bot_OnUserJoined(object sender, Medbot.Events.OnUserArgs e)
+        {
+            ConsoleAppendText("USER JOINED: " + e.User.DisplayName);
         }
 
         private void Bot_OnConsoleOuput(object sender, Medbot.Events.OnMessageArgs e)

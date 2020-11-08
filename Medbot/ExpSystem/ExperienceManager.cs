@@ -17,6 +17,7 @@ namespace Medbot.ExpSystem
         private TimeSpan idleTime;
         private Timer timer;
         private BotClient bot;
+        private readonly UsersManager _usersManager;
 
         /// <summary>
         /// Gets a Rank List
@@ -46,9 +47,10 @@ namespace Medbot.ExpSystem
         /// <param name="idleExp">Number of experience gained by idle users</param>
         /// <param name="idleTime">Time after which user will become idle (in minutes)</param>
         /// <param name="autostart">Bool value if timer should start immediately</param>
-        internal ExperienceManager(BotClient bot, TimeSpan interval, int activeExp, int idleExp, TimeSpan idleTime, bool autostart = false)
+        internal ExperienceManager(BotClient bot, UsersManager usersManager, TimeSpan interval, int activeExp, int idleExp, TimeSpan idleTime, bool autostart = false)
         {
             this.bot = bot;
+            _usersManager = usersManager;
             this.interval = interval;
             this.TimerRunning = false;
             this.activeExp = activeExp;
@@ -134,12 +136,12 @@ namespace Medbot.ExpSystem
         /// </summary>
         private void AwardExperience_TimerTick(Object state)
         {
-            if (BotClient.OnlineUsers == null || BotClient.OnlineUsers.Count <= 0)
+            if (!_usersManager.IsAnyUserOnline)
                 return;
 
-            Console.WriteLine("Timer Experience ticked for " + BotClient.OnlineUsers.Count + " users");
+            Console.WriteLine("Timer Experience ticked for " + _usersManager.TotalUsersOnline + " users");
 
-            foreach (var user in BotClient.OnlineUsers)
+            foreach (var user in _usersManager.OnlineUsers)
             {
                 if (user.LastMessage == null) // Skip users who never wrote anything in chat
                     continue;

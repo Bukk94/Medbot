@@ -17,8 +17,16 @@ namespace Medbot
 
     internal static class FilesControl
     {
+        private static UsersManager _usersManager;
         private static Object fileLock = new Object();
         private static Object settingsLock = new Object();
+
+        // HACK: Temporary init before refactoring this class
+        internal static void Initialize(UsersManager usersManager)
+        {
+            // TODO: Change this to regular constructor
+            _usersManager = usersManager;
+        }
 
         internal static List<Command> LoadCommands()
         {
@@ -131,7 +139,7 @@ namespace Medbot
 
                     try
                     {
-                        foreach (User user in BotClient.OnlineUsers)
+                        foreach (User user in _usersManager.OnlineUsers)
                         {
                             XAttribute userRecord = data.Element("Medbot").Elements("User").Attributes("Username").FirstOrDefault(att => att.Value == user.Username);
 
@@ -176,7 +184,7 @@ namespace Medbot
         {
             XDocument doc = new XDocument(new XElement("Medbot"));
 
-            foreach (User user in BotClient.OnlineUsers)
+            foreach (User user in _usersManager.OnlineUsers)
             {
                 AddUserRecord(ref doc, user);
             }

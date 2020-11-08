@@ -26,6 +26,7 @@ namespace Medbot
         private readonly Stopwatch uptime;
         private readonly PointsManager _pointsManager;
         private readonly ExperienceManager _experienceManager;
+        private readonly UsersManager _usersManager;
         private readonly MessageThrottling throttler;
         private TcpClient tcpClient;
         private StreamWriter writer;
@@ -33,11 +34,6 @@ namespace Medbot
 
         // TODO: Get rid of static properties
         #region Properties
-        /// <summary>
-        /// Gets list of currently online users
-        /// </summary>
-        public static List<User> OnlineUsers { get; private set; }
-
         /// <summary>
         /// Gets/Sets list of usernames that are blacklisted from receiveing points, EXP and ranks
         /// </summary>
@@ -135,7 +131,7 @@ namespace Medbot
             BotModeratorPermission = false;
             throttler = new MessageThrottling();
 
-            OnlineUsers = new List<User>();
+            _usersManager = new UsersManager();
 
             FilesControl.LoadLoginCredentials();
             FilesControl.LoadUsersBlacklist();
@@ -145,14 +141,15 @@ namespace Medbot
             Dictionary<string, int> intervals = FilesControl.LoadBotIntervals();
 
             chatMessagePrefix = String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :", Login.BotName, Login.Channel);
-            _pointsManager = new PointsManager(new TimeSpan(0, intervals["PointsInterval"], 0), new TimeSpan(0,
+            _pointsManager = new PointsManager(_usersManager, new TimeSpan(0, intervals["PointsInterval"], 0), new TimeSpan(0,
                                                 intervals["PointsIdleTime"], 0), Convert.ToBoolean(intervals["PointsRewardIdles"]),
                                                 intervals["PointsPerTick"], false);
 
-            _experienceManager = new ExperienceManager(this, new TimeSpan(0, intervals["ExperienceInterval"], 0),
+            _experienceManager = new ExperienceManager(this, _usersManager, new TimeSpan(0, intervals["ExperienceInterval"], 0),
                                                intervals["ExperienceActiveExp"],
                                                intervals["ExperienceIdleExp"], new TimeSpan(0, intervals["ExperienceIdleTime"], 0), false);
-            CommandsHandler.Initialize(_experienceManager, this);
+            CommandsHandler.Initialize(_usersManager, _experienceManager, this);
+            FilesControl.Initialize(_usersManager);
             CommandsList = FilesControl.LoadCommands();
 
             if (CommandsList == null)
@@ -163,6 +160,14 @@ namespace Medbot
             this.readingTimer = new Timer(Reader_Timer_Tick, null, Timeout.Infinite, 200);
             this.uptimeTimer = new Timer(Uptime_Timer_Tick, null, Timeout.Infinite, 1000);
             this.uptime = new Stopwatch();
+
+            SetupEvents();
+        }
+
+        private void SetupEvents()
+        {
+            _usersManager.OnUserJoined += (sender, e) => OnUserJoined?.Invoke(sender, e);
+            _usersManager.OnUserDisconnected += (sender, e) => OnUserDisconnected?.Invoke(sender, e);
         }
 
         /// <summary>
@@ -285,7 +290,7 @@ namespace Medbot
                 reader.Close();
                 writer.Close();
                 tcpClient.Close();
-                OnlineUsers.Clear();
+                _usersManager.ClearOnlineUsers();
             }
             catch (Exception ex)
             {
@@ -347,16 +352,18 @@ namespace Medbot
                     else if (chatLine.Contains("PART"))
                     {
                         // User disconnected
-                        UserDisconnect(Parsing.ParseUsername(chatLine));
+                        _usersManager.DisconnectUser(Parsing.ParseUsername(chatLine));
                     }
                     else if (chatLine.Contains("USERSTATE"))
                     {
+                        // TODO: What this does?!
                         GetUserFromChat(chatLine);
-                        CheckBotsPermissions(FindOnlineUser(Login.BotName));
+                        var botUser = _usersManager.FindOnlineUser(Login.BotName);
+                        CheckBotsPermissions(botUser);
                     }
                     else if (chatLine.Contains("PING :tmi.twitch.tv"))
                     {
-                        // Request bot response on ping command, keep connection alive
+                        // Request bot response on ping command, keeps connection alive
                         writer.WriteLine("PONG :tmi.twitch.tv");
                         writer.Flush();
                         ConsoleAppendText("PONG :tmi.twitch.tv");
@@ -421,33 +428,9 @@ namespace Medbot
         /// <returns>Sender user</returns>
         private User GetUserFromChat(string chatLine)
         {
-            User sender = TryUserJoin(chatLine);
+            User sender = _usersManager.JoinUser(chatLine);
             ApplyUserBadges(sender, Parsing.ParseBadges(chatLine));
             return sender;
-        }
-
-        /// <summary>
-        /// Tries to add user to Online List, if already exists, find him and return
-        /// </summary>
-        /// <param name="chatLine">Full chat line</param>
-        /// <returns>Sender user</returns>
-        private User TryUserJoin(string chatLine)
-        {
-            string user = Parsing.ParseUsername(chatLine);
-
-            if (!OnlineUsers.Any(u => u.Username == user))
-            { // User is not in the list
-                User newUser = new User(user);
-
-                FilesControl.LoadUserData(ref newUser);
-                OnlineUsers.Add(newUser);
-
-                OnUserJoined?.Invoke(this, new OnUserArgs { User = newUser });
-                Console.WriteLine("User " + user + " JOINED");
-                return newUser;
-            }
-
-            return OnlineUsers.Find(u => u.Username.Equals(user));
         }
 
         /// <summary>
@@ -473,32 +456,6 @@ namespace Medbot
                 if (!String.IsNullOrEmpty(displayName))
                     user.DisplayName = displayName;
             }
-        }
-
-        /// <summary>
-        /// User disconnected, remove from OnlineUsers and save all points
-        /// </summary>
-        /// <param name="user"></param>
-        private void UserDisconnect(string user)
-        {
-            User disconnectingUser = FindOnlineUser(user);
-            if (disconnectingUser == null)
-                return;
-
-            FilesControl.SaveData();
-            OnlineUsers.RemoveAll(u => u.Username == user);
-            OnUserDisconnected?.Invoke(this, new OnUserArgs { User = disconnectingUser });
-            Console.WriteLine("User " + user + " LEFT");
-        }
-
-        /// <summary>
-        /// Finds user from Online Users list by its name
-        /// </summary>
-        /// <param name="username">Username to find</param>
-        /// <returns>User object or null</returns>
-        public static User FindOnlineUser(string username)
-        {
-            return OnlineUsers.Find(u => u.Username.Equals(username.ToLower()));
         }
 
         /// <summary>

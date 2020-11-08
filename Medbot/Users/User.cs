@@ -8,6 +8,7 @@ namespace Medbot.Users
 {
     public class User
     {
+        #region Properties
         /// <summary>
         /// Username of the user in lowercase
         /// </summary>
@@ -53,7 +54,9 @@ namespace Medbot.Users
         /// Gets user's total experience
         /// </summary>
         public long Experience { get; set; }
+        #endregion
 
+        #region Constructors
         /// <summary>
         /// Data structure containing information about User such as username, points, experience, rank and time of last sent message
         /// </summary>
@@ -96,6 +99,7 @@ namespace Medbot.Users
             this.DisplayName = nickname;
             this.Points = points;
         }
+        #endregion
 
         /// <summary>
         /// Applies all given badges to user
