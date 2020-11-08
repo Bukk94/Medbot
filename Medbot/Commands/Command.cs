@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Medbot.Internal;
+using Medbot.Users;
 
 namespace Medbot.Commands
 {
@@ -98,7 +99,7 @@ namespace Medbot.Commands
         /// <returns>Bool value if he has permission to use the command</returns>
         public bool CheckCommandPermissions(User sender)
         {
-            return (BroadcasterOnly && sender.Broadcaster) || (ModeratorPermissionRequired && (sender.Moderator || sender.Broadcaster) || (!BroadcasterOnly && !ModeratorPermissionRequired));
+            return (BroadcasterOnly && sender.IsBroadcaster) || (ModeratorPermissionRequired && (sender.IsModerator || sender.IsBroadcaster) || (!BroadcasterOnly && !ModeratorPermissionRequired));
         }
 
         /// <summary>

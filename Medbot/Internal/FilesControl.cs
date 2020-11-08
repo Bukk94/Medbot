@@ -9,6 +9,7 @@ using Medbot.Internal;
 using Medbot.Commands;
 using System.Reflection;
 using Medbot.Points;
+using Medbot.Users;
 
 namespace Medbot
 {

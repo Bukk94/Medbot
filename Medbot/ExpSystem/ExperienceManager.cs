@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using Medbot.LoggingNS;
 using Medbot.Internal;
+using Medbot.Users;
 
 namespace Medbot.ExpSystem
 {
@@ -138,7 +139,7 @@ namespace Medbot.ExpSystem
 
             Console.WriteLine("Timer Experience ticked for " + BotClient.OnlineUsers.Count + " users");
 
-            foreach (User user in BotClient.OnlineUsers)
+            foreach (var user in BotClient.OnlineUsers)
             {
                 if (user.LastMessage == null) // Skip users who never wrote anything in chat
                     continue;

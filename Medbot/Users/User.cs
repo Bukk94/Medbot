@@ -4,65 +4,55 @@ using System.Linq;
 using Medbot.ExpSystem;
 using Medbot.Exceptions;
 
-namespace Medbot
+namespace Medbot.Users
 {
     public class User
     {
-        private readonly string nickname;
-        private string displayName;
-        private DateTime? lastMessage;
-        private long points;
-        private bool mod;
-        private bool broadcaster;
-        private bool subscriber;
-        private Rank rank;
-        private long experience;
-
         /// <summary>
         /// Username of the user in lowercase
         /// </summary>
-        public string Username { get { return this.nickname; } }
+        public string Username { get; }
 
         /// <summary>
         /// Sets/Gets User's Display name in chat, including lower and upper case
         /// </summary>
-        public string DisplayName { get { return this.displayName; } set { this.displayName = value; } }
+        public string DisplayName { get; set; }
 
         /// <summary>
         /// Date and Time of last message user sent. Can be null.
         /// </summary>
-        public DateTime? LastMessage { get { return this.lastMessage; } set { this.lastMessage = value; } }
+        public DateTime? LastMessage { get; set; }
 
         /// <summary>
         /// User's watching points
         /// </summary>
-        public long Points { get { return points; } set { this.points = value; } }
+        public long Points { get; set; }
 
         /// <summary>
         /// Gets bool if the user is Broadcaster
         /// </summary>
-        public bool Broadcaster { get { return this.broadcaster; } }
+        public bool IsBroadcaster { get; private set; }
 
         /// <summary>
         /// Gets bool if the user is chat Moderator 
         /// </summary>
-        public bool Moderator { get { return this.mod; } }
+        public bool IsModerator { get; private set; }
 
         // UNUSED: Subscriber value
         /// <summary>
         /// Gets bool if the user is subscribed to the channel
         /// </summary>
-        public bool Subscriber { get { return this.subscriber; } }
+        public bool IsSubscriber { get; private set; }
 
         /// <summary>
         /// Gets/Sets a user's current rank
         /// </summary>
-        public Rank UserRank { get { return this.rank; } set { this.rank = value; } }
+        public Rank UserRank { get; set; }
 
         /// <summary>
         /// Gets user's total experience
         /// </summary>
-        public long Experience { get { return this.experience; } set { this.experience = value; } }
+        public long Experience { get; set; }
 
         /// <summary>
         /// Data structure containing information about User such as username, points, experience, rank and time of last sent message
@@ -70,15 +60,15 @@ namespace Medbot
         /// <param name="nickname">Username of the User</param>
         public User(string nickname, Rank rank = null, bool mod = false, bool subscriber = false, bool owner = false)
         {
-            this.nickname = nickname;
-            this.displayName = nickname;
-            this.rank = rank;
-            this.mod = mod;
-            this.subscriber = subscriber;
-            this.broadcaster = owner;
-            lastMessage = null;
-            points = 0;
-            experience = 0;
+            this.Username = nickname;
+            this.DisplayName = nickname;
+            this.UserRank = rank;
+            this.IsModerator = mod;
+            this.IsSubscriber = subscriber;
+            this.IsBroadcaster = owner;
+            LastMessage = null;
+            Points = 0;
+            Experience = 0;
         }
 
         /// <summary>
@@ -89,10 +79,10 @@ namespace Medbot
         /// <param name="experience">Number of user's experience</param>
         public User(string nickname, long points, long experience)
         {
-            this.nickname = nickname;
-            this.displayName = nickname;
-            this.points = points;
-            this.experience = experience;
+            this.Username = nickname;
+            this.DisplayName = nickname;
+            this.Points = points;
+            this.Experience = experience;
         }
 
         /// <summary>
@@ -102,9 +92,9 @@ namespace Medbot
         /// <param name="points">Number of user's points</param>
         public User(string nickname, long points)
         {
-            this.nickname = nickname;
-            this.displayName = nickname;
-            this.points = points;
+            this.Username = nickname;
+            this.DisplayName = nickname;
+            this.Points = points;
         }
 
         /// <summary>
@@ -118,13 +108,13 @@ namespace Medbot
 
             // TODO: Improve this to use enums or even better, flags
             if (badges.SingleOrDefault(b => b.Contains("broadcaster")) != null)
-                this.broadcaster = true;
+                this.IsBroadcaster = true;
 
             if (badges.SingleOrDefault(b => b.Contains("moderator")) != null)
-                this.mod = true;
+                this.IsModerator = true;
 
             if (badges.SingleOrDefault(b => b.Contains("subscriber")) != null)
-                this.subscriber = true;
+                this.IsSubscriber = true;
         }
 
         /// <summary>
@@ -133,7 +123,7 @@ namespace Medbot
         /// <param name="value">Long - number of points to be added</param>
         public void AddPoints(long value)
         {
-            this.points += value;
+            this.Points += value;
         }
 
         /// <summary>
@@ -142,30 +132,30 @@ namespace Medbot
         /// <param name="value">Long - number of points to be removed</param>
         public void RemovePoints(long value)
         {
-            if (this.points - value >= 0)
-                this.points -= value;
+            if (this.Points - value >= 0)
+                this.Points -= value;
             else
-                this.points = 0;
+                this.Points = 0;
         }
 
         /// <summary>
         /// Trades user points. If fail, throws PointsException
         /// </summary>
-        /// <param name="points"></param>
-        /// <exception cref="PointsException">When user doesn'T have enough points</exception>
-        public void Trade(long points, User target, string targetUsername)
+        /// <param name="pointsToTrade"></param>
+        /// <exception cref="PointsException">When user doesn't have enough points</exception>
+        public void Trade(long pointsToTrade, User target, string targetUsername)
         {
-            if (this.Points - points >= 0)
+            if (this.Points - pointsToTrade >= 0)
             { // User is able to trade
-                RemovePoints(points);
+                RemovePoints(pointsToTrade);
 
                 if (target == null)
                 { // Target is not online, trade into file
-                    FilesControl.AddUserPointsToFile(targetUsername, points);
+                    FilesControl.AddUserPointsToFile(targetUsername, pointsToTrade);
                 }
                 else
                 { // User is online
-                    target.AddPoints(points);
+                    target.AddPoints(pointsToTrade);
                     FilesControl.SaveData();
                 }
             }
@@ -181,7 +171,7 @@ namespace Medbot
         /// <param name="value">Long - number of exp to add</param>
         public void AddExperience(long value)
         {
-            this.experience += value;
+            this.Experience += value;
         }
 
         /// <summary>
@@ -190,12 +180,12 @@ namespace Medbot
         /// <returns>Return bool if user got new rank up</returns>
         public bool CheckRankUp()
         {
-            bool nullRank = this.rank == null;
+            bool nullRank = this.UserRank == null;
             Rank matchRank = ExperienceManager.RankList.Last(r => r.ExpRequired <= this.Experience);
 
-            if (matchRank != this.rank)
+            if (matchRank != this.UserRank)
             { // Gain new rank
-                this.rank = matchRank;
+                this.UserRank = matchRank;
 
                 if (!nullRank) // Skip initiate null value (loading data from file)
                     return true;
@@ -209,11 +199,11 @@ namespace Medbot
         /// <returns>long value</returns>
         public long ToNextRank()
         {
-            if (this.rank == null)
+            if (this.UserRank == null)
                 return 0;
 
             Rank next = NextRank();
-            return next != null ? next.ExpRequired - this.experience : 0;
+            return next != null ? next.ExpRequired - this.Experience : 0;
         }
 
         /// <summary>
@@ -246,7 +236,7 @@ namespace Medbot
         /// <returns>Return user's next rank as Rank object</returns>
         public Rank NextRank()
         {
-            var rankIndex = ExperienceManager.RankList.IndexOf(this.rank);
+            var rankIndex = ExperienceManager.RankList.IndexOf(this.UserRank);
             return rankIndex + 1 < ExperienceManager.RankList.Count - 1 ? ExperienceManager.RankList[rankIndex + 1] : null;
         }
     }

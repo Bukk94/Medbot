@@ -14,6 +14,7 @@ using Medbot.Events;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Medbot.Points;
+using Medbot.Users;
 
 namespace Medbot
 {
@@ -569,10 +570,10 @@ namespace Medbot
         /// <param name="botObject">Bot's user object</param>
         private void CheckBotsPermissions(User botObject)
         {
-            if (botObject == null || botObject.Moderator == BotModeratorPermission) // Do nothing if botObject is null or permissions were not changed
+            if (botObject == null || botObject.IsModerator == BotModeratorPermission) // Do nothing if botObject is null or permissions were not changed
                 return;
 
-            BotModeratorPermission = botObject.Moderator;
+            BotModeratorPermission = botObject.IsModerator;
         }
 
         private void Uptime_Timer_Tick(Object sender)

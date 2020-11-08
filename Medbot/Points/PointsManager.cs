@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Medbot.Users;
+using System;
 using System.Threading;
 
 namespace Medbot.Points
@@ -117,15 +118,15 @@ namespace Medbot.Points
                 return;
 
             Console.WriteLine("Timer Points ticked, Number of users: " + BotClient.OnlineUsers.Count);
-            foreach (User u in BotClient.OnlineUsers)
+            foreach (var user in BotClient.OnlineUsers)
             {
-                if (BotClient.UserBlacklist.Contains(u.Username)) // Skip blacklisted user
+                if (BotClient.UserBlacklist.Contains(user.Username)) // Skip blacklisted user
                     continue;
 
-                if (u.LastMessage != null && (DateTime.Now - u.LastMessage < TimeSpan.FromMilliseconds(this.idleTime.TotalMilliseconds) || rewardIdles))
+                if (user.LastMessage != null && (DateTime.Now - user.LastMessage < TimeSpan.FromMilliseconds(this.idleTime.TotalMilliseconds) || rewardIdles))
                 {
-                    u.AddPoints(this.PointsPerTick);
-                    Console.WriteLine("Rewarding " + u.Username + " for activity");
+                    user.AddPoints(this.PointsPerTick);
+                    Console.WriteLine("Rewarding " + user.Username + " for activity");
                 }
             }
 

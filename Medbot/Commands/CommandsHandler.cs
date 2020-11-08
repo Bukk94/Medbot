@@ -9,6 +9,7 @@ using Medbot.ExpSystem;
 using Medbot.Exceptions;
 using Medbot.Internal;
 using Medbot.Points;
+using Medbot.Users;
 
 namespace Medbot.Commands
 {
@@ -363,7 +364,7 @@ namespace Medbot.Commands
             }
 
 
-            return "Unknown experience hanlder";
+            return "Unknown experience handler";
         }
 
         /// <summary>

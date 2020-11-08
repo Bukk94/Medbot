@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Medbot.Users;
+using System;
 
 namespace Medbot.Events
 {
