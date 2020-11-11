@@ -147,7 +147,7 @@ namespace Medbot.ExpSystem
                     continue;
 
                 // Skip blacklisted user
-                if (BotClient.UserBlacklist.Contains(user.Username))
+                if (_usersManager.IsUserBlacklisted(user))
                     continue;
 
                 // Reward active

@@ -27,6 +27,7 @@ namespace Medbot
         private readonly PointsManager _pointsManager;
         private readonly ExperienceManager _experienceManager;
         private readonly UsersManager _usersManager;
+        private readonly BotDataManager _botDataManager;
         private readonly MessageThrottling throttler;
         private TcpClient tcpClient;
         private StreamWriter writer;
@@ -35,57 +36,47 @@ namespace Medbot
         // TODO: Get rid of static properties
         #region Properties
         /// <summary>
-        /// Gets/Sets list of usernames that are blacklisted from receiveing points, EXP and ranks
-        /// </summary>
-        public static List<string> UserBlacklist { get; set; }
-
-        /// <summary>
-        /// Gets full path to settings XML file
+        /// Full path to settings XML file
         /// </summary>
         public static string SettingsPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Settings.xml";
 
         /// <summary>
-        /// Gets full path to file where are all users data stored
+        /// Full path to file where are all users data stored
         /// </summary>
         public static string DataPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Users_data.xml";
 
         /// <summary>
-        /// Gets full path to file where are all users data stored
+        /// Full path to file where are all users data stored
         /// </summary>
         public static string CommandsPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Commands.xml";
 
         /// <summary>
-        /// Gets full path to ranks file
+        /// Full path to ranks file
         /// </summary>
         public static string RanksPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Ranks.txt";
 
         /// <summary>
-        /// Gets bool if bot has moderator permissions
-        /// </summary>
-        public static bool BotModeratorPermission { get; private set; }
-
-        /// <summary>
-        /// Gets channel on which bot is deployed on
+        /// Channel on which bot is deployed on
         /// </summary>
         public string DeployedChannel => Login.Channel;
 
         /// <summary>
-        /// Gets bool if the bot is running
+        /// Bool if the bot is running
         /// </summary>
         public bool IsBotRunning { get; private set; }
 
         /// <summary>
         /// Gets bool if the connection of the bot is alive
         /// </summary>
-        public bool IsConnectionAlive { get { return tcpClient != null ? tcpClient.Connected : false; } }
+        public bool IsConnectionAlive => tcpClient != null ? tcpClient.Connected : false;
 
         /// <summary>
-        /// Gets/Sets bool if bot can use colored messages
+        /// Bool if bot can use colored messages
         /// </summary>
         public bool UseColoredMessages { get; set; }
 
         /// <summary>
-        /// Gets list of bot's commands
+        /// List of bot's commands
         /// </summary>
         public List<Command> CommandsList { get; }
         #endregion
@@ -128,10 +119,10 @@ namespace Medbot
         public BotClient()
         {
             UseColoredMessages = true;
-            BotModeratorPermission = false;
-            throttler = new MessageThrottling();
 
             _usersManager = new UsersManager();
+            _botDataManager = new BotDataManager();
+            throttler = new MessageThrottling(_botDataManager);
 
             FilesControl.LoadLoginCredentials();
             FilesControl.LoadUsersBlacklist();
@@ -312,6 +303,8 @@ namespace Medbot
             if (!IsConnectionAlive)
                 Connect();
 
+            // TODO: Bot should be initialized to online users as fast as possible
+            // Current JOIN event is quite slow and can result into bot's insufficient permissions
             try
             {
                 if (tcpClient.Available > 0 || reader.Peek() >= 0)
@@ -359,7 +352,7 @@ namespace Medbot
                         // TODO: What this does?!
                         GetUserFromChat(chatLine);
                         var botUser = _usersManager.FindOnlineUser(Login.BotName);
-                        CheckBotsPermissions(botUser);
+                        _botDataManager.UpdateBotPermissions(botUser);
                     }
                     else if (chatLine.Contains("PING :tmi.twitch.tv"))
                     {
@@ -519,18 +512,6 @@ namespace Medbot
         public void SaveData()
         {
             FilesControl.SaveData();
-        }
-
-        /// <summary>
-        /// Updates class's static variable BotModeratorPermission
-        /// </summary>
-        /// <param name="botObject">Bot's user object</param>
-        private void CheckBotsPermissions(User botObject)
-        {
-            if (botObject == null || botObject.IsModerator == BotModeratorPermission) // Do nothing if botObject is null or permissions were not changed
-                return;
-
-            BotModeratorPermission = botObject.IsModerator;
         }
 
         private void Uptime_Timer_Tick(Object sender)

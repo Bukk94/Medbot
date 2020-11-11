@@ -124,7 +124,7 @@ namespace Medbot.Points
             Console.WriteLine("Timer Points ticked, Number of users: " + _usersManager.TotalUsersOnline);
             foreach (var user in _usersManager.OnlineUsers)
             {
-                if (BotClient.UserBlacklist.Contains(user.Username)) // Skip blacklisted user
+                if (_usersManager.IsUserBlacklisted(user)) // Skip blacklisted user
                     continue;
 
                 if (user.LastMessage != null && (DateTime.Now - user.LastMessage < TimeSpan.FromMilliseconds(this.idleTime.TotalMilliseconds) || rewardIdles))

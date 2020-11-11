@@ -15,6 +15,11 @@ namespace Medbot.Users
         /// </summary>
         public List<User> OnlineUsers { get; private set; }
 
+        /// <summary>
+        /// List of usernames that are blacklisted from receiveing points, EXP, and ranks
+        /// </summary>
+        public List<string> UserBlacklist { get; set; }
+
         public bool IsAnyUserOnline => OnlineUsers.Any();
 
         public int TotalUsersOnline => OnlineUsers.Count;
@@ -34,6 +39,7 @@ namespace Medbot.Users
         public UsersManager()
         {
             OnlineUsers = new List<User>();
+            UserBlacklist = new List<string>();
         }
 
         /// <summary>
@@ -85,6 +91,11 @@ namespace Medbot.Users
         public User FindOnlineUser(string username)
         {
             return OnlineUsers.FirstOrDefault(x => string.Equals(x.Username, username, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public bool IsUserBlacklisted(User user)
+        {
+            return UserBlacklist.Contains(user.Username);
         }
 
         /// <summary>

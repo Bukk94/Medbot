@@ -66,6 +66,7 @@
     <Compile Include="Exceptions\RanksException.cs" />
     <Compile Include="ExpSystem\ExperienceManager.cs" />
     <Compile Include="ExpSystem\Rank.cs" />
+    <Compile Include="Internal\BotDataManager.cs" />
     <Compile Include="Internal\FilesControl.cs" />
     <Compile Include="Followers\Follow.cs" />
     <Compile Include="Followers\Follower.cs" />

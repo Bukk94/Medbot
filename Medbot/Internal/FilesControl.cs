@@ -319,8 +319,6 @@ namespace Medbot
         /// </summary>
         internal static void LoadUsersBlacklist()
         {
-            BotClient.UserBlacklist = new List<string>();
-
             if (!File.Exists(BotClient.SettingsPath))
                 return;
 
@@ -335,7 +333,7 @@ namespace Medbot
                     blacklist = blacklist.Select(val => val.Replace('\u0009'.ToString(), "").ToLower()).ToList();
                     blacklist = blacklist.Where(val => !String.IsNullOrEmpty(val)).Distinct().ToList();
 
-                    BotClient.UserBlacklist = blacklist;
+                    _usersManager.UserBlacklist = blacklist;
                 }
                 catch (Exception ex)
                 {
