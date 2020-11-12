@@ -36,26 +36,6 @@ namespace Medbot
         // TODO: Get rid of static properties
         #region Properties
         /// <summary>
-        /// Full path to settings XML file
-        /// </summary>
-        public static string SettingsPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Settings.xml";
-
-        /// <summary>
-        /// Full path to file where are all users data stored
-        /// </summary>
-        public static string DataPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Users_data.xml";
-
-        /// <summary>
-        /// Full path to file where are all users data stored
-        /// </summary>
-        public static string CommandsPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Commands.xml";
-
-        /// <summary>
-        /// Full path to ranks file
-        /// </summary>
-        public static string RanksPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Ranks.txt";
-
-        /// <summary>
         /// Channel on which bot is deployed on
         /// </summary>
         public string DeployedChannel => Login.Channel;
@@ -136,11 +116,11 @@ namespace Medbot
                                                 intervals["PointsIdleTime"], 0), Convert.ToBoolean(intervals["PointsRewardIdles"]),
                                                 intervals["PointsPerTick"], false);
 
-            _experienceManager = new ExperienceManager(this, _usersManager, new TimeSpan(0, intervals["ExperienceInterval"], 0),
+            _experienceManager = new ExperienceManager(this, _botDataManager, _usersManager, new TimeSpan(0, intervals["ExperienceInterval"], 0),
                                                intervals["ExperienceActiveExp"],
                                                intervals["ExperienceIdleExp"], new TimeSpan(0, intervals["ExperienceIdleTime"], 0), false);
             CommandsHandler.Initialize(_usersManager, _experienceManager, this);
-            FilesControl.Initialize(_usersManager);
+            FilesControl.Initialize(_botDataManager, _usersManager);
             CommandsList = FilesControl.LoadCommands();
 
             if (CommandsList == null)

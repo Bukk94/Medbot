@@ -17,6 +17,7 @@ namespace Medbot.ExpSystem
         private TimeSpan idleTime;
         private Timer timer;
         private BotClient bot;
+        private readonly BotDataManager _botDataManager;
         private readonly UsersManager _usersManager;
 
         /// <summary>
@@ -47,10 +48,11 @@ namespace Medbot.ExpSystem
         /// <param name="idleExp">Number of experience gained by idle users</param>
         /// <param name="idleTime">Time after which user will become idle (in minutes)</param>
         /// <param name="autostart">Bool value if timer should start immediately</param>
-        internal ExperienceManager(BotClient bot, UsersManager usersManager, TimeSpan interval, int activeExp, int idleExp, TimeSpan idleTime, bool autostart = false)
+        internal ExperienceManager(BotClient bot, BotDataManager botDataManager, UsersManager usersManager, TimeSpan interval, int activeExp, int idleExp, TimeSpan idleTime, bool autostart = false)
         {
             this.bot = bot;
             _usersManager = usersManager;
+            _botDataManager = botDataManager;
             this.interval = interval;
             this.TimerRunning = false;
             this.activeExp = activeExp;
@@ -71,13 +73,13 @@ namespace Medbot.ExpSystem
         /// </summary>
         internal void LoadRanks()
         {
-            if (!File.Exists(BotClient.RanksPath))
+            if (!File.Exists(_botDataManager.RanksPath))
             {
                 Logging.LogError(this, System.Reflection.MethodBase.GetCurrentMethod(), "FAILED to load ranks. File not found.");
                 return;
             }
 
-            string[] dataRaw = File.ReadAllText(BotClient.RanksPath).Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            string[] dataRaw = File.ReadAllText(_botDataManager.RanksPath).Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             int level = 1;
 
             foreach (string data in dataRaw)
