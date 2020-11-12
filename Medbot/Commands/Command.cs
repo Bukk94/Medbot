@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Medbot.Commands.Enums;
 using Medbot.Internal;
 using Medbot.Users;
 
 namespace Medbot.Commands
 {
-    enum CommandType { Internal, EXP, Points }
-    enum HandlerType { Add, All, Color, ChangeColor, FollowAge, Gamble, Help, Info, InfoSecond, Leaderboard, LastFollower, Trade, Random, Remove }
-
     public class Command
     {
+        private readonly CommandThrottling _throttler;
         private CommandType _commandType;
         private TimeSpan _cooldown;
-        private CommandThrottling _throttler;
 
         /// <summary>
         /// Gets an command format e.g !points
@@ -23,7 +21,7 @@ namespace Medbot.Commands
         /// <summary>
         /// Gets an command handler type (e.g. Add, Remove)
         /// </summary>
-        internal HandlerType CommandHandlerType { get; }
+        internal CommandHandlerType CommandHandlerType { get; }
 
         /// <summary>
         /// Gets a boolean if the command can be executed only by broadcaster
@@ -60,7 +58,7 @@ namespace Medbot.Commands
         /// </summary>
         internal bool SendWhisper { get; }
 
-        internal Command(CommandType cmd, HandlerType handler, string commandFormat, string about, string successMessage,
+        internal Command(CommandType cmd, CommandHandlerType handler, string commandFormat, string about, string successMessage,
                          string failMessage, string errorMessage, bool broadcasterOnly, bool modPermission, bool sendWhisp, TimeSpan cd)
         {
             this.CommandHandlerType = handler;

@@ -147,7 +147,7 @@ namespace Medbot.Users
         /// </summary>
         /// <param name="pointsToTrade"></param>
         /// <exception cref="PointsException">When user doesn't have enough points</exception>
-        public void Trade(long pointsToTrade, User target, string targetUsername)
+        internal void Trade(FilesControl filesControl, long pointsToTrade, User target, string targetUsername)
         {
             if (this.Points - pointsToTrade >= 0)
             { // User is able to trade
@@ -155,12 +155,12 @@ namespace Medbot.Users
 
                 if (target == null)
                 { // Target is not online, trade into file
-                    FilesControl.AddUserPointsToFile(targetUsername, pointsToTrade);
+                    filesControl.AddUserPointsToFile(targetUsername, pointsToTrade);
                 }
                 else
                 { // User is online
                     target.AddPoints(pointsToTrade);
-                    FilesControl.SaveData();
+                    filesControl.SaveData();
                 }
             }
             else

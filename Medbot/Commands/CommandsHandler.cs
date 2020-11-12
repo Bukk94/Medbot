@@ -10,16 +10,16 @@ using Medbot.Exceptions;
 using Medbot.Internal;
 using Medbot.Points;
 using Medbot.Users;
+using Medbot.Commands.Enums;
 
 namespace Medbot.Commands
 {
-    internal enum BotChatColors { Blue, Coral, DodgerBlue, SpringGreen, YellowGreen, Green, OrangeRed, Red, GoldenRod, HotPink, CadetBlue, SeaGreen, Chocolate, BlueViolet, Firebrick }
-
     internal static class CommandsHandler
     {
         private static ExperienceManager expObject;
         private static BotClient botClient;
         private static UsersManager _usersManager;
+        private static FilesControl _filesControl;
 
         // TODO: !Followerinfo (or smth)
 
@@ -27,12 +27,13 @@ namespace Medbot.Commands
         /// Initializes Commands Handler, passing XP object
         /// </summary>
         /// <param name="exp">Object of Experiences class</param>
-        internal static void Initialize(UsersManager usersManager, ExperienceManager exp, BotClient bot)
+        internal static void Initialize(UsersManager usersManager, FilesControl filesControl, ExperienceManager exp, BotClient bot)
         {
             // TODO: Change this to regular constructor
             expObject = exp;
             botClient = bot;
             _usersManager = usersManager;
+            _filesControl = filesControl;
         }
 
         /// <summary>
@@ -74,7 +75,7 @@ namespace Medbot.Commands
         {
             switch (cmd.CommandHandlerType)
             {
-                case HandlerType.Info:
+                case CommandHandlerType.Info:
                     // Get points info !med |  0 input args
                     if (sender == null)
                     { // Fail: 5 params: {0:Currency name} {1:Currency plural} {2:Currency units} {3:Number of points} {4:User to which add points}
@@ -88,7 +89,7 @@ namespace Medbot.Commands
                     // Success: 4 params: {0:User} {1:Total} {2:Currency plural} {3:Currency units}
                     return String.Format(cmd.SuccessMessage, sender.DisplayName, sender.Points, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits);
 
-                case HandlerType.Add:
+                case CommandHandlerType.Add:
                     // Add points,  !addhoney 50 Bukk94 |  2 input args {0:Number of points} {1:User to which add points}
                     User receiver = null;
                     try
@@ -105,12 +106,12 @@ namespace Medbot.Commands
                         receiver = _usersManager.FindOnlineUser(args[1]);
                         if (receiver == null)
                         { // user is not online
-                            FilesControl.AddUserPointsToFile(args[1], long.Parse(args[0]));
+                            _filesControl.AddUserPointsToFile(args[1], long.Parse(args[0]));
                         }
                         else
                         {
                             receiver.AddPoints(long.Parse(args[0]));
-                            FilesControl.SaveData();
+                            _filesControl.SaveData();
                         }
                         Logging.LogEvent(MethodBase.GetCurrentMethod(),
                                                  String.Format("{0}  Args: {1}, {2} - Points successfully added", cmd.CommandFormat, args[0], args[1]));
@@ -126,7 +127,7 @@ namespace Medbot.Commands
                         return String.Format(cmd.FailMessage, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits, args[0], receiver != null ? receiver.DisplayName : args[1]);
                     }
 
-                case HandlerType.Remove:
+                case CommandHandlerType.Remove:
                     //_Remove points, !removehoney 50 Bukk94 |  2 input args {0:Number of points} {1:User to which remove points}
 
                     User targetUser = null;
@@ -144,12 +145,12 @@ namespace Medbot.Commands
                         targetUser = _usersManager.FindOnlineUser(args[1]);
                         if (targetUser == null)
                         { // user is not online
-                            FilesControl.RemoveUserPointsFromFile(args[1], long.Parse(args[0]));
+                            _filesControl.RemoveUserPointsFromFile(args[1], long.Parse(args[0]));
                         }
                         else
                         {
                             targetUser.RemovePoints(long.Parse(args[0]));
-                            FilesControl.SaveData();
+                            _filesControl.SaveData();
                         }
 
                         Logging.LogEvent(MethodBase.GetCurrentMethod(),
@@ -166,7 +167,7 @@ namespace Medbot.Commands
                         return String.Format(cmd.FailMessage, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits, args[0], targetUser != null ? targetUser.DisplayName : args[1]);
                     }
 
-                case HandlerType.Trade:
+                case CommandHandlerType.Trade:
                     // Trading,  !trade {0} {1}   |  2 input args {0:Number of points} {1:User to which trade points}
                     try
                     {
@@ -182,7 +183,7 @@ namespace Medbot.Commands
                             return "";
                         }
 
-                        sender.Trade(long.Parse(args[0]), target, args[1]);
+                        sender.Trade(_filesControl, long.Parse(args[0]), target, args[1]);
 
                         Logging.LogEvent(MethodBase.GetCurrentMethod(),
                                                  String.Format("{0}  Args: {1}, {2} - Points successfully traded", cmd.CommandFormat, args[0], args[1]));
@@ -204,7 +205,7 @@ namespace Medbot.Commands
                         return String.Format(cmd.ErrorMessage, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits, args[0], args[1]);
                     }
 
-                case HandlerType.Gamble:
+                case CommandHandlerType.Gamble:
                     try
                     {
                         if (args.Count < 1)
@@ -223,19 +224,19 @@ namespace Medbot.Commands
                         if (random > 100 - BotDictionary.GambleBonusWinPercentage)
                         {
                             sender.AddPoints(gambleValue * 3);
-                            FilesControl.SaveData();
+                            _filesControl.SaveData();
                             return String.Format(cmd.SuccessMessage, gambleValue * 3, PointsManager.CurrencyUnits, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural);
                         }
                         else if (random > 100 - BotDictionary.GambleWinPercentage - BotDictionary.GambleBonusWinPercentage)
                         { // 79-98 - double reward
                             sender.AddPoints(gambleValue * 2);
-                            FilesControl.SaveData();
+                            _filesControl.SaveData();
                             return String.Format(cmd.SuccessMessage, gambleValue * 2, PointsManager.CurrencyUnits, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural);
                         }
 
                         // User lost
                         sender.RemovePoints(gambleValue);
-                        FilesControl.SaveData();
+                        _filesControl.SaveData();
                         return String.Format(cmd.FailMessage, args[0], PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits);
                     }
                     catch (PointsException ex)
@@ -259,7 +260,7 @@ namespace Medbot.Commands
             switch (cmd.CommandHandlerType)
             {
                 // !rank    | 0 input args
-                case HandlerType.Info:
+                case CommandHandlerType.Info:
                     try
                     {
                         if (sender == null)
@@ -279,7 +280,7 @@ namespace Medbot.Commands
 
                         return String.Format(cmd.FailMessage, sender.DisplayName, sender.UserRank.RankLevel, sender.UserRank.RankName, sender.Experience);
                     }
-                case HandlerType.InfoSecond:
+                case CommandHandlerType.InfoSecond:
                     // !nextrank   | 0 input args
                     try
                     {
@@ -322,7 +323,7 @@ namespace Medbot.Commands
                                              nextRank != null ? nextRank.RankName : "N/A", sender.Experience);
                     }
 
-                case HandlerType.Add:
+                case CommandHandlerType.Add:
                     // Add experience,  !addexp 500 Bukk94 |  2 input args {0:Number of points} {1:User to which add points}
                     User receiver = null;
                     try
@@ -339,7 +340,7 @@ namespace Medbot.Commands
                         receiver = _usersManager.FindOnlineUser(args[1]);
                         if (receiver == null)
                         { // user is not online
-                            FilesControl.AddUserExperienceToFile(args[1], long.Parse(args[0]));
+                            _filesControl.AddUserExperienceToFile(args[1], long.Parse(args[0]));
                         }
                         else
                         {
@@ -349,7 +350,7 @@ namespace Medbot.Commands
                                 botClient.SendChatMessage(String.Format(BotDictionary.NewRankMessage, receiver.DisplayName,
                                                                 receiver.UserRank.RankLevel, receiver.UserRank.RankName));
 
-                            FilesControl.SaveData();
+                            _filesControl.SaveData();
                         }
                         Logging.LogEvent(MethodBase.GetCurrentMethod(),
                                                  String.Format("{0}  Args: {1}, {2} - Experience successfully added", cmd.CommandFormat, args[0], args[1]));
@@ -381,7 +382,7 @@ namespace Medbot.Commands
         {
             switch (cmd.CommandHandlerType)
             {
-                case HandlerType.LastFollower:
+                case CommandHandlerType.LastFollower:
                     // Last follower, !lastfollower |  0 input args
                     try
                     {
@@ -398,7 +399,7 @@ namespace Medbot.Commands
                         return cmd.FailMessage;
                     }
 
-                case HandlerType.Random:
+                case CommandHandlerType.Random:
                     // Selects random user,  !random   !random {0}  | 0 or 1 input args {0: Active past X minutes}
                     try
                     {
@@ -433,7 +434,7 @@ namespace Medbot.Commands
                         return cmd.FailMessage;
                     }
 
-                case HandlerType.Color:
+                case CommandHandlerType.Color:
                     // !color on  !color off    | input args 1 {1: state}
                     if (args.Count != 1)
                     {
@@ -471,7 +472,7 @@ namespace Medbot.Commands
                         return String.Format(cmd.ErrorMessage);
                     }
 
-                case HandlerType.ChangeColor:
+                case CommandHandlerType.ChangeColor:
                     // !color <name>
                     var match = Enum.GetNames(typeof(BotChatColors)).FirstOrDefault(color => color.ToLower().Equals(args[0].ToLower()));
                     if (match == null)
@@ -479,7 +480,7 @@ namespace Medbot.Commands
 
                     botClient.SendChatMessage($".color {match}", true);
                     return cmd.SuccessMessage;
-                case HandlerType.All:
+                case CommandHandlerType.All:
                     // !medbot   !medbot mod  !medbot streamer         |  0 or 1 input args {1: mod/streamer}
                     if (args.Count == 0)
                     {
@@ -527,7 +528,7 @@ namespace Medbot.Commands
                     Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), "ERROR while listing all commands. Arguments doesn't match");
                     return String.Format(cmd.ErrorMessage);
 
-                case HandlerType.Leaderboard:
+                case CommandHandlerType.Leaderboard:
                     // !leaderboard & !leaderboard {1}     | input args 0 or 1  {1: currency name / xp / level}
                     try
                     {
@@ -536,8 +537,8 @@ namespace Medbot.Commands
 
                         if (args.Count == 0)
                         { // Form leaderboard with top 3 with points & XP
-                            List<TempUser> fullPointsLeaderboard = await FilesControl.GetPointsLeaderboard();
-                            List<TempUser> fullXPLeaderboard = await FilesControl.GetExperienceLeaderboard();
+                            List<TempUser> fullPointsLeaderboard = await _filesControl.GetPointsLeaderboard();
+                            List<TempUser> fullXPLeaderboard = await _filesControl.GetExperienceLeaderboard();
 
                             if (fullPointsLeaderboard.Count <= 0 || fullXPLeaderboard.Count <= 0)
                                 throw new PointsException("Leaderboard doesn't contain any records");
@@ -552,7 +553,7 @@ namespace Medbot.Commands
                         { // Form specific leaderboard
                             if (args[0].ToLower().Equals(PointsManager.CurrencyName.ToLower()) || args[0].ToLower().Equals("points"))
                             {
-                                List<TempUser> fullLeaderboard = await FilesControl.GetPointsLeaderboard();
+                                List<TempUser> fullLeaderboard = await _filesControl.GetPointsLeaderboard();
                                 if (fullLeaderboard.Count <= 0)
                                     throw new PointsException("Leaderboard doesn't contain any records");
 
@@ -561,7 +562,7 @@ namespace Medbot.Commands
                             }
                             else if (args[0].ToLower().Equals("xp") || args[0].ToLower().Equals("exp") || args[0].ToLower().Equals("level"))
                             {
-                                List<TempUser> fullLeaderboard = await FilesControl.GetExperienceLeaderboard();
+                                List<TempUser> fullLeaderboard = await _filesControl.GetExperienceLeaderboard();
                                 if (fullLeaderboard.Count <= 0)
                                     throw new PointsException("Leaderboard doesn't contain any records");
 
@@ -581,7 +582,7 @@ namespace Medbot.Commands
                         Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), "ERROR while forming leaderboard!\n" + ex.ToString());
                         return cmd.ErrorMessage;
                     }
-                case HandlerType.FollowAge:
+                case CommandHandlerType.FollowAge:
                     // !followage    | input args 0
                     try
                     {
@@ -610,7 +611,7 @@ namespace Medbot.Commands
                         return cmd.ErrorMessage;
                     }
 
-                case HandlerType.Help:
+                case CommandHandlerType.Help:
                     Command matchedCommand = botClient.CommandsList.FirstOrDefault(c => c.CommandFormat.Contains(args[0]));
                     if (matchedCommand == null)
                         return "";

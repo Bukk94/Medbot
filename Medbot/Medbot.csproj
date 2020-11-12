@@ -46,17 +46,16 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BotClient.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandsHandler.cs" />
+    <Compile Include="Commands\Enums\BotChatColors.cs" />
+    <Compile Include="Commands\Enums\CommandType.cs" />
+    <Compile Include="Commands\Enums\CommandHandlerType.cs" />
     <Compile Include="Events\OnCommandReceivedArgs.cs" />
     <Compile Include="Events\OnCommandThrottledArgs.cs" />
     <Compile Include="Events\OnMessageArgs.cs" />

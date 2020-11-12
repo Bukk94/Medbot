@@ -2,6 +2,7 @@
 using Medbot.Internal;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace Medbot.Users
 {
     internal class UsersManager
     {
+        private FilesControl _filesControl;
+
         /// <summary>
         /// List of currently online users
         /// </summary>
@@ -42,6 +45,11 @@ namespace Medbot.Users
             UserBlacklist = new List<string>();
         }
 
+        internal void Initialize(FilesControl filesControl)
+        {
+            _filesControl = filesControl;
+        }
+
         /// <summary>
         /// Tries to add user to Online List, if already exists, find him and return
         /// </summary>
@@ -55,7 +63,7 @@ namespace Medbot.Users
             { // User is not in the list
                 var newUser = new User(userName);
 
-                FilesControl.LoadUserData(ref newUser);
+                _filesControl.LoadUserData(ref newUser);
                 OnlineUsers.Add(newUser);
 
                 OnUserJoined?.Invoke(this, new OnUserArgs { User = newUser });
@@ -76,7 +84,7 @@ namespace Medbot.Users
             if (disconnectingUser == null)
                 return;
 
-            FilesControl.SaveData();
+            _filesControl.SaveData();
             // TODO: Pass object to remove method?
             OnlineUsers.RemoveAll(x => x.Username == user);
             OnUserDisconnected?.Invoke(this, new OnUserArgs { User = disconnectingUser });

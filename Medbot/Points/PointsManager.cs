@@ -7,6 +7,7 @@ namespace Medbot.Points
     public class PointsManager
     {
         private readonly UsersManager _usersManager;
+        private readonly FilesControl _filesControl;
         private readonly bool rewardIdles;
         private TimeSpan idleTime;
         private Timer timer;
@@ -63,9 +64,10 @@ namespace Medbot.Points
         /// <param name="idleTime">Time after which the user will become idle</param>
         /// <param name="pointsPerTick">Amount of points awarded to active users each tick</param>
         /// <param name="autostart">Bool value if the time should start immediately</param>
-        internal PointsManager(UsersManager usersManager, TimeSpan interval, TimeSpan idleTime, bool rewardIdles, int pointsPerTick, bool autostart = false)
+        internal PointsManager(UsersManager usersManager, FilesControl filesControl, TimeSpan interval, TimeSpan idleTime, bool rewardIdles, int pointsPerTick, bool autostart = false)
         {
             _usersManager = usersManager;
+            _filesControl = filesControl;
             this.TimerInterval = interval;
             this.PointsPerTick = pointsPerTick;
             this.idleTime = idleTime;
@@ -134,7 +136,7 @@ namespace Medbot.Points
                 }
             }
 
-            FilesControl.SaveData();
+            _filesControl.SaveData();
         }
 
         /// <summary>

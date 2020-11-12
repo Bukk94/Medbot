@@ -28,6 +28,7 @@ namespace Medbot
         private readonly ExperienceManager _experienceManager;
         private readonly UsersManager _usersManager;
         private readonly BotDataManager _botDataManager;
+        private readonly FilesControl _filesControl;
         private readonly MessageThrottling throttler;
         private TcpClient tcpClient;
         private StreamWriter writer;
@@ -103,25 +104,26 @@ namespace Medbot
             _usersManager = new UsersManager();
             _botDataManager = new BotDataManager();
             throttler = new MessageThrottling(_botDataManager);
+            _filesControl = new FilesControl(_botDataManager, _usersManager);
+            _usersManager.Initialize(_filesControl);
 
-            FilesControl.LoadLoginCredentials();
-            FilesControl.LoadUsersBlacklist();
-            FilesControl.LoadBotDictionary();
+            _filesControl.LoadLoginCredentials();
+            _filesControl.LoadUsersBlacklist();
+            _filesControl.LoadBotDictionary();
 
             // TODO: Convert interval strings to enum
-            Dictionary<string, int> intervals = FilesControl.LoadBotIntervals();
+            Dictionary<string, int> intervals = _filesControl.LoadBotIntervals();
 
             chatMessagePrefix = String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :", Login.BotName, Login.Channel);
-            _pointsManager = new PointsManager(_usersManager, new TimeSpan(0, intervals["PointsInterval"], 0), new TimeSpan(0,
+            _pointsManager = new PointsManager(_usersManager, _filesControl, new TimeSpan(0, intervals["PointsInterval"], 0), new TimeSpan(0,
                                                 intervals["PointsIdleTime"], 0), Convert.ToBoolean(intervals["PointsRewardIdles"]),
                                                 intervals["PointsPerTick"], false);
 
-            _experienceManager = new ExperienceManager(this, _botDataManager, _usersManager, new TimeSpan(0, intervals["ExperienceInterval"], 0),
+            _experienceManager = new ExperienceManager(this, _botDataManager, _filesControl, _usersManager, new TimeSpan(0, intervals["ExperienceInterval"], 0),
                                                intervals["ExperienceActiveExp"],
                                                intervals["ExperienceIdleExp"], new TimeSpan(0, intervals["ExperienceIdleTime"], 0), false);
-            CommandsHandler.Initialize(_usersManager, _experienceManager, this);
-            FilesControl.Initialize(_botDataManager, _usersManager);
-            CommandsList = FilesControl.LoadCommands();
+            CommandsHandler.Initialize(_usersManager, _filesControl, _experienceManager, this);
+            CommandsList = _filesControl.LoadCommands();
 
             if (CommandsList == null)
                 SendChatMessage(BotDictionary.CommandsNotFound);
@@ -257,7 +259,7 @@ namespace Medbot
                 // TODO: Make goodbye message optional
                 // SendChatMessage(BotDictionary.GoodbyeMessage);
 
-                FilesControl.SaveData();
+                _filesControl.SaveData();
                 reader.Close();
                 writer.Close();
                 tcpClient.Close();
@@ -489,9 +491,9 @@ namespace Medbot
         /// <summary>
         /// Saves all online users points
         /// </summary>
-        public void SaveData()
+        public void InvokeDataSave()
         {
-            FilesControl.SaveData();
+            _filesControl.SaveData();
         }
 
         private void Uptime_Timer_Tick(Object sender)

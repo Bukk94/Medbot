@@ -10,27 +10,26 @@ using Medbot.Commands;
 using System.Reflection;
 using Medbot.Points;
 using Medbot.Users;
+using Medbot.Commands.Enums;
 
 namespace Medbot
 {
     internal enum DataType { Points, Experience }
 
-    internal static class FilesControl
+    internal class FilesControl
     {
-        private static BotDataManager _botDataManager;
-        private static UsersManager _usersManager;
-        private static Object fileLock = new Object();
-        private static Object settingsLock = new Object();
+        private readonly BotDataManager _botDataManager;
+        private readonly UsersManager _usersManager;
+        private readonly Object fileLock = new Object();
+        private readonly Object settingsLock = new Object();
 
-        // HACK: Temporary init before refactoring this class
-        internal static void Initialize(BotDataManager botDataManager, UsersManager usersManager)
+        public FilesControl(BotDataManager botDataManager, UsersManager usersManager)
         {
-            // TODO: Change this to regular constructor
             _botDataManager = botDataManager;
             _usersManager = usersManager;
         }
 
-        internal static List<Command> LoadCommands()
+        internal List<Command> LoadCommands()
         {
             if (!File.Exists(_botDataManager.CommandsPath))
             {
@@ -51,8 +50,7 @@ namespace Medbot
 
                     foreach (var cmd in commands)
                     {
-                        HandlerType handler;
-                        if (!Enum.TryParse<HandlerType>(cmd.Attribute("Handler").Value, out handler))
+                        if (!Enum.TryParse<CommandHandlerType>(cmd.Attribute("Handler").Value, out CommandHandlerType handler))
                             continue;
 
                         bool broadcasterOnly = Parsing.ParseBooleanFromAttribute(cmd, "BroadcasterOnly");
@@ -86,7 +84,7 @@ namespace Medbot
         /// Loads data for specific user
         /// </summary>
         /// <param name="user">Reference to user which should be loaded</param>
-        internal static void LoadUserData(ref User user)
+        internal void LoadUserData(ref User user)
         {
             lock (fileLock)
             {
@@ -127,7 +125,7 @@ namespace Medbot
         /// <summary>
         /// Saves all data to XML file
         /// </summary>
-        internal static void SaveData()
+        internal void SaveData()
         {
             lock (fileLock)
             {
@@ -182,7 +180,7 @@ namespace Medbot
         /// <summary>
         /// Creates a new file if the file does not exist
         /// </summary>
-        internal static void CreateNewDataFile()
+        internal void CreateNewDataFile()
         {
             XDocument doc = new XDocument(new XElement("Medbot"));
 
@@ -207,7 +205,7 @@ namespace Medbot
         /// </summary>
         /// <param name="doc">Reference to opened XDocument where user shoud be added</param>
         /// <param name="user">User that should be added to the XML document</param>
-        internal static void AddUserRecord(ref XDocument doc, User user)
+        internal void AddUserRecord(ref XDocument doc, User user)
         {
             XElement element = new XElement("User");
             element.Add(new XAttribute("Username", user.Username));
@@ -217,7 +215,7 @@ namespace Medbot
             doc.Element("Medbot").Add(element);
         }
 
-        internal async static Task<bool> LoadLoginCredentials()
+        internal async Task<bool> LoadLoginCredentials()
         {
             lock (settingsLock)
             {
@@ -260,7 +258,7 @@ namespace Medbot
         /// Loads bot dictionary from XML file
         /// </summary>
         /// <returns>Bool if successfully loaded all strings</returns>
-        internal static bool LoadBotDictionary()
+        internal bool LoadBotDictionary()
         {
             lock (settingsLock)
             {
@@ -319,7 +317,7 @@ namespace Medbot
         /// <summary>
         /// Loads users blacklist, usernames are in lowercase
         /// </summary>
-        internal static void LoadUsersBlacklist()
+        internal void LoadUsersBlacklist()
         {
             if (!File.Exists(_botDataManager.SettingsPath))
                 return;
@@ -348,7 +346,7 @@ namespace Medbot
         /// Loads bot intervals
         /// </summary>
         /// <returns>Returns Dictionary<string, int> containing intervals and values</returns>
-        internal static Dictionary<string, int> LoadBotIntervals()
+        internal Dictionary<string, int> LoadBotIntervals()
         {
             Dictionary<string, int> intervals = new Dictionary<string, int>();
             lock (settingsLock)
@@ -390,7 +388,7 @@ namespace Medbot
         /// Loads default bot intervals
         /// </summary>
         /// <returns>Returns dictionary of default intervals</returns>
-        private static Dictionary<string, int> LoadDefaultIntervals()
+        private Dictionary<string, int> LoadDefaultIntervals()
         {
             Dictionary<string, int> intervals = new Dictionary<string, int>();
             intervals.Add("PointsInterval", 1);
@@ -408,7 +406,7 @@ namespace Medbot
         /// <summary>
         /// Loads default bot's dictionary
         /// </summary>
-        private static void LoadDefaultDictionary()
+        private void LoadDefaultDictionary()
         {
             BotDictionary.Yes = "Yes";
             BotDictionary.No = "No";
@@ -419,7 +417,7 @@ namespace Medbot
         /// Gets a points full leaderboard
         /// </summary>
         /// <returns>Sorted list of users</returns>
-        internal static async Task<List<TempUser>> GetPointsLeaderboard()
+        internal async Task<List<TempUser>> GetPointsLeaderboard()
         {
             List<TempUser> leaderboard = await GetAllUsersSpecificInfo("Points");
             leaderboard.Sort(new LeaderboardComparer());
@@ -431,7 +429,7 @@ namespace Medbot
         /// Gets experience full leaderboard
         /// </summary>
         /// <returns>Sorted list of users</returns>
-        internal static async Task<List<TempUser>> GetExperienceLeaderboard()
+        internal async Task<List<TempUser>> GetExperienceLeaderboard()
         {
             List<TempUser> leaderboard = await GetAllUsersSpecificInfo("Experience");
             leaderboard.Sort(new LeaderboardComparer());
@@ -444,7 +442,7 @@ namespace Medbot
         /// </summary>
         /// <param name="attribute"></param>
         /// <returns></returns>
-        internal static async Task<List<TempUser>> GetAllUsersSpecificInfo(string attribute)
+        internal async Task<List<TempUser>> GetAllUsersSpecificInfo(string attribute)
         {
             lock (fileLock)
             {
@@ -485,7 +483,7 @@ namespace Medbot
         /// </summary>
         /// <param name="username">Username to search and change</param>
         /// <param name="expToAdd">Number of points to add</param>
-        internal static void AddUserPointsToFile(string username, long pointsToAdd)
+        internal void AddUserPointsToFile(string username, long pointsToAdd)
         {
             FileDataManipulation(username, pointsToAdd, DataType.Points, (x, y) => x + y);
         }
@@ -495,7 +493,7 @@ namespace Medbot
         /// </summary>
         /// <param name="username">Username to search and change</param>
         /// <param name="pointsToRemove">Number of points to remove</param>
-        internal static void RemoveUserPointsFromFile(string username, long pointsToRemove)
+        internal void RemoveUserPointsFromFile(string username, long pointsToRemove)
         {
             FileDataManipulation(username, pointsToRemove, DataType.Points, (x, y) => { return x - y >= 0 ? x - y : 0; });
         }
@@ -505,7 +503,7 @@ namespace Medbot
         /// </summary>
         /// <param name="username">Username to search and change</param>
         /// <param name="expToAdd">Number of points to add</param>
-        internal static void AddUserExperienceToFile(string username, long expToAdd)
+        internal void AddUserExperienceToFile(string username, long expToAdd)
         {
             FileDataManipulation(username, expToAdd, DataType.Experience, (x, y) => x + y);
         }
@@ -516,7 +514,7 @@ namespace Medbot
         /// <param name="username">Username to search and change</param>
         /// <param name="pointsToChange">Number of points to change</param>
         /// <param name="operation">Function with 2 long params to define points operation</param>
-        private static void FileDataManipulation(string username, long dataToChange, DataType type, Func<long, long, long> operation)
+        private void FileDataManipulation(string username, long dataToChange, DataType type, Func<long, long, long> operation)
         {
             lock (fileLock)
             {
