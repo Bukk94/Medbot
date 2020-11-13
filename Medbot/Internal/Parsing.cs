@@ -108,6 +108,7 @@ namespace Medbot.Internal
         }
     }
 
+    // TODO: Extract to separate class
     public class LeaderboardComparer : IComparer<TempUser>
     {
         public int Compare(TempUser x, TempUser y)

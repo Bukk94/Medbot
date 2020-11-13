@@ -1,4 +1,5 @@
 ﻿using Medbot.Events;
+using Medbot.Exceptions;
 using Medbot.Internal;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Medbot.Users
 {
     internal class UsersManager
     {
-        private FilesControl _filesControl;
+        private BotDataManager _botDataManager;
 
         /// <summary>
         /// List of currently online users
@@ -39,15 +40,12 @@ namespace Medbot.Users
         public event EventHandler<OnUserArgs> OnUserDisconnected;
         #endregion
 
-        public UsersManager()
+        public UsersManager(BotDataManager botDataManager)
         {
-            OnlineUsers = new List<User>();
-            UserBlacklist = new List<string>();
-        }
+            _botDataManager = botDataManager;
 
-        internal void Initialize(FilesControl filesControl)
-        {
-            _filesControl = filesControl;
+            OnlineUsers = new List<User>();
+            UserBlacklist = _botDataManager.LoadUsersBlacklist();
         }
 
         /// <summary>
@@ -63,7 +61,7 @@ namespace Medbot.Users
             { // User is not in the list
                 var newUser = new User(userName);
 
-                _filesControl.LoadUserData(ref newUser);
+                newUser = _botDataManager.LoadUserData(newUser);
                 OnlineUsers.Add(newUser);
 
                 OnUserJoined?.Invoke(this, new OnUserArgs { User = newUser });
@@ -84,11 +82,44 @@ namespace Medbot.Users
             if (disconnectingUser == null)
                 return;
 
-            _filesControl.SaveData();
+            SaveData();
             // TODO: Pass object to remove method?
             OnlineUsers.RemoveAll(x => x.Username == user);
             OnUserDisconnected?.Invoke(this, new OnUserArgs { User = disconnectingUser });
             Console.WriteLine("User " + user + " LEFT");
+        }
+
+
+        /// <summary>
+        /// Trades user points. If fail, throws PointsException
+        /// </summary>
+        /// <param name="pointsToTrade"></param>
+        /// <exception cref="PointsException">When user doesn't have enough points</exception>
+        internal void Trade(long pointsToTrade, User sender, User target, string targetUsername)
+        {
+            if (sender.Points - pointsToTrade >= 0)
+            { // User is able to trade
+                sender.RemovePoints(pointsToTrade);
+
+                if (target == null)
+                { // Target is not online, trade into file
+                    _botDataManager.AddUserPointsToFile(targetUsername, pointsToTrade);
+                }
+                else
+                { // User is online
+                    target.AddPoints(pointsToTrade);
+                    SaveData();
+                }
+            }
+            else
+            {
+                throw new PointsException("User can't trade this amount of points. User doesn't have enough points to trade.");
+            }
+        }
+
+        internal void SaveData()
+        {
+            _botDataManager.SaveDataInternal(this.OnlineUsers);
         }
 
         /// <summary>

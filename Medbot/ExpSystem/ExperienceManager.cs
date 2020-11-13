@@ -19,7 +19,6 @@ namespace Medbot.ExpSystem
         private BotClient bot;
         private readonly BotDataManager _botDataManager;
         private readonly UsersManager _usersManager;
-        private readonly FilesControl _filesControl;
 
         /// <summary>
         /// Gets a Rank List
@@ -49,13 +48,12 @@ namespace Medbot.ExpSystem
         /// <param name="idleExp">Number of experience gained by idle users</param>
         /// <param name="idleTime">Time after which user will become idle (in minutes)</param>
         /// <param name="autostart">Bool value if timer should start immediately</param>
-        internal ExperienceManager(BotClient bot, BotDataManager botDataManager, FilesControl filesControl, UsersManager usersManager, 
+        internal ExperienceManager(BotClient bot, BotDataManager botDataManager, UsersManager usersManager, 
                                    TimeSpan interval, int activeExp, int idleExp, TimeSpan idleTime, bool autostart = false)
         {
             this.bot = bot;
             _usersManager = usersManager;
             _botDataManager = botDataManager;
-            _filesControl = filesControl;
             this.interval = interval;
             this.TimerRunning = false;
             this.activeExp = activeExp;
@@ -168,7 +166,7 @@ namespace Medbot.ExpSystem
                 Console.WriteLine(user.DisplayName + " gained experience");
             }
 
-            _filesControl.SaveData();
+            _usersManager.SaveData();
         }
     }
 }

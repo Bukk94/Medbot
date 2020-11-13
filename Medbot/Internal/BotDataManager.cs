@@ -1,13 +1,20 @@
-﻿using Medbot.Users;
+﻿using Medbot.Commands;
+using Medbot.Users;
+using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Medbot.Internal
 {
     internal class BotDataManager
     {
+        private readonly FilesControl _filesControl;
+
         internal bool IsBotModerator => BotObject?.IsModerator ?? false;
 
         internal User BotObject { get; set; }
+
+        internal Dictionary<string, int> BotIntervals { get; private set; }
 
         /// <summary>
         /// Full path to settings XML file
@@ -28,6 +35,61 @@ namespace Medbot.Internal
         /// Full path to ranks file
         /// </summary>
         public string RanksPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Ranks.txt";
+
+        public BotDataManager()
+        {
+            _filesControl = new FilesControl(this);
+
+            _filesControl.LoadLoginCredentials().Wait();
+            _filesControl.LoadBotDictionary();
+            BotIntervals = _filesControl.LoadBotIntervals();
+        }
+
+        internal void SaveDataInternal(List<User> onlineUsers)
+        {
+            _filesControl.SaveData(onlineUsers);
+        }
+
+        internal List<string> LoadUsersBlacklist()
+        {
+            return _filesControl.LoadUsersBlacklist();
+        }
+
+        internal User LoadUserData(User user)
+        {
+            return _filesControl.LoadUserData(user);
+        }
+
+        // TODO: Delete this and create Commands list here
+        internal List<Command> LoadCommands()
+        {
+            return _filesControl.LoadCommands();
+        }
+
+        internal List<TempUser> GetPointsLeaderboard()
+        {
+            return _filesControl.GetPointsLeaderboard();
+        }
+
+        internal List<TempUser> GetExperienceLeaderboard()
+        {
+            return _filesControl.GetExperienceLeaderboard();
+        }
+
+        internal void AddUserPointsToFile(string username, long pointsToAdd)
+        {
+            _filesControl.AddUserPointsToFile(username, pointsToAdd);
+        }
+
+        internal void RemoveUserPointsFromFile(string username, long pointsToRemove)
+        {
+            _filesControl.RemoveUserPointsFromFile(username, pointsToRemove);
+        }
+
+        internal void AddUserExperienceToFile(string username, long experienceToAdd)
+        {
+            _filesControl.AddUserExperienceToFile(username, experienceToAdd);
+        }
 
         /// <summary>
         /// Updates bot permissions

@@ -19,7 +19,7 @@ namespace Medbot.Commands
         private static ExperienceManager expObject;
         private static BotClient botClient;
         private static UsersManager _usersManager;
-        private static FilesControl _filesControl;
+        private static BotDataManager _botDataManager;
 
         // TODO: !Followerinfo (or smth)
 
@@ -27,13 +27,13 @@ namespace Medbot.Commands
         /// Initializes Commands Handler, passing XP object
         /// </summary>
         /// <param name="exp">Object of Experiences class</param>
-        internal static void Initialize(UsersManager usersManager, FilesControl filesControl, ExperienceManager exp, BotClient bot)
+        internal static void Initialize(UsersManager usersManager, BotDataManager botDataManager, ExperienceManager exp, BotClient bot)
         {
             // TODO: Change this to regular constructor
             expObject = exp;
             botClient = bot;
             _usersManager = usersManager;
-            _filesControl = filesControl;
+            _botDataManager = botDataManager;
         }
 
         /// <summary>
@@ -106,12 +106,12 @@ namespace Medbot.Commands
                         receiver = _usersManager.FindOnlineUser(args[1]);
                         if (receiver == null)
                         { // user is not online
-                            _filesControl.AddUserPointsToFile(args[1], long.Parse(args[0]));
+                            _botDataManager.AddUserPointsToFile(args[1], long.Parse(args[0]));
                         }
                         else
                         {
                             receiver.AddPoints(long.Parse(args[0]));
-                            _filesControl.SaveData();
+                            _usersManager.SaveData();
                         }
                         Logging.LogEvent(MethodBase.GetCurrentMethod(),
                                                  String.Format("{0}  Args: {1}, {2} - Points successfully added", cmd.CommandFormat, args[0], args[1]));
@@ -145,12 +145,12 @@ namespace Medbot.Commands
                         targetUser = _usersManager.FindOnlineUser(args[1]);
                         if (targetUser == null)
                         { // user is not online
-                            _filesControl.RemoveUserPointsFromFile(args[1], long.Parse(args[0]));
+                            _botDataManager.RemoveUserPointsFromFile(args[1], long.Parse(args[0]));
                         }
                         else
                         {
                             targetUser.RemovePoints(long.Parse(args[0]));
-                            _filesControl.SaveData();
+                            _usersManager.SaveData();
                         }
 
                         Logging.LogEvent(MethodBase.GetCurrentMethod(),
@@ -183,7 +183,7 @@ namespace Medbot.Commands
                             return "";
                         }
 
-                        sender.Trade(_filesControl, long.Parse(args[0]), target, args[1]);
+                        _usersManager.Trade(long.Parse(args[0]), sender, target, args[1]);
 
                         Logging.LogEvent(MethodBase.GetCurrentMethod(),
                                                  String.Format("{0}  Args: {1}, {2} - Points successfully traded", cmd.CommandFormat, args[0], args[1]));
@@ -224,19 +224,19 @@ namespace Medbot.Commands
                         if (random > 100 - BotDictionary.GambleBonusWinPercentage)
                         {
                             sender.AddPoints(gambleValue * 3);
-                            _filesControl.SaveData();
+                            _usersManager.SaveData();
                             return String.Format(cmd.SuccessMessage, gambleValue * 3, PointsManager.CurrencyUnits, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural);
                         }
                         else if (random > 100 - BotDictionary.GambleWinPercentage - BotDictionary.GambleBonusWinPercentage)
                         { // 79-98 - double reward
                             sender.AddPoints(gambleValue * 2);
-                            _filesControl.SaveData();
+                            _usersManager.SaveData();
                             return String.Format(cmd.SuccessMessage, gambleValue * 2, PointsManager.CurrencyUnits, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural);
                         }
 
                         // User lost
                         sender.RemovePoints(gambleValue);
-                        _filesControl.SaveData();
+                        _usersManager.SaveData();
                         return String.Format(cmd.FailMessage, args[0], PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits);
                     }
                     catch (PointsException ex)
@@ -340,7 +340,7 @@ namespace Medbot.Commands
                         receiver = _usersManager.FindOnlineUser(args[1]);
                         if (receiver == null)
                         { // user is not online
-                            _filesControl.AddUserExperienceToFile(args[1], long.Parse(args[0]));
+                            _botDataManager.AddUserExperienceToFile(args[1], long.Parse(args[0]));
                         }
                         else
                         {
@@ -350,7 +350,7 @@ namespace Medbot.Commands
                                 botClient.SendChatMessage(String.Format(BotDictionary.NewRankMessage, receiver.DisplayName,
                                                                 receiver.UserRank.RankLevel, receiver.UserRank.RankName));
 
-                            _filesControl.SaveData();
+                            _usersManager.SaveData();
                         }
                         Logging.LogEvent(MethodBase.GetCurrentMethod(),
                                                  String.Format("{0}  Args: {1}, {2} - Experience successfully added", cmd.CommandFormat, args[0], args[1]));
@@ -537,8 +537,8 @@ namespace Medbot.Commands
 
                         if (args.Count == 0)
                         { // Form leaderboard with top 3 with points & XP
-                            List<TempUser> fullPointsLeaderboard = await _filesControl.GetPointsLeaderboard();
-                            List<TempUser> fullXPLeaderboard = await _filesControl.GetExperienceLeaderboard();
+                            List<TempUser> fullPointsLeaderboard = _botDataManager.GetPointsLeaderboard();
+                            List<TempUser> fullXPLeaderboard = _botDataManager.GetExperienceLeaderboard();
 
                             if (fullPointsLeaderboard.Count <= 0 || fullXPLeaderboard.Count <= 0)
                                 throw new PointsException("Leaderboard doesn't contain any records");
@@ -553,7 +553,7 @@ namespace Medbot.Commands
                         { // Form specific leaderboard
                             if (args[0].ToLower().Equals(PointsManager.CurrencyName.ToLower()) || args[0].ToLower().Equals("points"))
                             {
-                                List<TempUser> fullLeaderboard = await _filesControl.GetPointsLeaderboard();
+                                List<TempUser> fullLeaderboard = _botDataManager.GetPointsLeaderboard();
                                 if (fullLeaderboard.Count <= 0)
                                     throw new PointsException("Leaderboard doesn't contain any records");
 
@@ -562,7 +562,7 @@ namespace Medbot.Commands
                             }
                             else if (args[0].ToLower().Equals("xp") || args[0].ToLower().Equals("exp") || args[0].ToLower().Equals("level"))
                             {
-                                List<TempUser> fullLeaderboard = await _filesControl.GetExperienceLeaderboard();
+                                List<TempUser> fullLeaderboard = _botDataManager.GetExperienceLeaderboard();
                                 if (fullLeaderboard.Count <= 0)
                                     throw new PointsException("Leaderboard doesn't contain any records");
 

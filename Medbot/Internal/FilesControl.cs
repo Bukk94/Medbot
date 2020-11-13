@@ -19,14 +19,12 @@ namespace Medbot
     internal class FilesControl
     {
         private readonly BotDataManager _botDataManager;
-        private readonly UsersManager _usersManager;
         private readonly Object fileLock = new Object();
         private readonly Object settingsLock = new Object();
 
-        public FilesControl(BotDataManager botDataManager, UsersManager usersManager)
+        public FilesControl(BotDataManager botDataManager)
         {
             _botDataManager = botDataManager;
-            _usersManager = usersManager;
         }
 
         internal List<Command> LoadCommands()
@@ -84,7 +82,7 @@ namespace Medbot
         /// Loads data for specific user
         /// </summary>
         /// <param name="user">Reference to user which should be loaded</param>
-        internal void LoadUserData(ref User user)
+        internal User LoadUserData(User user)
         {
             lock (fileLock)
             {
@@ -93,7 +91,7 @@ namespace Medbot
                 if (!File.Exists(_botDataManager.DataPath))
                 {
                     Logging.LogError(typeof(FilesControl), System.Reflection.MethodBase.GetCurrentMethod(), "Data loading of user" + user.DisplayName + " FAILED. FILE NOT FOUND.");
-                    return;
+                    return user;
                 }
 
                 string username = user.Username;
@@ -120,12 +118,14 @@ namespace Medbot
                     Logging.LogError(typeof(FilesControl), MethodBase.GetCurrentMethod(), ex.ToString());
                 }
             }
+
+            return user;
         }
 
         /// <summary>
         /// Saves all data to XML file
         /// </summary>
-        internal void SaveData()
+        internal void SaveData(List<User> onlineUsers)
         {
             lock (fileLock)
             {
@@ -139,7 +139,7 @@ namespace Medbot
 
                     try
                     {
-                        foreach (User user in _usersManager.OnlineUsers)
+                        foreach (User user in onlineUsers)
                         {
                             XAttribute userRecord = data.Element("Medbot").Elements("User").Attributes("Username").FirstOrDefault(att => att.Value == user.Username);
 
@@ -172,7 +172,7 @@ namespace Medbot
                 }
                 else
                 { // File doesn't exist, create a new one, save all values
-                    CreateNewDataFile();
+                    CreateNewDataFile(onlineUsers);
                 }
             }
         }
@@ -180,11 +180,11 @@ namespace Medbot
         /// <summary>
         /// Creates a new file if the file does not exist
         /// </summary>
-        internal void CreateNewDataFile()
+        internal void CreateNewDataFile(List<User> onlineUsers)
         {
             XDocument doc = new XDocument(new XElement("Medbot"));
 
-            foreach (User user in _usersManager.OnlineUsers)
+            foreach (User user in onlineUsers)
             {
                 AddUserRecord(ref doc, user);
             }
@@ -317,10 +317,10 @@ namespace Medbot
         /// <summary>
         /// Loads users blacklist, usernames are in lowercase
         /// </summary>
-        internal void LoadUsersBlacklist()
+        internal List<string> LoadUsersBlacklist()
         {
             if (!File.Exists(_botDataManager.SettingsPath))
-                return;
+                return new List<string>();
 
             lock (settingsLock)
             {
@@ -333,11 +333,12 @@ namespace Medbot
                     blacklist = blacklist.Select(val => val.Replace('\u0009'.ToString(), "").ToLower()).ToList();
                     blacklist = blacklist.Where(val => !String.IsNullOrEmpty(val)).Distinct().ToList();
 
-                    _usersManager.UserBlacklist = blacklist;
+                    return blacklist;
                 }
                 catch (Exception ex)
                 {
                     Logging.LogError(typeof(FilesControl), MethodBase.GetCurrentMethod(), ex.ToString());
+                    return new List<string>();
                 }
             }
         }
@@ -417,9 +418,9 @@ namespace Medbot
         /// Gets a points full leaderboard
         /// </summary>
         /// <returns>Sorted list of users</returns>
-        internal async Task<List<TempUser>> GetPointsLeaderboard()
+        internal List<TempUser> GetPointsLeaderboard()
         {
-            List<TempUser> leaderboard = await GetAllUsersSpecificInfo("Points");
+            List<TempUser> leaderboard = GetAllUsersSpecificInfo("Points");
             leaderboard.Sort(new LeaderboardComparer());
             leaderboard.Reverse();
             return leaderboard;
@@ -429,9 +430,10 @@ namespace Medbot
         /// Gets experience full leaderboard
         /// </summary>
         /// <returns>Sorted list of users</returns>
-        internal async Task<List<TempUser>> GetExperienceLeaderboard()
+        internal List<TempUser> GetExperienceLeaderboard()
         {
-            List<TempUser> leaderboard = await GetAllUsersSpecificInfo("Experience");
+            List<TempUser> leaderboard = GetAllUsersSpecificInfo("Experience");
+            // TODO: make singleton of the comparer
             leaderboard.Sort(new LeaderboardComparer());
             leaderboard.Reverse();
             return leaderboard;
@@ -442,7 +444,7 @@ namespace Medbot
         /// </summary>
         /// <param name="attribute"></param>
         /// <returns></returns>
-        internal async Task<List<TempUser>> GetAllUsersSpecificInfo(string attribute)
+        internal List<TempUser> GetAllUsersSpecificInfo(string attribute)
         {
             lock (fileLock)
             {
@@ -519,7 +521,7 @@ namespace Medbot
             lock (fileLock)
             {
                 if (!File.Exists(_botDataManager.DataPath))
-                    CreateNewDataFile();
+                    CreateNewDataFile(new List<User>());
 
                 try
                 {

@@ -27,6 +27,5 @@ namespace Medbot
         void SendChatMessage(string msg);
         void SendChatMessage(string msg, bool isCommand);
         void SendPrivateMessage(string msg, string user);
-        void InvokeDataSave();
     }
 }

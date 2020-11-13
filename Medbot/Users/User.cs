@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Medbot.ExpSystem;
 using Medbot.Exceptions;
+using Medbot.Internal;
 
 namespace Medbot.Users
 {
@@ -140,33 +141,6 @@ namespace Medbot.Users
                 this.Points -= value;
             else
                 this.Points = 0;
-        }
-
-        /// <summary>
-        /// Trades user points. If fail, throws PointsException
-        /// </summary>
-        /// <param name="pointsToTrade"></param>
-        /// <exception cref="PointsException">When user doesn't have enough points</exception>
-        internal void Trade(FilesControl filesControl, long pointsToTrade, User target, string targetUsername)
-        {
-            if (this.Points - pointsToTrade >= 0)
-            { // User is able to trade
-                RemovePoints(pointsToTrade);
-
-                if (target == null)
-                { // Target is not online, trade into file
-                    filesControl.AddUserPointsToFile(targetUsername, pointsToTrade);
-                }
-                else
-                { // User is online
-                    target.AddPoints(pointsToTrade);
-                    filesControl.SaveData();
-                }
-            }
-            else
-            {
-                throw new PointsException("User can't trade this amount of points. User doesn't have enough points to trade.");
-            }
         }
 
         /// <summary>
