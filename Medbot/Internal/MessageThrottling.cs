@@ -1,12 +1,11 @@
 ﻿using Medbot.Events;
 using Medbot.LoggingNS;
+using Medbot.Enums;
 using System;
 using System.Timers;
 
 namespace Medbot.Internal
 {
-    public enum ThrottleViolation { MessageEmpty, MessageLimitExceeded, ExcessiveSending }
-
     internal class MessageThrottling
     {
         private readonly BotDataManager _botDataManager;

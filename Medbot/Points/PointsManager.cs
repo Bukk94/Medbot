@@ -8,7 +8,6 @@ namespace Medbot.Points
     public class PointsManager
     {
         private readonly UsersManager _usersManager;
-        private readonly BotDataManager _botDataManager;
         private readonly bool rewardIdles;
         private TimeSpan idleTime;
         private Timer timer;
@@ -65,10 +64,9 @@ namespace Medbot.Points
         /// <param name="idleTime">Time after which the user will become idle</param>
         /// <param name="pointsPerTick">Amount of points awarded to active users each tick</param>
         /// <param name="autostart">Bool value if the time should start immediately</param>
-        internal PointsManager(UsersManager usersManager, BotDataManager botDataManager, TimeSpan interval, TimeSpan idleTime, bool rewardIdles, int pointsPerTick, bool autostart = false)
+        internal PointsManager(UsersManager usersManager, TimeSpan interval, TimeSpan idleTime, bool rewardIdles, int pointsPerTick, bool autostart = false)
         {
             _usersManager = usersManager;
-            _botDataManager = botDataManager;
             this.TimerInterval = interval;
             this.PointsPerTick = pointsPerTick;
             this.idleTime = idleTime;

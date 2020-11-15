@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Medbot.ExpSystem;
-using Medbot.Exceptions;
-using Medbot.Internal;
+using Medbot.Enums;
 
 namespace Medbot.Users
 {
@@ -106,20 +105,14 @@ namespace Medbot.Users
         /// Applies all given badges to user
         /// </summary>
         /// <param name="badges">List of badges</param>
-        public void ApplyBadges(List<string> badges)
+        public void ApplyBadges(List<Badges> badges)
         {
-            if (badges == null)
+            if (badges?.Any() != true)
                 return;
 
-            // TODO: Improve this to use enums or even better, flags
-            if (badges.SingleOrDefault(b => b.Contains("broadcaster")) != null)
-                this.IsBroadcaster = true;
-
-            if (badges.SingleOrDefault(b => b.Contains("moderator")) != null)
-                this.IsModerator = true;
-
-            if (badges.SingleOrDefault(b => b.Contains("subscriber")) != null)
-                this.IsSubscriber = true;
+            this.IsBroadcaster = badges.Any(x => x.Equals(Badges.Broadcaster));
+            this.IsModerator = badges.Any(x => x.Equals(Badges.Moderator));
+            this.IsSubscriber = badges.Any(x => x.Equals(Badges.Subscriber));
         }
 
         /// <summary>

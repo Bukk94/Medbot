@@ -1,6 +1,5 @@
 ### ISSUES ###
 - Fix Twitch API calls. Old kraken (v5) endpoint is dead, use new helix endpoint
-- New helix endpoints must contain client-id headers
 - Fix async method warnings and issues
 
 - Sometimes stream reader crashes on small buffer or some weird exception. It's not a problem (yet) and it's not causing any more issues but it's annoying. Attemp to fix this was made.

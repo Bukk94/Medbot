@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using Medbot.Points;
 using Medbot.Users;
+using Medbot.Enums;
 
 namespace Medbot
 {
@@ -108,7 +109,7 @@ namespace Medbot
             Dictionary<string, int> intervals = _botDataManager.BotIntervals;
 
             chatMessagePrefix = String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :", Login.BotName, Login.Channel);
-            _pointsManager = new PointsManager(_usersManager, _botDataManager, new TimeSpan(0, intervals["PointsInterval"], 0), new TimeSpan(0,
+            _pointsManager = new PointsManager(_usersManager, new TimeSpan(0, intervals["PointsInterval"], 0), new TimeSpan(0,
                                                 intervals["PointsIdleTime"], 0), Convert.ToBoolean(intervals["PointsRewardIdles"]),
                                                 intervals["PointsPerTick"], false);
 
@@ -129,7 +130,7 @@ namespace Medbot
 
             SetupEvents();
 
-            //var test = Requests.TwitchJsonRequest("https://api.twitch.tv/helix/users/follows?to_id=24395849&first=1", "GET");
+            var test = Requests.TwitchJsonRequest("https://api.twitch.tv/helix/users/follows?to_id=24395849&first=1", RequestType.GET);
         }
 
         private void SetupEvents()
@@ -399,18 +400,8 @@ namespace Medbot
         private User GetUserFromChat(string chatLine)
         {
             User sender = _usersManager.JoinUser(chatLine);
-            ApplyUserBadges(sender, Parsing.ParseBadges(chatLine));
+            sender.ApplyBadges(Parsing.ParseBadges(chatLine));
             return sender;
-        }
-
-        /// <summary>
-        /// Applies user badges to User's object
-        /// </summary>
-        /// <param name="user">User which should be given the badges</param>
-        /// <param name="badges">List of badges</param>
-        private void ApplyUserBadges(User user, List<string> badges)
-        {
-            user.ApplyBadges(badges);
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using Medbot.Users;
+﻿using Medbot.Enums;
+using Medbot.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +56,7 @@ namespace Medbot.Internal
         /// </summary>
         /// <param name="chatLine">Full chat line with possible badges inside (badges=broadcaster/1,global_mod/1,turbo/6;)</param>
         /// <returns>Returns List of strings containing all user's badges </returns>
-        public static List<string> ParseBadges(string chatLine)
+        public static List<Badges> ParseBadges(string chatLine)
         {
             var regexPattern = @"badges=(?<list>.+)\/\d;";
             var match = Regex.Match(chatLine, regexPattern);
@@ -66,7 +67,13 @@ namespace Medbot.Internal
             // broadcaster/1,global_mod/1,turbo
             var badgesRawList = match.Groups["list"].Value;
 
-            return Regex.Split(badgesRawList, @"\/\d,?").ToList();
+            var badges = Regex.Split(badgesRawList, @"\/\d,?");
+
+            return badges.Select(x => {
+                if (Enum.TryParse<Badges>(x, true, out var badge)) return badge;
+                Console.WriteLine($"WARNING: Unknown badge found: {x}!");
+                return Badges.Unknown;
+            }).ToList();
         }
 
         /// <summary>

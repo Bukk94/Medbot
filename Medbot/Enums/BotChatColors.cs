@@ -1,4 +1,4 @@
-﻿namespace Medbot.Commands.Enums
+﻿namespace Medbot.Enums
 {
     public enum BotChatColors
     {

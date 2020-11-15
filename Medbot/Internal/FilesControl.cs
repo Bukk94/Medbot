@@ -10,7 +10,7 @@ using Medbot.Commands;
 using System.Reflection;
 using Medbot.Points;
 using Medbot.Users;
-using Medbot.Commands.Enums;
+using Medbot.Enums;
 
 namespace Medbot
 {

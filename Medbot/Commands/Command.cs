@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Medbot.Commands.Enums;
+using Medbot.Enums;
 using Medbot.Internal;
 using Medbot.Users;
 

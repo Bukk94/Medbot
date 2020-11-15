@@ -54,9 +54,12 @@
     <Compile Include="BotClient.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandsHandler.cs" />
-    <Compile Include="Commands\Enums\BotChatColors.cs" />
-    <Compile Include="Commands\Enums\CommandType.cs" />
-    <Compile Include="Commands\Enums\CommandHandlerType.cs" />
+    <Compile Include="Enums\Badges.cs" />
+    <Compile Include="Enums\BotChatColors.cs" />
+    <Compile Include="Enums\CommandType.cs" />
+    <Compile Include="Enums\CommandHandlerType.cs" />
+    <Compile Include="Enums\RequestType.cs" />
+    <Compile Include="Enums\ThrottleViolation.cs" />
     <Compile Include="Events\OnCommandReceivedArgs.cs" />
     <Compile Include="Events\OnCommandThrottledArgs.cs" />
     <Compile Include="Events\OnMessageArgs.cs" />

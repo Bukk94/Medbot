@@ -1,4 +1,4 @@
-﻿using Medbot.Internal;
+﻿using Medbot.Enums;
 using System;
 
 namespace Medbot.Events
