@@ -56,7 +56,7 @@ namespace Medbot.Internal
             request.ContentType = "application/json";
             request.Accept = "application/json";
             request.Headers["Authorization"] = $"Bearer {Login.BotOauth}";
-            request.Method = nameof(method);
+            request.Method = method.ToString();
 
             if (payload != null)
                 using (var writer = new StreamWriter(request.GetRequestStreamAsync().GetAwaiter().GetResult()))

@@ -234,6 +234,7 @@ namespace Medbot
                     // Load credentials
                     Login.BotName = data.Element("BotName") != null ? data.Element("BotName").Value : "";
                     Login.BotOauth = data.Element("Oauth") != null ? data.Element("Oauth").Value : "";
+                    Login.BotIrcOAuth = data.Element("IrcOauth") != null ? data.Element("IrcOauth").Value : "";
                     Login.Channel = data.Element("Channel") != null ? data.Element("Channel").Value : "";
 
                     // Optional
