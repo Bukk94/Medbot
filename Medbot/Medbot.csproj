@@ -78,6 +78,7 @@
     <Compile Include="IBotClient.cs" />
     <Compile Include="Internal\CommandThrottling.cs" />
     <Compile Include="Internal\BotDictionary.cs" />
+    <Compile Include="Internal\LeaderboardComparer.cs" />
     <Compile Include="Internal\MessageThrottling.cs" />
     <Compile Include="Internal\Requests.cs" />
     <Compile Include="Logging\Logging.cs" />
