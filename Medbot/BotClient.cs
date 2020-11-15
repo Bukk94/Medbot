@@ -128,6 +128,8 @@ namespace Medbot
             this.uptime = new Stopwatch();
 
             SetupEvents();
+
+            //var test = Requests.TwitchJsonRequest("https://api.twitch.tv/helix/users/follows?to_id=24395849&first=1", "GET");
         }
 
         private void SetupEvents()
