@@ -129,9 +129,13 @@ namespace Medbot
             this.uptime = new Stopwatch();
 
             SetupEvents();
+            // Task.Run(() => TestAPI()).Wait();
+        }
 
-            // var test = Requests.TwitchJsonRequest("https://api.twitch.tv/helix/users/follows?to_id=24395849&first=1", RequestType.GET);
-            // var test = Requests.TwitchJsonRequest("https://api.twitch.tv/helix/streams?user_login=bukk94", RequestType.GET);
+        public async Task TestAPI()
+        {
+            var test = await Requests.TwitchJsonRequestAsync("https://api.twitch.tv/helix/users/follows?to_id=24395849&first=1", RequestType.GET);
+            var test2 = await Requests.TwitchJsonRequestAsync("https://api.twitch.tv/helix/streams?user_login=bukk94", RequestType.GET);
         }
 
         private void SetupEvents()

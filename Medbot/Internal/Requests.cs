@@ -1,11 +1,7 @@
-﻿using Medbot.Commands;
-using Medbot.Enums;
-using Medbot.LoggingNS;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Medbot.Enums;
 using System;
-using System.IO;
-using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Medbot.Internal
@@ -18,7 +14,7 @@ namespace Medbot.Internal
         /// <param name="url">URL to request JSON file</param>
         /// <param name="method">POST/GET HTTP method</param>
         /// <returns>Request results</returns>
-        public static string TwitchJsonRequest(string url, RequestType method, string payload = null)
+        public static async Task<string> TwitchJsonRequestAsync(string url, RequestType method, string payload = null)
         {
             if (string.IsNullOrEmpty(Login.ClientID))
                 throw new ArgumentException("Client ID is missing!");
@@ -29,29 +25,27 @@ namespace Medbot.Internal
             if (method == RequestType.POST && string.IsNullOrEmpty(payload))
                 Console.WriteLine("WARNING: POST request was sent without payload!");
 
-            var request = WebRequest.CreateHttp(url);
-            request.Headers["Client-ID"] = Login.ClientID;
-            request.ContentType = "application/json";
-            request.Accept = "application/json";
-            request.Headers["Authorization"] = $"Bearer {Login.BotOauth}";
-            request.Method = method.ToString();
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("Client-ID", Login.ClientID);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Login.BotOauth);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            if (payload != null)
-                using (var writer = new StreamWriter(request.GetRequestStreamAsync().GetAwaiter().GetResult()))
-                    writer.Write(payload);
-
-            try
+            HttpResponseMessage response;
+            if (method == RequestType.POST && payload != null)
             {
-                var response = (HttpWebResponse)request.GetResponse();
-
-                using (var reader = new StreamReader(response.GetResponseStream()))
-                    return reader.ReadToEnd();
+                var payloadContent = new StringContent(payload);
+                payloadContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = client.PostAsync(url, payloadContent).Result;
             }
-            catch (Exception ex)
+            else
             {
-                Logging.LogError(typeof(CommandsHandler), System.Reflection.MethodBase.GetCurrentMethod(), ex.ToString());
-                return null;
+                response = await client.GetAsync(new Uri(url));
             }
+
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+
+            return content;
         }
     }
 }

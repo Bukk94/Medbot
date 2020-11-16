@@ -65,7 +65,7 @@ namespace Medbot.Followers
                                         channel.ToLower(), clientID, limit, dir);
 
 
-            return JsonConvert.DeserializeObject<FollowersInfo>(Requests.TwitchJsonRequest(url, RequestType.GET));
+            return JsonConvert.DeserializeObject<FollowersInfo>(await Requests.TwitchJsonRequestAsync(url, RequestType.GET));
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Medbot.Followers
             // https://api.twitch.tv/kraken/users/<user ID>/follows/channels/<channel id>?client_id=<client id>
             string url = String.Format(@"https://api.twitch.tv/kraken/users/{0}/follows/channels/{1}?client_id={2}", followerUsername.ToLower(), channel.ToLower(), clientID);
 
-            return JsonConvert.DeserializeObject<Follower>(Requests.TwitchJsonRequest(url, RequestType.GET));
+            return JsonConvert.DeserializeObject<Follower>(await Requests.TwitchJsonRequestAsync(url, RequestType.GET));
         }
     }
 }

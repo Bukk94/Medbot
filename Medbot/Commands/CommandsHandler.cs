@@ -57,7 +57,7 @@ namespace Medbot.Commands
                     result = ExperienceHandler(sender, cmd, args);
                     break;
                 case CommandType.Internal:
-                    result = InternalHandler(sender, cmd, args).Result;
+                    result = Task.Run(() => InternalHandler(sender, cmd, args)).Result;
                     break;
             }
 
@@ -386,7 +386,7 @@ namespace Medbot.Commands
                     // Last follower, !lastfollower |  0 input args
                     try
                     {
-                        Follow last = FollowersManager.GetNewestFollower(Login.Channel, Login.ClientID).Result;
+                        Follow last = await FollowersManager.GetNewestFollower(Login.Channel, Login.ClientID);
                         if (last == null) // Fail: 0 params
                             throw new NullReferenceException("Last follower has not been found");
 
