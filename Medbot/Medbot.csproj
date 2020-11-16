@@ -26,7 +26,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -58,6 +58,7 @@
     <Compile Include="Enums\BotChatColors.cs" />
     <Compile Include="Enums\CommandType.cs" />
     <Compile Include="Enums\CommandHandlerType.cs" />
+    <Compile Include="Enums\DataType.cs" />
     <Compile Include="Enums\RequestType.cs" />
     <Compile Include="Enums\ThrottleViolation.cs" />
     <Compile Include="Events\OnCommandReceivedArgs.cs" />
@@ -78,8 +79,10 @@
     <Compile Include="IBotClient.cs" />
     <Compile Include="Internal\CommandThrottling.cs" />
     <Compile Include="Internal\BotDictionary.cs" />
+    <Compile Include="Internal\InternalExtensions.cs" />
     <Compile Include="Internal\LeaderboardComparer.cs" />
     <Compile Include="Internal\MessageThrottling.cs" />
+    <Compile Include="Internal\Models\DictionaryStrings.cs" />
     <Compile Include="Internal\Requests.cs" />
     <Compile Include="Logging\Logging.cs" />
     <Compile Include="Login.cs" />

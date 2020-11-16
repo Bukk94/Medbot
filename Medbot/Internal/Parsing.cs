@@ -1,7 +1,10 @@
 ﻿using Medbot.Enums;
+using Medbot.LoggingNS;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
@@ -111,6 +114,22 @@ namespace Medbot.Internal
                 parseTimespan = new TimeSpan();
 
             return parseTimespan;
+        }
+
+        public static T Deserialize<T>(string json)
+        {
+            if (string.IsNullOrEmpty(json))
+                return default;
+
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(json);
+            }
+            catch (Exception ex)
+            {
+                Logging.LogError(typeof(Parsing), System.Reflection.MethodBase.GetCurrentMethod(), ex.ToString());
+                return default;
+            }
         }
     }
 }

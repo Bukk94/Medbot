@@ -11,34 +11,35 @@ using System.Reflection;
 using Medbot.Points;
 using Medbot.Users;
 using Medbot.Enums;
+using Medbot.ExpSystem;
+using Medbot.Internal.Models;
 
 namespace Medbot
 {
-    internal enum DataType { Points, Experience }
-
     internal class FilesControl
     {
-        private readonly BotDataManager _botDataManager;
         private readonly Object fileLock = new Object();
         private readonly Object settingsLock = new Object();
+        private readonly Object dictionaryLock = new Object();
 
-        public FilesControl(BotDataManager botDataManager)
-        {
-            _botDataManager = botDataManager;
-        }
+        public string SettingsPath => Path.Combine(Directory.GetCurrentDirectory(), "Settings.xml");
+        public string DictionaryPath => Path.Combine(Directory.GetCurrentDirectory(), "Dictionary.json");
+        public string DataPath => Path.Combine(Directory.GetCurrentDirectory(), "Users_data.xml");
+        public string CommandsPath => Path.Combine(Directory.GetCurrentDirectory(), "Commands.xml");
+        public string RanksPath => Path.Combine(Directory.GetCurrentDirectory(), "Ranks.txt");
 
         internal List<Command> LoadCommands()
         {
-            if (!File.Exists(_botDataManager.CommandsPath))
+            if (!File.Exists(CommandsPath))
             {
                 Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), "FAILED to load commands. File not found");
                 return null;
             }
-
+            
             List<Command> commandsList = new List<Command>();
             try
             {
-                XDocument data = XDocument.Load(_botDataManager.CommandsPath);
+                XDocument data = XDocument.Load(CommandsPath);
                 var commandsTypeGroups = data.Element("Medbot").Elements("Commands");
 
                 foreach (var cmdGroup in commandsTypeGroups)
@@ -79,6 +80,40 @@ namespace Medbot
         }
 
         /// <summary>
+        /// Loads ranks from text file
+        /// </summary>
+        internal List<Rank> LoadRanks()
+        {
+            var ranks = new List<Rank>();
+
+            if (!File.Exists(RanksPath))
+            {
+                Logging.LogError(this, System.Reflection.MethodBase.GetCurrentMethod(), "FAILED to load ranks. File not found.");
+                return ranks;
+            }
+
+            string[] dataRaw = File.ReadAllText(RanksPath).Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            int level = 1;
+
+            foreach (string data in dataRaw)
+            {
+                // Format Exp (space) rankname:  500 RankName
+                try
+                {
+                    var rankData = data.Split(new string[] { "\t" }, StringSplitOptions.RemoveEmptyEntries);
+                    ranks.Add(new Rank(rankData[1], level++, long.Parse(rankData[0])));
+                }
+                catch (Exception ex)
+                {
+                    Logging.LogError(this, System.Reflection.MethodBase.GetCurrentMethod(), ex.ToString());
+                    continue;
+                }
+            }
+
+            return ranks;
+        }
+
+        /// <summary>
         /// Loads data for specific user
         /// </summary>
         /// <param name="user">Reference to user which should be loaded</param>
@@ -88,14 +123,14 @@ namespace Medbot
             {
                 // Loading
                 Console.WriteLine("LOADING user profile " + user.DisplayName);
-                if (!File.Exists(_botDataManager.DataPath))
+                if (!File.Exists(DataPath))
                 {
                     Logging.LogError(typeof(FilesControl), System.Reflection.MethodBase.GetCurrentMethod(), "Data loading of user" + user.DisplayName + " FAILED. FILE NOT FOUND.");
                     return user;
                 }
 
                 string username = user.Username;
-                XDocument data = XDocument.Load(_botDataManager.DataPath);
+                XDocument data = XDocument.Load(DataPath);
 
                 try
                 {
@@ -133,9 +168,9 @@ namespace Medbot
                 Console.WriteLine("SAVING DATA");
 
                 // File exists, load it, apply new values and save it
-                if (File.Exists(_botDataManager.DataPath))
+                if (File.Exists(DataPath))
                 {
-                    XDocument data = XDocument.Load(_botDataManager.DataPath);
+                    XDocument data = XDocument.Load(DataPath);
 
                     try
                     {
@@ -168,7 +203,7 @@ namespace Medbot
                         return;
                     }
 
-                    data.Save(_botDataManager.DataPath);
+                    data.Save(DataPath);
                 }
                 else
                 { // File doesn't exist, create a new one, save all values
@@ -197,7 +232,7 @@ namespace Medbot
             }
 
             Logging.LogEvent(System.Reflection.MethodBase.GetCurrentMethod(), "Points file was sucessfully created");
-            doc.Save(_botDataManager.DataPath);
+            doc.Save(DataPath);
         }
 
         /// <summary>
@@ -219,7 +254,7 @@ namespace Medbot
         {
             lock (settingsLock)
             {
-                if (!File.Exists(_botDataManager.SettingsPath))
+                if (!File.Exists(SettingsPath))
                 {
                     PointsManager.LoadDefaultCurrencyDetails();
                     LoadDefaultDictionary();
@@ -228,7 +263,7 @@ namespace Medbot
 
                 try
                 {
-                    XDocument dataRaw = XDocument.Load(_botDataManager.SettingsPath);
+                    XDocument dataRaw = XDocument.Load(SettingsPath);
                     var data = dataRaw.Element("Medbot").Element("Login");
 
                     // Load credentials
@@ -255,34 +290,22 @@ namespace Medbot
             return Login.IsLoginCredentialsValid;
         }
 
-        /// <summary>
-        /// Loads bot dictionary from XML file
-        /// </summary>
-        /// <returns>Bool if successfully loaded all strings</returns>
-        internal bool LoadBotDictionary()
+        // TODO: This method do too much, it needs some separation
+        internal void LoadBotSettings()
         {
             lock (settingsLock)
             {
-                if (!File.Exists(_botDataManager.SettingsPath))
+                if (!File.Exists(SettingsPath))
                 {
                     PointsManager.LoadDefaultCurrencyDetails();
-                    LoadDefaultDictionary();
-                    return false;
+                    return;
                 }
 
                 try
                 {
-                    XDocument dataRaw = XDocument.Load(_botDataManager.SettingsPath);
-                    var data = dataRaw.Element("Medbot").Element("Dictionary");
+                    XDocument dataRaw = XDocument.Load(SettingsPath);
+                    var data = dataRaw.Element("Medbot").Element("Settings");
 
-                    // Load bot's dictionary
-                    BotDictionary.WelcomeMessage = data.Element("WelcomeMessage") != null ? data.Element("WelcomeMessage").Value : "";
-                    BotDictionary.GoodbyeMessage = data.Element("GoodbyeMessage") != null ? data.Element("GoodbyeMessage").Value : "";
-                    BotDictionary.NewRankMessage = data.Element("NewRankMessage") != null ? data.Element("NewRankMessage").Value : "";
-                    BotDictionary.CommandsNotFound = data.Element("CommandsNotFound") != null ? data.Element("CommandsNotFound").Value : "";
-                    BotDictionary.ZeroCommands = data.Element("ZeroCommands") != null ? data.Element("ZeroCommands").Value : "";
-                    BotDictionary.Yes = data.Element("Yes") != null ? data.Element("Yes").Value : "Yes";
-                    BotDictionary.No = data.Element("No") != null ? data.Element("No").Value : "No";
                     BotDictionary.LeaderboardTopNumber = data.Element("LeaderboardTopNumber") != null ? int.Parse(data.Element("LeaderboardTopNumber").Value) : 3;
                     BotDictionary.GambleWinPercentage = data.Element("GambleWinPercentage") != null ? int.Parse(data.Element("GambleWinPercentage").Value) : 20;
                     BotDictionary.GambleBonusWinPercentage = data.Element("GambleBonusWinPercentage") != null ? int.Parse(data.Element("GambleBonusWinPercentage").Value) : 2;
@@ -293,7 +316,6 @@ namespace Medbot
                         BotDictionary.GambleWinPercentage = 20;
                         BotDictionary.GambleBonusWinPercentage = 2;
                     }
-
 
                     // Load currency details
                     var currency = dataRaw.Element("Medbot").Element("Currency");
@@ -307,12 +329,26 @@ namespace Medbot
                 {
                     Logging.LogError(typeof(FilesControl), MethodBase.GetCurrentMethod(), ex.ToString());
                     PointsManager.LoadDefaultCurrencyDetails();
-                    LoadDefaultDictionary();
-                    return false;
                 }
             }
+        }
 
-            return true;
+        /// <summary>
+        /// Loads bot dictionary from JSON file
+        /// </summary>
+        /// <returns>Returns dictionary object</returns>
+        internal DictionaryStrings LoadBotDictionary()
+        {
+            if (!File.Exists(DictionaryPath))
+            {
+                return LoadDefaultDictionary();
+            }
+
+            lock(dictionaryLock)
+            {
+                var dictionary = Parsing.Deserialize<DictionaryStrings>(File.ReadAllText(DictionaryPath));
+                return dictionary ?? LoadDefaultDictionary();
+            }
         }
 
         /// <summary>
@@ -320,14 +356,14 @@ namespace Medbot
         /// </summary>
         internal List<string> LoadUsersBlacklist()
         {
-            if (!File.Exists(_botDataManager.SettingsPath))
+            if (!File.Exists(SettingsPath))
                 return new List<string>();
 
             lock (settingsLock)
             {
                 try
                 {
-                    XDocument dataRaw = XDocument.Load(_botDataManager.SettingsPath);
+                    XDocument dataRaw = XDocument.Load(SettingsPath);
                     var data = dataRaw.Element("Medbot").Element("Blacklist");
 
                     List<string> blacklist = data.Value.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -353,12 +389,12 @@ namespace Medbot
             Dictionary<string, int> intervals = new Dictionary<string, int>();
             lock (settingsLock)
             {
-                if (!File.Exists(_botDataManager.SettingsPath))
+                if (!File.Exists(SettingsPath))
                     return LoadDefaultIntervals();
 
                 try
                 {
-                    XDocument dataRaw = XDocument.Load(_botDataManager.SettingsPath);
+                    XDocument dataRaw = XDocument.Load(SettingsPath);
                     var pointsData = dataRaw.Element("Medbot").Element("Currency");
                     var expData = dataRaw.Element("Medbot").Element("Experience");
 
@@ -408,11 +444,16 @@ namespace Medbot
         /// <summary>
         /// Loads default bot's dictionary
         /// </summary>
-        private void LoadDefaultDictionary()
+        private DictionaryStrings LoadDefaultDictionary()
         {
-            BotDictionary.Yes = "Yes";
-            BotDictionary.No = "No";
+            // TODO: Load proper defaults
             BotDictionary.LeaderboardTopNumber = 3;
+
+            return new DictionaryStrings
+            {
+                Yes = "Yes",
+                No = "No",
+            };
         }
 
         /// <summary>
@@ -451,12 +492,12 @@ namespace Medbot
             {
                 List<TempUser> usersList = new List<TempUser>();
 
-                if (!File.Exists(_botDataManager.DataPath))
+                if (!File.Exists(DataPath))
                     return usersList;
 
                 try
                 {
-                    XDocument data = XDocument.Load(_botDataManager.DataPath);
+                    XDocument data = XDocument.Load(DataPath);
                     var userRecords = data.Element("Medbot").Elements("User").Where(u =>
                     {
                         long numData = -1;
@@ -521,12 +562,12 @@ namespace Medbot
         {
             lock (fileLock)
             {
-                if (!File.Exists(_botDataManager.DataPath))
+                if (!File.Exists(DataPath))
                     CreateNewDataFile(new List<User>());
 
                 try
                 {
-                    XDocument data = XDocument.Load(_botDataManager.DataPath);
+                    XDocument data = XDocument.Load(DataPath);
                     XElement userRecord = data.Element("Medbot").Elements("User").Attributes("Username").FirstOrDefault(att => att.Value == username.ToLower()).Parent;
 
                     if (userRecord != null)
@@ -549,7 +590,7 @@ namespace Medbot
                     if (data.Root == null)
                         throw new Exception("Points were NOT saved! Method tried to save the XML without root !");
 
-                    data.Save(_botDataManager.DataPath);
+                    data.Save(DataPath);
                 }
                 catch (Exception ex)
                 {

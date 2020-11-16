@@ -1,7 +1,8 @@
 ﻿using Medbot.Commands;
+using Medbot.ExpSystem;
+using Medbot.Internal.Models;
 using Medbot.Users;
 using System.Collections.Generic;
-using System.IO;
 
 namespace Medbot.Internal
 {
@@ -15,35 +16,25 @@ namespace Medbot.Internal
 
         internal Dictionary<string, int> BotIntervals { get; private set; }
 
-        /// <summary>
-        /// Full path to settings XML file
-        /// </summary>
-        public string SettingsPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Settings.xml";
-
-        /// <summary>
-        /// Full path to file where are all users data stored
-        /// </summary>
-        public string DataPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Users_data.xml";
-
-        /// <summary>
-        /// Full path to file where are all users data stored
-        /// </summary>
-        public string CommandsPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Commands.xml";
-
-        /// <summary>
-        /// Full path to ranks file
-        /// </summary>
-        public string RanksPath => Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Ranks.txt";
+        internal DictionaryStrings BotDictionary { get; private set; }
 
         public BotDataManager()
         {
-            _filesControl = new FilesControl(this);
+            _filesControl = new FilesControl();
 
             _filesControl.LoadLoginCredentials().Wait();
-            _filesControl.LoadBotDictionary();
+            _filesControl.LoadBotSettings();
+            BotDictionary = _filesControl.LoadBotDictionary();
             BotIntervals = _filesControl.LoadBotIntervals();
         }
 
+        // TODO: Delete this and create Commands list here
+        internal List<Command> LoadCommands()
+        {
+            return _filesControl.LoadCommands();
+        }
+
+        #region FileControl method redirects
         internal void SaveDataInternal(List<User> onlineUsers)
         {
             _filesControl.SaveData(onlineUsers);
@@ -59,12 +50,6 @@ namespace Medbot.Internal
             return _filesControl.LoadUserData(user);
         }
 
-        // TODO: Delete this and create Commands list here
-        internal List<Command> LoadCommands()
-        {
-            return _filesControl.LoadCommands();
-        }
-
         internal List<TempUser> GetPointsLeaderboard()
         {
             return _filesControl.GetPointsLeaderboard();
@@ -73,6 +58,11 @@ namespace Medbot.Internal
         internal List<TempUser> GetExperienceLeaderboard()
         {
             return _filesControl.GetExperienceLeaderboard();
+        }
+
+        internal List<Rank> LoadRanks()
+        {
+            return _filesControl.LoadRanks();
         }
 
         internal void AddUserPointsToFile(string username, long pointsToAdd)
@@ -89,6 +79,7 @@ namespace Medbot.Internal
         {
             _filesControl.AddUserExperienceToFile(username, experienceToAdd);
         }
+        #endregion
 
         /// <summary>
         /// Updates bot permissions

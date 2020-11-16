@@ -59,44 +59,13 @@ namespace Medbot.ExpSystem
             this.activeExp = activeExp;
             this.idleExp = idleExp;
             this.idleTime = idleTime;
-            RankList = new List<Rank>();
+
+            RankList = _botDataManager.LoadRanks();
 
             if (autostart)
                 StartExperienceTimer();
             else
                 this.timer = new Timer(AwardExperience_TimerTick, null, Timeout.Infinite, (int)this.interval.TotalMilliseconds);
-
-            LoadRanks();
-        }
-
-        /// <summary>
-        /// Loads ranks from txt file
-        /// </summary>
-        internal void LoadRanks()
-        {
-            if (!File.Exists(_botDataManager.RanksPath))
-            {
-                Logging.LogError(this, System.Reflection.MethodBase.GetCurrentMethod(), "FAILED to load ranks. File not found.");
-                return;
-            }
-
-            string[] dataRaw = File.ReadAllText(_botDataManager.RanksPath).Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            int level = 1;
-
-            foreach (string data in dataRaw)
-            {
-                // Format Exp (space) rankname:  500 RankName
-                try
-                {
-                    var rankData = data.Split(new string[] { "\t" }, StringSplitOptions.RemoveEmptyEntries);
-                    RankList.Add(new Rank(rankData[1], level++, long.Parse(rankData[0])));
-                }
-                catch (Exception ex)
-                {
-                    Logging.LogError(this, System.Reflection.MethodBase.GetCurrentMethod(), ex.ToString());
-                    continue;
-                }
-            }
         }
 
         /// <summary>
