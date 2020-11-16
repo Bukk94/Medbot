@@ -2,7 +2,7 @@
 
 [![GitHub version](https://img.shields.io/badge/version-0.4.0-brightgreen.svg)](https://github.com/Bukk94/Medbot/releases)
 [![Build Status](https://travis-ci.com/Bukk94/Medbot.svg?token=XTeWt6KEyExzbH1iNFWD&branch=master)](https://travis-ci.com/Bukk94/Medbot)
-[![Dependency Status](https://david-dm.org/boennemann/badges.svg)](/packages.config)
+[![Dependency Status](https://david-dm.org/boennemann/badges.svg)](/Medbot/packages.config)
 
 IRC loyalty Twitch bot in development for YouTube channel [Medvědí Doupě](https://www.youtube.com/Bukk94).
 
