@@ -37,6 +37,7 @@
         /// </summary>
         internal static string No { get; set; }
 
+        // TODO: Move these to different class, this isn't dictionary, it's a settings!
         /// <summary>
         /// Gets/Sets number of top people printed in !leaderboard command
         /// </summary>

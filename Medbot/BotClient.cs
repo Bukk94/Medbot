@@ -130,7 +130,8 @@ namespace Medbot
 
             SetupEvents();
 
-            var test = Requests.TwitchJsonRequest("https://api.twitch.tv/helix/users/follows?to_id=24395849&first=1", RequestType.GET);
+            // var test = Requests.TwitchJsonRequest("https://api.twitch.tv/helix/users/follows?to_id=24395849&first=1", RequestType.GET);
+            // var test = Requests.TwitchJsonRequest("https://api.twitch.tv/helix/streams?user_login=bukk94", RequestType.GET);
         }
 
         private void SetupEvents()
@@ -305,7 +306,7 @@ namespace Medbot
                         string message = Parsing.ParseChatMessage(chatLine);
                         OnMessageReceived?.Invoke(this, new OnMessageArgs { Message = message, Sender = sender });
 
-                        if (message.Contains("@" + Login.BotFullTwitchName))
+                        if (message.ContainsInsensitive("@" + Login.BotFullTwitchName))
                         { // Bot is called by it's name, respond somehow
                             // TODO: Bot respond
                             SendChatMessage("Ahoj! Jsem MedBot, nový medvědí bot-pomocník. Momentálně jsem ještě ve vývoji, buďte na mě hodný :)");
