@@ -22,7 +22,7 @@ namespace Medbot.Internal
         {
             _filesControl = new FilesControl();
 
-            _filesControl.LoadLoginCredentials().Wait();
+            _filesControl.LoadLoginCredentials();
             _filesControl.LoadBotSettings();
             BotDictionary = _filesControl.LoadBotDictionary();
             BotIntervals = _filesControl.LoadBotIntervals();

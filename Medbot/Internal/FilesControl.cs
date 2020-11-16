@@ -21,12 +21,18 @@ namespace Medbot
         private readonly Object fileLock = new Object();
         private readonly Object settingsLock = new Object();
         private readonly Object dictionaryLock = new Object();
+        private readonly LeaderboardComparer LeaderboardComparer;
 
         public string SettingsPath => Path.Combine(Directory.GetCurrentDirectory(), "Settings.xml");
         public string DictionaryPath => Path.Combine(Directory.GetCurrentDirectory(), "Dictionary.json");
         public string DataPath => Path.Combine(Directory.GetCurrentDirectory(), "Users_data.xml");
         public string CommandsPath => Path.Combine(Directory.GetCurrentDirectory(), "Commands.xml");
         public string RanksPath => Path.Combine(Directory.GetCurrentDirectory(), "Ranks.txt");
+
+        public FilesControl()
+        {
+            LeaderboardComparer = new LeaderboardComparer();
+        }
 
         internal List<Command> LoadCommands()
         {
@@ -36,7 +42,7 @@ namespace Medbot
                 return null;
             }
             
-            List<Command> commandsList = new List<Command>();
+            var commandsList = new List<Command>();
             try
             {
                 XDocument data = XDocument.Load(CommandsPath);
@@ -144,8 +150,7 @@ namespace Medbot
                     user.Experience = long.Parse(userRecord.Parent.Attribute("Experience").Value);
                     user.CheckRankUp();
 
-                    DateTime date;
-                    user.LastMessage = DateTime.TryParse(userRecord.Parent.Attribute("LastMessage").Value, out date) ? date : (DateTime?)null;
+                    user.LastMessage = DateTime.TryParse(userRecord.Parent.Attribute("LastMessage").Value, out DateTime date) ? date : (DateTime?)null;
                 }
                 catch (Exception ex)
                 {
@@ -250,7 +255,7 @@ namespace Medbot
             doc.Element("Medbot").Add(element);
         }
 
-        internal async Task<bool> LoadLoginCredentials()
+        internal bool LoadLoginCredentials()
         {
             lock (settingsLock)
             {
@@ -271,8 +276,6 @@ namespace Medbot
                     Login.BotOauth = data.Element("Oauth") != null ? data.Element("Oauth").Value : "";
                     Login.BotIrcOAuth = data.Element("IrcOauth") != null ? data.Element("IrcOauth").Value : "";
                     Login.Channel = data.Element("Channel") != null ? data.Element("Channel").Value : "";
-
-                    // Optional
                     Login.BotFullTwitchName = data.Element("BotFullName") != null ? data.Element("BotFullName").Value : "";
                     Login.ClientID = data.Element("ClientID") != null ? data.Element("ClientID").Value : "";
                 }
@@ -282,10 +285,6 @@ namespace Medbot
                     return false;
                 }
             }
-
-            // Generate ClientID if it's not set, causing a few sec freeze during waiting on server response
-            if (String.IsNullOrEmpty(Login.ClientID))
-                Login.ClientID = await Requests.GetClientID(Login.BotOauth);
 
             return Login.IsLoginCredentialsValid;
         }
@@ -340,9 +339,7 @@ namespace Medbot
         internal DictionaryStrings LoadBotDictionary()
         {
             if (!File.Exists(DictionaryPath))
-            {
                 return LoadDefaultDictionary();
-            }
 
             lock(dictionaryLock)
             {
@@ -428,17 +425,17 @@ namespace Medbot
         /// <returns>Returns dictionary of default intervals</returns>
         private Dictionary<string, int> LoadDefaultIntervals()
         {
-            Dictionary<string, int> intervals = new Dictionary<string, int>();
-            intervals.Add("PointsInterval", 1);
-            intervals.Add("PointsIdleTime", 5);
-            intervals.Add("PointsPerTick", 1);
-            intervals.Add("PointsRewardIdles", 0);
-            intervals.Add("ExperienceInterval", 1);
-            intervals.Add("ExperienceIdleExp", 1);
-            intervals.Add("ExperienceActiveExp", 5);
-            intervals.Add("ExperienceIdleTime", 5);
-
-            return intervals;
+            return new Dictionary<string, int>
+            {
+                { "PointsInterval", 1 },
+                { "PointsIdleTime", 5 },
+                { "PointsPerTick", 1 },
+                { "PointsRewardIdles", 0 },
+                { "ExperienceInterval", 1 },
+                { "ExperienceIdleExp", 1 },
+                { "ExperienceActiveExp", 5 },
+                { "ExperienceIdleTime", 5 }
+            };
         }
 
         /// <summary>
@@ -462,9 +459,10 @@ namespace Medbot
         /// <returns>Sorted list of users</returns>
         internal List<TempUser> GetPointsLeaderboard()
         {
-            List<TempUser> leaderboard = GetAllUsersSpecificInfo("Points");
-            leaderboard.Sort(new LeaderboardComparer());
+            List<TempUser> leaderboard = GetAllUsersSpecificInfo(DataType.Points);
+            leaderboard.Sort(LeaderboardComparer);
             leaderboard.Reverse();
+
             return leaderboard;
         }
 
@@ -474,10 +472,10 @@ namespace Medbot
         /// <returns>Sorted list of users</returns>
         internal List<TempUser> GetExperienceLeaderboard()
         {
-            List<TempUser> leaderboard = GetAllUsersSpecificInfo("Experience");
-            // TODO: make singleton of the comparer
-            leaderboard.Sort(new LeaderboardComparer());
+            List<TempUser> leaderboard = GetAllUsersSpecificInfo(DataType.Experience);
+            leaderboard.Sort(LeaderboardComparer);
             leaderboard.Reverse();
+
             return leaderboard;
         }
 
@@ -486,15 +484,16 @@ namespace Medbot
         /// </summary>
         /// <param name="attribute"></param>
         /// <returns></returns>
-        internal List<TempUser> GetAllUsersSpecificInfo(string attribute)
+        internal List<TempUser> GetAllUsersSpecificInfo(DataType dataType)
         {
             lock (fileLock)
             {
-                List<TempUser> usersList = new List<TempUser>();
+                var usersList = new List<TempUser>();
 
                 if (!File.Exists(DataPath))
                     return usersList;
 
+                var attribute = dataType.ToString();
                 try
                 {
                     XDocument data = XDocument.Load(DataPath);
