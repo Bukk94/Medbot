@@ -61,9 +61,6 @@ namespace Medbot.Followers
             if (limit > 100) // Can't return more than 100 values
                 limit = 100;
 
-            if (clientID == null)
-                clientID = await Requests.GetClientID(Login.BotOauth);
-
             string url = String.Format(@"https://api.twitch.tv/kraken/channels/{0}/follows?client_id={1}&limit={2}&direction={3}",
                                         channel.ToLower(), clientID, limit, dir);
 
@@ -81,9 +78,6 @@ namespace Medbot.Followers
         {
             if (channel.Equals(followerUsername, StringComparison.InvariantCultureIgnoreCase)) // return if owner is trying to get info about himself
                 return null;
-
-            if (clientID == null)
-                clientID = await Requests.GetClientID(Login.BotOauth);
 
             // https://api.twitch.tv/kraken/users/<user ID>/follows/channels/<channel id>?client_id=<client id>
             string url = String.Format(@"https://api.twitch.tv/kraken/users/{0}/follows/channels/{1}?client_id={2}", followerUsername.ToLower(), channel.ToLower(), clientID);
