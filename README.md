@@ -52,4 +52,4 @@ Note that this is a safe way to generate tokens, and you can always reject acces
 
 ## Using the Medbot
 
-Do you want to use this bot? No problem! See the [License](/License).
+Do you want to use this bot? No problem! See the [License](/LICENSE).
