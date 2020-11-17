@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using Medbot.Events;
 using Medbot.Internal;
 using Medbot.Users;
 
@@ -14,9 +15,10 @@ namespace Medbot.ExpSystem
         private TimeSpan interval;
         private TimeSpan idleTime;
         private Timer timer;
-        private BotClient bot;
         private readonly BotDataManager _botDataManager;
         private readonly UsersManager _usersManager;
+
+        internal event EventHandler<OnRankUpArgs> OnRankUp;
 
         /// <summary>
         /// Gets a Rank List
@@ -46,10 +48,9 @@ namespace Medbot.ExpSystem
         /// <param name="idleExp">Number of experience gained by idle users</param>
         /// <param name="idleTime">Time after which user will become idle (in minutes)</param>
         /// <param name="autostart">Bool value if timer should start immediately</param>
-        internal ExperienceManager(BotClient bot, BotDataManager botDataManager, UsersManager usersManager, 
+        internal ExperienceManager(BotDataManager botDataManager, UsersManager usersManager, 
                                    TimeSpan interval, int activeExp, int idleExp, TimeSpan idleTime, bool autostart = false)
         {
-            this.bot = bot;
             _usersManager = usersManager;
             _botDataManager = botDataManager;
             this.interval = interval;
@@ -128,7 +129,7 @@ namespace Medbot.ExpSystem
 
                 bool newRank = user.CheckRankUp();
                 if (newRank && !String.IsNullOrEmpty(_botDataManager.BotDictionary.NewRankMessage))
-                    this.bot.SendChatMessage(String.Format(_botDataManager.BotDictionary.NewRankMessage, user.DisplayName, user.UserRank.RankLevel, user.UserRank.RankName));
+                    OnRankUp?.Invoke(this, new OnRankUpArgs { User = user, NewRank = user.UserRank });
 
                 Console.WriteLine(user.DisplayName + " gained experience");
             }

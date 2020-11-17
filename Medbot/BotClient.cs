@@ -113,9 +113,9 @@ namespace Medbot
                                                 intervals["PointsIdleTime"], 0), Convert.ToBoolean(intervals["PointsRewardIdles"]),
                                                 intervals["PointsPerTick"], false);
 
-            _experienceManager = new ExperienceManager(this, _botDataManager, _usersManager, new TimeSpan(0, intervals["ExperienceInterval"], 0),
-                                               intervals["ExperienceActiveExp"],
-                                               intervals["ExperienceIdleExp"], new TimeSpan(0, intervals["ExperienceIdleTime"], 0), false);
+            _experienceManager = new ExperienceManager(_botDataManager, _usersManager, TimeSpan.FromMinutes(intervals["ExperienceInterval"]),
+                                                       intervals["ExperienceActiveExp"], intervals["ExperienceIdleExp"],
+                                                       TimeSpan.FromMinutes(intervals["ExperienceIdleTime"]), false);
             CommandsHandler.Initialize(_usersManager, _botDataManager, _experienceManager, this);
             CommandsList = _botDataManager.LoadCommands();
 
@@ -142,6 +142,7 @@ namespace Medbot
         {
             _usersManager.OnUserJoined += (sender, e) => OnUserJoined?.Invoke(sender, e);
             _usersManager.OnUserDisconnected += (sender, e) => OnUserDisconnected?.Invoke(sender, e);
+            _experienceManager.OnRankUp += ExperienceManager_OnRankUp;
         }
 
         /// <summary>
@@ -485,6 +486,12 @@ namespace Medbot
         private void Uptime_Timer_Tick(Object sender)
         {
             OnUptimeTick?.Invoke(this, uptime.Elapsed);
+        }
+
+
+        private void ExperienceManager_OnRankUp(object sender, OnRankUpArgs e)
+        {
+            SendChatMessage(String.Format(_botDataManager.BotDictionary.NewRankMessage, e.User.DisplayName, e.NewRank.RankLevel, e.NewRank.RankName));
         }
     }
 }

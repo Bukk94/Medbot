@@ -145,6 +145,7 @@ namespace Medbot.Users
             this.Experience += value;
         }
 
+        // TODO: Maybe rework this method? It's doing check and rankup at the same time!
         /// <summary>
         /// Checks if the user is able to rank up, if yes, promote him to next rank
         /// </summary>

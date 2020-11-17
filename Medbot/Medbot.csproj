@@ -66,6 +66,7 @@
     <Compile Include="Events\OnCommandThrottledArgs.cs" />
     <Compile Include="Events\OnMessageArgs.cs" />
     <Compile Include="Events\OnMessageThrottledArgs.cs" />
+    <Compile Include="Events\OnRankUpArgs.cs" />
     <Compile Include="Events\OnUserArgs.cs" />
     <Compile Include="Exceptions\PointsException.cs" />
     <Compile Include="Exceptions\RanksException.cs" />
