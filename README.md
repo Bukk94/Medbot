@@ -1,5 +1,6 @@
 # Medbot
 
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 [![GitHub version](https://img.shields.io/badge/version-0.4.0-brightgreen.svg)](https://github.com/Bukk94/Medbot/releases)
 [![Build Status](https://travis-ci.com/Bukk94/Medbot.svg?token=XTeWt6KEyExzbH1iNFWD&branch=master)](https://travis-ci.com/Bukk94/Medbot)
 [![Dependency Status](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen)](/Medbot/packages.config)
@@ -51,4 +52,4 @@ Note that this is a safe way to generate tokens, and you can always reject acces
 
 ## Using the Medbot
 
-Do you want to use this bot? No problem! Just let me know **Bukk94[at]seznam.cz**.
+Do you want to use this bot? No problem! See the [License](/License).
