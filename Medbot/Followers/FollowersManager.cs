@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Medbot.Internal;
 using Medbot.Enums;
+using Medbot.Users;
 
 namespace Medbot.Followers
 {
@@ -68,21 +69,19 @@ namespace Medbot.Followers
             return JsonConvert.DeserializeObject<FollowersInfo>(await Requests.TwitchJsonRequestAsync(url, RequestType.GET));
         }
 
-        /// <summary>
-        /// Gets single follower's info
-        /// </summary>
-        /// <param name="followerUsername">Name of follower to look at</param>
-        /// <param name="clientID">Bot's client ID, if null it will be calculated from oAuth</param>
-        /// <returns>Return Follower object containing all info about follower</returns>
-        public async static Task<Follower> GetFollowerFollowsInfo(string channel, string followerUsername, string clientID = null)
+        public async static Task<DateTime?> GetFollowDate(long channelId, User follower)
         {
-            if (channel.Equals(followerUsername, StringComparison.InvariantCultureIgnoreCase)) // return if owner is trying to get info about himself
+            if (follower.ID <= 0)
+                await follower.UpdateUserId();
+
+            if (channelId == follower.ID) // return if owner is trying to get info about himself
                 return null;
 
-            // https://api.twitch.tv/kraken/users/<user ID>/follows/channels/<channel id>?client_id=<client id>
-            string url = String.Format(@"https://api.twitch.tv/kraken/users/{0}/follows/channels/{1}?client_id={2}", followerUsername.ToLower(), channel.ToLower(), clientID);
+            // https://api.twitch.tv/helix/users/follows?to_id=<user ID>
+            var data = await Requests.TwitchJsonRequestAsync($"https://api.twitch.tv/helix/users/follows?from_id={follower.ID}&to_id={channelId}&first=1", RequestType.GET);
+            var json = Newtonsoft.Json.Linq.JObject.Parse(data);
 
-            return JsonConvert.DeserializeObject<Follower>(await Requests.TwitchJsonRequestAsync(url, RequestType.GET));
+            return json["data"].First?.Value<DateTime?>("followed_at");
         }
     }
 }

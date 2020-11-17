@@ -53,10 +53,14 @@ namespace Medbot.Users
         public User JoinUser(string chatLine)
         {
             string userName = Parsing.ParseUsername(chatLine);
+            long userId = Parsing.ParseUserId(chatLine);
 
             if (!OnlineUsers.Any(x => x.Username == userName))
             { // User is not in the list
-                var newUser = new User(userName);
+                var newUser = new User(userName)
+                {
+                    ID = userId
+                };
 
                 newUser = _botDataManager.LoadUserData(newUser);
                 OnlineUsers.Add(newUser);

@@ -12,6 +12,7 @@ using Medbot.Users;
 using Medbot.Enums;
 using Medbot.ExpSystem;
 using Medbot.Internal.Models;
+using System.Threading.Tasks;
 
 namespace Medbot
 {
@@ -122,7 +123,7 @@ namespace Medbot
         /// Loads data for specific user
         /// </summary>
         /// <param name="user">Reference to user which should be loaded</param>
-        internal User LoadUserData(User user)
+        internal async Task<User> LoadUserData(User user)
         {
             lock (fileLock)
             {
@@ -145,6 +146,8 @@ namespace Medbot
                     if (userRecord == null)
                         throw new Exception("Data loading of user " + user.DisplayName + " FAILED. User not found");
 
+                    var fileUserId = userRecord.Parent.Attribute("ID")?.Value;
+                    user.ID = fileUserId != null ? long.Parse(fileUserId) : user.ID;
                     user.Points = long.Parse(userRecord.Parent.Attribute("Points").Value);
                     user.Experience = long.Parse(userRecord.Parent.Attribute("Experience").Value);
                     user.CheckRankUp();
@@ -157,6 +160,9 @@ namespace Medbot
                     Logging.LogError(typeof(FilesControl), MethodBase.GetCurrentMethod(), ex.ToString());
                 }
             }
+
+            if (user.ID <= 0)
+                await user.UpdateUserId();
 
             return user;
         }
@@ -184,6 +190,11 @@ namespace Medbot
 
                             if (userRecord != null)
                             { // User exists in current XML, edit his value
+                                if (userRecord.Parent.Attribute("ID") == null)
+                                    userRecord.Parent.Add(new XAttribute("ID", user.ID));
+                                else
+                                    userRecord.Parent.Attribute("ID").Value = user.ID.ToString();
+                                
                                 userRecord.Parent.Attribute("Points").Value = user.Points.ToString();
                                 userRecord.Parent.Attribute("Experience").Value = user.Experience.ToString();
                                 userRecord.Parent.Attribute("LastMessage").Value = user.LastMessage.ToString();
@@ -247,6 +258,7 @@ namespace Medbot
         internal void AddUserRecord(ref XDocument doc, User user)
         {
             XElement element = new XElement("User");
+            element.Add(new XAttribute("ID", user.ID));
             element.Add(new XAttribute("Username", user.Username));
             element.Add(new XAttribute("Points", user.Points));
             element.Add(new XAttribute("Experience", user.Experience));
@@ -273,6 +285,8 @@ namespace Medbot
                     Login.Channel = data.Element("Channel") != null ? data.Element("Channel").Value : "";
                     Login.BotFullTwitchName = data.Element("BotFullName") != null ? data.Element("BotFullName").Value : "";
                     Login.ClientID = data.Element("ClientID") != null ? data.Element("ClientID").Value : "";
+
+                    Login.ChannelId = Task.Run(() => Requests.GetUserId(Login.Channel)).Result;
                 }
                 catch (Exception ex)
                 {

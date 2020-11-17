@@ -23,6 +23,15 @@ namespace Medbot.Internal
             return sub.Substring(0, sub.IndexOf('@')) != String.Empty ? sub.Substring(0, sub.IndexOf('@')) : ParseDisplayName(chatLine).ToLower();
         }
 
+        public static long ParseUserId(string chatLine)
+        {
+            var match = Regex.Match(chatLine, @"user-id=(?<id>\d+);");
+            if (match.Success)
+                return long.Parse(match.Groups["id"].Value);
+
+            return -1;
+        }
+
         /// <summary>
         /// Parses Display Name from PRIVMSG chat line
         /// </summary>

@@ -589,19 +589,24 @@ namespace Medbot.Commands
                         if (sender == null)
                             throw new NullReferenceException("Something went wrong, sender is null");
 
-                        Follower followerData = await FollowersManager.GetFollowerFollowsInfo(Login.Channel, "bukk94", Login.ClientID);
-                        if (followerData == null)
+                        var followDate = await FollowersManager.GetFollowDate(Login.ChannelId, sender);
+                        if (followDate == null)
                             return "";
 
-                        TimeSpan age = DateTime.Now - followerData.CreatedAt;
+                        TimeSpan age = DateTime.Now - followDate.Value;
                         //TimeSpan age = DateTime.Now - new DateTime(2017, 3, 1, 5, 30, 20, 1);
 
                         // Success 2 params - {0: user/sender} {1: number of days} 
                         string ageFormatting = String.Empty;
-                        if (age.TotalDays > 365)
-                            ageFormatting += Math.Round(age.TotalDays / 365) + "Y ";
 
-                        ageFormatting += Math.Round(age.TotalDays) + "D";
+                        int numberOfYears = 0;
+                        if (age.TotalDays > 365)
+                        {
+                            numberOfYears = (int)Math.Round(age.TotalDays / 365);
+                            ageFormatting += numberOfYears + "Y ";
+                        }
+
+                        ageFormatting += Math.Round(age.TotalDays - (numberOfYears * 365)) + "D";
 
                         return String.Format(cmd.SuccessMessage, sender.Username, ageFormatting);
                     }

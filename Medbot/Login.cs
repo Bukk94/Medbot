@@ -44,6 +44,8 @@ namespace Medbot
         /// </summary>
         internal static string BotFullTwitchName { get; set; } = String.Empty;
 
+        internal static long ChannelId { get; set; }
+
         /// <summary>
         /// Gets bool if login credentials are valid
         /// </summary>

@@ -47,5 +47,13 @@ namespace Medbot.Internal
 
             return content;
         }
+
+
+        internal async static Task<long> GetUserId(string username)
+        {
+            var data = await Requests.TwitchJsonRequestAsync($"https://api.twitch.tv/helix/users?login={username}", RequestType.GET);
+            var json = Newtonsoft.Json.Linq.JObject.Parse(data);
+            return json["data"].First.Value<long>("id");
+        }
     }
 }

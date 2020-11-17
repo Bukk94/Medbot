@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Medbot.ExpSystem;
 using Medbot.Enums;
+using Medbot.Internal;
+using System.Threading.Tasks;
 
 namespace Medbot.Users
 {
     public class User
     {
         #region Properties
+        public long ID { get; set; } = -1;
+
         /// <summary>
         /// Username of the user in lowercase
         /// </summary>
@@ -210,6 +214,11 @@ namespace Medbot.Users
         {
             var rankIndex = ExperienceManager.RankList.IndexOf(this.UserRank);
             return rankIndex + 1 < ExperienceManager.RankList.Count - 1 ? ExperienceManager.RankList[rankIndex + 1] : null;
+        }
+
+        public async Task UpdateUserId()
+        {
+            this.ID = await Requests.GetUserId(this.Username);
         }
     }
 

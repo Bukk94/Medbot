@@ -3,6 +3,7 @@ using Medbot.ExpSystem;
 using Medbot.Internal.Models;
 using Medbot.Users;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Medbot.Internal
 {
@@ -47,7 +48,7 @@ namespace Medbot.Internal
 
         internal User LoadUserData(User user)
         {
-            return _filesControl.LoadUserData(user);
+            return Task.Run(() => _filesControl.LoadUserData(user)).Result;
         }
 
         internal List<TempUser> GetPointsLeaderboard()
