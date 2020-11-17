@@ -1,0 +1,12 @@
+﻿{
+	"WelcomeMessage": "MedBot se připojil do chatu",
+	"GoodbyeMessage": "MedBot se loučí",
+	"NewRankMessage": "{0} získal nový rank: [{1}] {2}",
+	"Yes": "Ano",
+	"No": "Ne",
+	"CommandsNotFound": "Nedokázal jsem načíst příkazy. Někdo něco posral. Já za to nemůžu :(",
+	"ZeroCommands": "Něco je špatně ... Nemám tu žádné příkazy se kterými můžu pracovat. Zavolejte pomoc! Je to i ve vašem zájmu! Když je nemám já, nemá je nikdo!",
+	"BotRespondMessages": [
+		"Ahoj! Jsem MedBot, nový medvědí bot-pomocník. Momentálně jsem ještě ve vývoji, buďte na mě hodný :)"
+	]
+}

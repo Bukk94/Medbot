@@ -15,6 +15,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{5D0DE9CB-1
 		TODO.txt = TODO.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{E99ACD91-0A5C-464F-9B9D-921BC2D83A0C}"
+	ProjectSection(SolutionItems) = preProject
+		Samples\Commands.xml = Samples\Commands.xml
+		Samples\Dictionary.json = Samples\Dictionary.json
+		Samples\Ranks.txt = Samples\Ranks.txt
+		Samples\Settings.xml = Samples\Settings.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +44,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E99ACD91-0A5C-464F-9B9D-921BC2D83A0C} = {5D0DE9CB-1900-41DA-95E5-C40EEBE17F9C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {37ACAD0C-CDCF-4803-8DE1-D07723C9F1DA}
