@@ -47,7 +47,7 @@ namespace Medbot
         public bool IsBotRunning { get; private set; }
 
         /// <summary>
-        /// Gets bool if the connection of the bot is alive
+        /// Bool if the connection of the bot is alive
         /// </summary>
         public bool IsConnectionAlive => tcpClient != null ? tcpClient.Connected : false;
 
@@ -120,9 +120,9 @@ namespace Medbot
             CommandsList = _botDataManager.LoadCommands();
 
             if (CommandsList == null)
-                SendChatMessage(BotDictionary.CommandsNotFound);
+                SendChatMessage(_botDataManager.BotDictionary.CommandsNotFound);
             else if (CommandsList.Count <= 0)
-                SendChatMessage(BotDictionary.ZeroCommands);
+                SendChatMessage(_botDataManager.BotDictionary.ZeroCommands);
 
             this.readingTimer = new Timer(Reader_Timer_Tick, null, Timeout.Infinite, 200);
             this.uptimeTimer = new Timer(Uptime_Timer_Tick, null, Timeout.Infinite, 1000);
@@ -312,8 +312,7 @@ namespace Medbot
 
                         if (message.ContainsInsensitive("@" + Login.BotFullTwitchName))
                         { // Bot is called by it's name, respond somehow
-                            // TODO: Bot respond
-                            SendChatMessage("Ahoj! Jsem MedBot, nový medvědí bot-pomocník. Momentálně jsem ještě ve vývoji, buďte na mě hodný :)");
+                            SendChatMessage(_botDataManager.BotDictionary.BotRespondMessages.SelectOneRandom());
                         }
                         else if (message.StartsWith("!"))
                         { // Someone is trying to call an command
@@ -439,12 +438,16 @@ namespace Medbot
         /// <param name="msg">String message to send</param>
         public void SendChatMessage(string msg, bool isCommand)
         {
+            if (string.IsNullOrEmpty(msg))
+                return;
+
             // :sender!sender@sender.tmi.twitch.tv PRIVMSG #channel :message
             if (!IsConnectionAlive)
             {
                 Console.WriteLine("Cannot send chat message, connection is NOT alive");
                 return;
             }
+
             if (!throttler.AllowToSendMessage(msg))
                 return;
 

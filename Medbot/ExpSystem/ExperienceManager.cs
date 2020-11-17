@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
-using Medbot.LoggingNS;
 using Medbot.Internal;
 using Medbot.Users;
 
@@ -129,8 +127,8 @@ namespace Medbot.ExpSystem
                     user.AddExperience(this.idleExp);
 
                 bool newRank = user.CheckRankUp();
-                if (newRank && !String.IsNullOrEmpty(BotDictionary.NewRankMessage))
-                    this.bot.SendChatMessage(String.Format(BotDictionary.NewRankMessage, user.DisplayName, user.UserRank.RankLevel, user.UserRank.RankName));
+                if (newRank && !String.IsNullOrEmpty(_botDataManager.BotDictionary.NewRankMessage))
+                    this.bot.SendChatMessage(String.Format(_botDataManager.BotDictionary.NewRankMessage, user.DisplayName, user.UserRank.RankLevel, user.UserRank.RankName));
 
                 Console.WriteLine(user.DisplayName + " gained experience");
             }

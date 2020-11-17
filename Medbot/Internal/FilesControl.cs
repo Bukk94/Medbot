@@ -260,11 +260,7 @@ namespace Medbot
             lock (settingsLock)
             {
                 if (!File.Exists(SettingsPath))
-                {
-                    PointsManager.LoadDefaultCurrencyDetails();
-                    LoadDefaultDictionary();
                     return false;
-                }
 
                 try
                 {
@@ -450,6 +446,7 @@ namespace Medbot
             {
                 Yes = "Yes",
                 No = "No",
+                BotRespondMessages = new string[0]
             };
         }
 
@@ -504,7 +501,7 @@ namespace Medbot
                         (long.TryParse(u.Attribute(attribute).Value, out numData)) && numData > 0 &&
                         !u.Attribute("Username").Value.Equals(Login.BotName);
                     }) //Exclude bot from leaderboard
-                                                                                    .ToList();
+                    .ToList();
 
                     foreach (XElement user in userRecords)
                     {

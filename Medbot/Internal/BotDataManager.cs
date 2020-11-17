@@ -24,8 +24,8 @@ namespace Medbot.Internal
 
             _filesControl.LoadLoginCredentials();
             _filesControl.LoadBotSettings();
-            BotDictionary = _filesControl.LoadBotDictionary();
-            BotIntervals = _filesControl.LoadBotIntervals();
+            this.BotDictionary = _filesControl.LoadBotDictionary();
+            this.BotIntervals = _filesControl.LoadBotIntervals();
         }
 
         // TODO: Delete this and create Commands list here

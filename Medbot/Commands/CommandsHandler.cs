@@ -346,8 +346,8 @@ namespace Medbot.Commands
                         {
                             receiver.AddExperience(long.Parse(args[0]));
                             bool newRank = receiver.CheckRankUp();
-                            if (newRank && !String.IsNullOrEmpty(BotDictionary.NewRankMessage))
-                                botClient.SendChatMessage(String.Format(BotDictionary.NewRankMessage, receiver.DisplayName,
+                            if (newRank && !String.IsNullOrEmpty(_botDataManager.BotDictionary.NewRankMessage))
+                                botClient.SendChatMessage(String.Format(_botDataManager.BotDictionary.NewRankMessage, receiver.DisplayName,
                                                                 receiver.UserRank.RankLevel, receiver.UserRank.RankName));
 
                             _usersManager.SaveData();
@@ -391,7 +391,7 @@ namespace Medbot.Commands
                             throw new NullReferenceException("Last follower has not been found");
 
                         // Success: 3 params: {0:User} {1:Date} {2:Notification (bool)}
-                        return String.Format(cmd.SuccessMessage, last.Follower.DisplayName, last.CreatedAt.ToShortDateString(), last.Notifications ? BotDictionary.Yes : BotDictionary.No);
+                        return String.Format(cmd.SuccessMessage, last.Follower.DisplayName, last.CreatedAt.ToShortDateString(), last.Notifications ? _botDataManager.BotDictionary.Yes : _botDataManager.BotDictionary.No);
                     }
                     catch (Exception ex)
                     {
