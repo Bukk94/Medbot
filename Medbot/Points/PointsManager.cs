@@ -58,10 +58,9 @@ namespace Medbot.Points
         /// <summary>
         /// Point class manages point awarding and timer ticking
         /// </summary>
-        /// <param name="onlineUsers">Reference to List of online users</param>
         /// <param name="interval">The time interval between each tick</param>
-        /// <param name="rewardIdles">Bool if idle users should be rewarded</param>
         /// <param name="idleTime">Time after which the user will become idle</param>
+        /// <param name="rewardIdles">Bool if idle users should be rewarded</param>
         /// <param name="pointsPerTick">Amount of points awarded to active users each tick</param>
         /// <param name="autostart">Bool value if the time should start immediately</param>
         internal PointsManager(UsersManager usersManager, TimeSpan interval, TimeSpan idleTime, bool rewardIdles, int pointsPerTick, bool autostart = false)

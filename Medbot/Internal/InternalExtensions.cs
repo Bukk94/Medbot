@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Medbot.Internal
 {
@@ -16,9 +18,9 @@ namespace Medbot.Internal
             return Contains(source, toCheck, StringComparison.OrdinalIgnoreCase);
         }
 
-        public static T SelectOneRandom<T>(this T[] array)
+        public static T SelectOneRandom<T>(this IEnumerable<T> array)
         {
-            return array[_random.Next(0, array.Length)];
+            return array.ElementAt(_random.Next(0, array.Count()));
         }
     }
 }

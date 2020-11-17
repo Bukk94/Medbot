@@ -9,7 +9,7 @@ namespace Medbot.Users
 {
     internal class UsersManager
     {
-        private BotDataManager _botDataManager;
+        private readonly BotDataManager _botDataManager;
 
         /// <summary>
         /// List of currently online users
@@ -170,14 +170,12 @@ namespace Medbot.Users
 
         private User SelectRandomUser(List<User> usersList)
         {
-            if (usersList.Count() <= 0)
+            if (usersList.Count <= 0)
                 return null;
-            else if (usersList.Count() == 1)
+            else if (usersList.Count == 1)
                 return usersList.First();
 
-            Random rand = new Random(Guid.NewGuid().GetHashCode());
-            int random = rand.Next(0, usersList.Count());
-            return usersList.ElementAt(random);
+            return usersList.SelectOneRandom();
         }
     }
 }

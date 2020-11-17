@@ -7,25 +7,21 @@ namespace Medbot.Internal
 {
     internal class CommandThrottling
     {
-        private Command command;
-        private Timer throttlingTimer;
-        private TimeSpan throttlingInterval;
-        private bool noCooldown;
+        private readonly Command command;
+        private readonly Timer throttlingTimer;
+        private readonly bool noCooldown;
         private bool cooldownActive;
 
         internal event EventHandler<OnCommandThrottledArgs> OnCommandThrottled;
 
-        /// <summary>
-        /// Gets throttling interval
-        /// </summary>
-        internal TimeSpan ThrottlingInterval { get { return this.throttlingInterval; } }
+        internal TimeSpan ThrottlingInterval { get; }
 
         /// <summary>
         /// Creates an instance of Command throttler which can check if the command is allowed to be executed
         /// </summary>
         internal CommandThrottling(TimeSpan interval, Command cmd)
         {
-            throttlingInterval = interval;
+            ThrottlingInterval = interval;
             this.command = cmd;
 
             if (interval == null || interval.TotalMilliseconds <= 0)

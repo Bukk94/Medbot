@@ -9,7 +9,7 @@ namespace Medbot.Internal
     internal class MessageThrottling
     {
         private readonly BotDataManager _botDataManager;
-        private Timer _throttlingTimer;
+        private readonly Timer _throttlingTimer;
         private int messagesSent;
 
         /// <summary>
@@ -20,22 +20,22 @@ namespace Medbot.Internal
         /// <summary>
         /// Gets maximum character limit to be send
         /// </summary>
-        internal int MaxCharacterLimit { get { return 500; } }
+        internal int MaxCharacterLimit => 500;
 
         /// <summary>
         /// Gets number of maximum messages to be send via bot in given Throttling Interval
         /// </summary>
-        internal int MaxMessagesLimit { get { return 20; } }
+        internal int MaxMessagesLimit => 20;
 
         /// <summary>
         /// Gets number of maximum messages to be send via bot with moderator's permissions in given Throttling Interval
         /// </summary>
-        internal int MaxModeratorMessagesLimit { get { return 100; } }
+        internal int MaxModeratorMessagesLimit => 100;
 
         /// <summary>
         /// Gets throttling interval
         /// </summary>
-        internal TimeSpan ThrottlingInterval { get { return new TimeSpan(0, 0, 20); } }
+        internal TimeSpan ThrottlingInterval => TimeSpan.FromSeconds(20);
 
         /// <summary>
         /// Creates an instance of Message throttler which can check if the message is allowed to be send
