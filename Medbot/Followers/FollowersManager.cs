@@ -32,9 +32,7 @@ namespace Medbot.Followers
                 limit = 100;
 
             var data = await Requests.TwitchJsonRequestAsync($"https://api.twitch.tv/helix/users/follows?to_id={channelId}&first={limit}", RequestType.GET);
-            var json = Newtonsoft.Json.Linq.JObject.Parse(data);
-
-            var followers = json["data"];
+            var followers = Requests.GetJsonData(data);
 
             return followers.ToObject<Follower[]>();
         }
@@ -44,7 +42,7 @@ namespace Medbot.Followers
         /// </summary>
         /// <param name="channel">ID of channel to search</param>
         /// <param name="user">User to get info about</param>
-        /// <returns></returns>
+        /// <returns>Return nullable datetime</returns>
         public async Task<DateTime?> GetFollowDate(long channelId, User user)
         {
             if (user.ID <= 0)
@@ -55,9 +53,8 @@ namespace Medbot.Followers
 
             // https://api.twitch.tv/helix/users/follows?to_id=<user ID>
             var data = await Requests.TwitchJsonRequestAsync($"https://api.twitch.tv/helix/users/follows?from_id={user.ID}&to_id={channelId}&first=1", RequestType.GET);
-            var json = Newtonsoft.Json.Linq.JObject.Parse(data);
-
-            return json["data"].FirstOrDefault()?.ToObject<Follower>().FollowedAt;
+            
+            return Requests.GetJsonData(data)?.FirstOrDefault()?.ToObject<Follower>().FollowedAt;
         }
     }
 }

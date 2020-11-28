@@ -134,6 +134,7 @@ namespace Medbot
 
         public async Task TestAPI()
         {
+            var isLive = await IsBroadcasterLive();
             var test = await Requests.TwitchJsonRequestAsync("https://api.twitch.tv/helix/users/follows?to_id=24395849&first=1", RequestType.GET);
             var test2 = await Requests.TwitchJsonRequestAsync("https://api.twitch.tv/helix/streams?user_login=bukk94", RequestType.GET);
         }
@@ -482,6 +483,16 @@ namespace Medbot
             writer.Flush();
             ConsoleAppendText(String.Format("{0}/w {1} {2}", chatMessagePrefix, user.ToLower(), msg));
             Console.WriteLine("Private message sent");
+        }
+
+
+        private async Task<bool> IsBroadcasterLive()
+        {
+            // https://api.twitch.tv/helix/streams?user_login=Bukk94
+            // https://api.twitch.tv/helix/streams?user_id=5798794897
+            var data = await Requests.TwitchJsonRequestAsync($"https://api.twitch.tv/helix/streams?user_login={Login.Channel}", RequestType.GET);
+
+            return Requests.GetJsonData(data)?.Any() == true;
         }
 
         private void Uptime_Timer_Tick(Object sender)

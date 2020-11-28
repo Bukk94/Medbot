@@ -1,4 +1,5 @@
 ﻿using Medbot.Enums;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -48,12 +49,16 @@ namespace Medbot.Internal
             return content;
         }
 
-
         internal async static Task<long> GetUserId(string username)
         {
-            var data = await Requests.TwitchJsonRequestAsync($"https://api.twitch.tv/helix/users?login={username}", RequestType.GET);
-            var json = Newtonsoft.Json.Linq.JObject.Parse(data);
-            return json["data"].First.Value<long>("id");
+            var data = await TwitchJsonRequestAsync($"https://api.twitch.tv/helix/users?login={username}", RequestType.GET);
+            return GetJsonData(data).First.Value<long>("id");
+        }
+
+        internal static JToken GetJsonData(string json)
+        {
+            var parsedJson = JObject.Parse(json);
+            return parsedJson["data"];
         }
     }
 }

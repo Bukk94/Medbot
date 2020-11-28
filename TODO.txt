@@ -20,6 +20,7 @@
 - Improve readme file with some docs how to setup the bot
 - Activate Exp & Point timer only if broadcaster is live
 - Command like !FollowerInfo to get follower info
+- Create separate project with own Twitch Helix API
 
 ### VERIFY ###
 - Sending whisper messages
