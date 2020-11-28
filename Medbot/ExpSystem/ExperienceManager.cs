@@ -7,38 +7,39 @@ using Medbot.Users;
 
 namespace Medbot.ExpSystem
 {
-    // TODO: Implement event notification instead of passing BotClient object
     internal class ExperienceManager
     {
-        private int activeExp; // Exp value
-        private int idleExp; // Exp value
-        private TimeSpan interval;
-        private TimeSpan idleTime;
-        private Timer timer;
         private readonly BotDataManager _botDataManager;
         private readonly UsersManager _usersManager;
+        private readonly TimeSpan _idleTime;
+        private Timer _timer;
 
         internal event EventHandler<OnRankUpArgs> OnRankUp;
 
         /// <summary>
-        /// Gets a Rank List
+        /// List of all available ranks
         /// </summary>
         internal static List<Rank> RankList { get; private set; }
 
         /// <summary>
-        /// Gets bool if the Experience timer is running
+        /// If the Experience timer is running
         /// </summary>
         internal bool TimerRunning { get; private set; }
 
         /// <summary>
-        /// Gets experience timer tick interval
+        /// Experience timer tick interval in ms
         /// </summary>
-        internal TimeSpan ExperienceInterval => this.interval;
+        internal int ExperienceTickInterval { get; private set; }
 
         /// <summary>
-        /// Gets value of experience for active users
+        /// Value of experience reward for active users
         /// </summary>
-        internal int ActiveExperience => this.activeExp;
+        internal int ActiveExperienceReward { get; private set; }
+
+        /// <summary>
+        /// Value of experience reward for idle users
+        /// </summary>
+        internal int IdleExperienceReward { get; private set; }
 
         /// <summary>
         /// Experiences class manages exp awarding and timer ticking
@@ -53,18 +54,18 @@ namespace Medbot.ExpSystem
         {
             _usersManager = usersManager;
             _botDataManager = botDataManager;
-            this.interval = interval;
+            this.ExperienceTickInterval = (int)interval.TotalMilliseconds;
             this.TimerRunning = false;
-            this.activeExp = activeExp;
-            this.idleExp = idleExp;
-            this.idleTime = idleTime;
+            this.ActiveExperienceReward = activeExp;
+            this.IdleExperienceReward = idleExp;
+            this._idleTime = idleTime;
 
             RankList = _botDataManager.LoadRanks();
 
             if (autostart)
                 StartExperienceTimer();
             else
-                this.timer = new Timer(AwardExperience_TimerTick, null, Timeout.Infinite, (int)this.interval.TotalMilliseconds);
+                this._timer = new Timer(AwardExperience_TimerTick, null, Timeout.Infinite, this.ExperienceTickInterval);
         }
 
         /// <summary>
@@ -78,10 +79,10 @@ namespace Medbot.ExpSystem
                 return;
             }
 
-            if (this.timer == null)
-                this.timer = new Timer(AwardExperience_TimerTick, null, 0, (int)this.interval.TotalMilliseconds);
+            if (this._timer == null)
+                this._timer = new Timer(AwardExperience_TimerTick, null, 0, this.ExperienceTickInterval);
 
-            this.timer.Change(0, (int)this.interval.TotalMilliseconds);
+            this._timer.Change(0, this.ExperienceTickInterval);
             this.TimerRunning = true;
             Console.WriteLine("Starting experience timer");
         }
@@ -97,7 +98,7 @@ namespace Medbot.ExpSystem
                 return;
             }
 
-            this.timer.Change(Timeout.Infinite, int.MaxValue);
+            this._timer.Change(Timeout.Infinite, int.MaxValue);
             this.TimerRunning = false;
             Console.WriteLine("Stopping experience timer");
         }
@@ -122,10 +123,10 @@ namespace Medbot.ExpSystem
                     continue;
 
                 // Reward active
-                if (DateTime.Now - user.LastMessage < TimeSpan.FromMilliseconds(this.idleTime.TotalMilliseconds))
-                    user.AddExperience(this.activeExp);
+                if (DateTime.Now - user.LastMessage < TimeSpan.FromMilliseconds(this._idleTime.TotalMilliseconds))
+                    user.AddExperience(this.ActiveExperienceReward);
                 else // Reward idle
-                    user.AddExperience(this.idleExp);
+                    user.AddExperience(this.IdleExperienceReward);
 
                 bool newRank = user.CheckRankUp();
                 if (newRank && !String.IsNullOrEmpty(_botDataManager.BotDictionary.NewRankMessage))
