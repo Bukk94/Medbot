@@ -29,6 +29,7 @@ namespace Medbot
         private readonly ExperienceManager _experienceManager;
         private readonly UsersManager _usersManager;
         private readonly BotDataManager _botDataManager;
+        private readonly CommandsHandler _commandsHandler;
         private readonly MessageThrottling throttler;
         private TcpClient tcpClient;
         private StreamWriter writer;
@@ -115,7 +116,7 @@ namespace Medbot
             _experienceManager = new ExperienceManager(_botDataManager, _usersManager, TimeSpan.FromMinutes(intervals["ExperienceInterval"]),
                                                        intervals["ExperienceActiveExp"], intervals["ExperienceIdleExp"],
                                                        TimeSpan.FromMinutes(intervals["ExperienceIdleTime"]), false);
-            CommandsHandler.Initialize(_usersManager, _botDataManager, _experienceManager, this);
+            _commandsHandler = new CommandsHandler(_usersManager, _botDataManager, _experienceManager, this);
             CommandsList = _botDataManager.LoadCommands();
 
             if (CommandsList == null)
@@ -377,7 +378,7 @@ namespace Medbot
                     return;
                 }
 
-                string commandResult = CommandsHandler.ExecuteCommand(command, sender, Parsing.ParseCommandValues(message));
+                string commandResult = _commandsHandler.ExecuteCommand(command, sender, Parsing.ParseCommandValues(message));
                 OnCommandReceived?.Invoke(this, new OnCommandReceivedArgs { Command = command });
                 DeliverCommandResults(command, commandResult, sender);
             }

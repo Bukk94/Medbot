@@ -6,6 +6,7 @@
 - Maybe convert other settings file to JSON too? For now it's OK-ish
 
 - Remove static classes and create instance managers
+- Remove BotClient from CommandsHandler
 
 - Improve command handling, maybe create separate commands for each and use polymorphism to call out the function (instead of ugly swiches...)
 - Denied permissions should write at least some logs to the console

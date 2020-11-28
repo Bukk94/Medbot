@@ -14,21 +14,17 @@ using Medbot.Enums;
 
 namespace Medbot.Commands
 {
-    internal static class CommandsHandler
+    internal class CommandsHandler
     {
-        private static ExperienceManager expObject;
-        private static BotClient botClient;
-        private static UsersManager _usersManager;
-        private static BotDataManager _botDataManager;
+        private readonly BotClient botClient;
+        private readonly ExperienceManager _experienceManager;
+        private readonly UsersManager _usersManager;
+        private readonly BotDataManager _botDataManager;
 
-        /// <summary>
-        /// Initializes Commands Handler, passing XP object
-        /// </summary>
-        /// <param name="exp">Object of Experiences class</param>
-        internal static void Initialize(UsersManager usersManager, BotDataManager botDataManager, ExperienceManager exp, BotClient bot)
+        // TODO: Stop using BotClient object
+        public CommandsHandler(UsersManager usersManager, BotDataManager botDataManager, ExperienceManager exp, BotClient bot)
         {
-            // TODO: Change this to regular constructor
-            expObject = exp;
+            _experienceManager = exp;
             botClient = bot;
             _usersManager = usersManager;
             _botDataManager = botDataManager;
@@ -40,7 +36,7 @@ namespace Medbot.Commands
         /// <param name="sender">User who executed the command</param>
         /// <param name="command">Full name of the command</param>
         /// <returns>Informative string</returns>
-        internal static string ExecuteCommand(Command commandToExecute, User sender, List<string> args)
+        internal string ExecuteCommand(Command commandToExecute, User sender, List<string> args)
         {
             if (commandToExecute.IsUserAllowedToExecute(sender))
                 return ExecuteCommandInternal(commandToExecute, sender, args);
@@ -58,7 +54,7 @@ namespace Medbot.Commands
         /// <param name="sender">User who sent the command</param>
         /// <param name="args">Command arguments</param>
         /// <returns>String result</returns>
-        private static string ExecuteCommandInternal(Command command, User sender, List<string> args)
+        private string ExecuteCommandInternal(Command command, User sender, List<string> args)
         {
             string result = String.Empty;
 
@@ -85,7 +81,7 @@ namespace Medbot.Commands
         /// <param name="cmd">Command to execute</param>
         /// <param name="args">Command arguments</param>
         /// <returns>String result</returns>
-        private static string PointsHandler(User sender, Command cmd, List<string> args)
+        private string PointsHandler(User sender, Command cmd, List<string> args)
         {
             switch (cmd.CommandHandlerType)
             {
@@ -269,7 +265,7 @@ namespace Medbot.Commands
             return "Unknown Points handler";
         }
 
-        private static string ExperienceHandler(User sender, Command cmd, List<string> args)
+        private string ExperienceHandler(User sender, Command cmd, List<string> args)
         {
             switch (cmd.CommandHandlerType)
             {
@@ -310,7 +306,7 @@ namespace Medbot.Commands
                                             nextRank.RankLevel,
                                             nextRank.RankName,
                                             sender.ToNextRank(),
-                                            sender.TimeToNextRank(expObject.ActiveExperience, expObject.ExperienceInterval));
+                                            sender.TimeToNextRank(_experienceManager.ActiveExperience, _experienceManager.ExperienceInterval));
                     }
                     catch (RanksException ex)
                     {
@@ -392,7 +388,7 @@ namespace Medbot.Commands
         /// <param name="cmd">Command to execute</param>
         /// <param name="args">Command arguments</param>
         /// <returns>String result</returns>
-        private static async Task<string> InternalHandler(User sender, Command cmd, List<string> args)
+        private async Task<string> InternalHandler(User sender, Command cmd, List<string> args)
         {
             switch (cmd.CommandHandlerType)
             {
@@ -642,7 +638,7 @@ namespace Medbot.Commands
             return "Unknown internal handler";
         }
 
-        private static List<string> FormLeaderboard(List<TempUser> fullLeaderboard)
+        private List<string> FormLeaderboard(List<TempUser> fullLeaderboard)
         {
             List<string> leaderboard = new List<string>();
 
