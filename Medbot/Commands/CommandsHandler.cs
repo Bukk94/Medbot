@@ -386,12 +386,12 @@ namespace Medbot.Commands
                     // Last follower, !lastfollower |  0 input args
                     try
                     {
-                        Follow last = await FollowersManager.GetNewestFollower(Login.Channel, Login.ClientID);
+                        Follower last = await FollowersManager.GetNewestFollower(Login.ChannelId);
                         if (last == null) // Fail: 0 params
                             throw new NullReferenceException("Last follower has not been found");
 
-                        // Success: 3 params: {0:User} {1:Date} {2:Notification (bool)}
-                        return String.Format(cmd.SuccessMessage, last.Follower.DisplayName, last.CreatedAt.ToShortDateString(), last.Notifications ? _botDataManager.BotDictionary.Yes : _botDataManager.BotDictionary.No);
+                        // Success: 2 params: {0:User} {1:Date}
+                        return String.Format(cmd.SuccessMessage, last.FollowerName, last.FollowedAt.ToShortDateString());
                     }
                     catch (Exception ex)
                     {

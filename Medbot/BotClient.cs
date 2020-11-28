@@ -34,7 +34,6 @@ namespace Medbot
         private StreamWriter writer;
         private StreamReader reader;
 
-        // TODO: Get rid of static properties
         #region Properties
         /// <summary>
         /// Channel on which bot is deployed on

@@ -1,5 +1,4 @@
 ### ISSUES ###
-- Fix Twitch API calls. Old kraken (v5) endpoint is dead, use new helix endpoint
 - Sometimes stream reader crashes on small buffer or some weird exception. It's not a problem (yet) and it's not causing any more issues but it's annoying. Attemp to fix this was made.
 
 ### IMPROVEMENTS ###
@@ -7,21 +6,18 @@
 - Maybe convert other settings file to JSON too? For now it's OK-ish
 
 - Remove static classes and create instance managers
-- Remove static fields from BotClient
 
 - Improve command handling, maybe create separate commands for each and use polymorphism to call out the function (instead of ugly swiches...)
 - Denied permissions should write at least some logs to the console
 
 - Bot loaded intervals are dictionary with string key. This should be enum to better access the value
 
-- Implement notification event to ExperienceManager to notify bot about some XP changes, rankups, etc.
-- Activate Exp & Point timer only if broadcaster is live
-
 - Implement better logging, like NLog
 
 ### NEW STUFF ###
 - Allow turn on/off bot's welcome/goodbye messages
 - Improve readme file with some docs how to setup the bot
+- Activate Exp & Point timer only if broadcaster is live
 
 ### VERIFY ###
 - Sending whisper messages
