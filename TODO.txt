@@ -9,7 +9,6 @@
 - Remove BotClient from CommandsHandler
 
 - Improve command handling, maybe create separate commands for each and use polymorphism to call out the function (instead of ugly swiches...)
-- Denied permissions should write at least some logs to the console
 
 - Bot loaded intervals are dictionary with string key. This should be enum to better access the value
 

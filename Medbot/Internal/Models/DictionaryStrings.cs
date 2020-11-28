@@ -10,6 +10,7 @@
         public string NewRankMessage { get; set; }
         public string CommandsNotFound { get; set; }
         public string ZeroCommands { get; set; }
+        public string InsufficientPermissions { get; set; }
 
         public string[] BotRespondMessages { get; set; }
     }
