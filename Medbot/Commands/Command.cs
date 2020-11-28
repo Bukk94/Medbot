@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Medbot.Enums;
 using Medbot.Internal;
@@ -10,16 +9,20 @@ namespace Medbot.Commands
     public class Command
     {
         private readonly CommandThrottling _throttler;
-        private CommandType _commandType;
         private TimeSpan _cooldown;
 
         /// <summary>
-        /// Gets an command format e.g !points
+        /// Command format e.g !points
         /// </summary>
         internal string CommandFormat { get; }
 
         /// <summary>
-        /// Gets an command handler type (e.g. Add, Remove)
+        /// Command type (Points, Exp, Internal)
+        /// </summary>
+        public CommandType CommandType { get; private set; }
+
+        /// <summary>
+        /// Command handler type (e.g. Add, Remove)
         /// </summary>
         internal CommandHandlerType CommandHandlerType { get; }
 
@@ -58,7 +61,7 @@ namespace Medbot.Commands
         /// </summary>
         internal bool SendWhisper { get; }
 
-        internal Command(CommandType cmd, CommandHandlerType handler, string commandFormat, string about, string successMessage,
+        internal Command(CommandType type, CommandHandlerType handler, string commandFormat, string about, string successMessage,
                          string failMessage, string errorMessage, bool broadcasterOnly, bool modPermission, bool sendWhisp, TimeSpan cd)
         {
             this.CommandHandlerType = handler;
@@ -67,7 +70,7 @@ namespace Medbot.Commands
             this.SuccessMessage = successMessage;
             this.FailMessage = failMessage;
             this.ErrorMessage = errorMessage;
-            this._commandType = cmd;
+            this.CommandType = type;
             this.BroadcasterOnly = broadcasterOnly;
             this.ModeratorPermissionRequired = modPermission;
             this.SendWhisper = sendWhisp;
@@ -75,19 +78,9 @@ namespace Medbot.Commands
             this._throttler = new CommandThrottling(this._cooldown, this);
         }
 
-        /// <summary>
-        /// Executes command
-        /// </summary>
-        /// <param name="sender">User who executed the command</param>
-        /// <param name="command">Full name of the command</param>
-        /// <returns>Informative string</returns>
-        internal string Execute(User sender, List<string> args)
+        public bool IsUserAllowedToExecute(User sender)
         {
-            if (CheckCommandPermissions(sender) && _throttler.AllowedToExecute())
-                return CommandsHandler.ExecuteMethod(_commandType, this, sender, args);
-            //else
-            //    return String.Format("Nemáš dostatečná práva abys provedl tento příkaz. MedBot ti nepomůže.");
-            return "";
+            return CheckCommandPermissions(sender) && _throttler.AllowedToExecute();
         }
 
         /// <summary>

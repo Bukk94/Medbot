@@ -73,7 +73,7 @@
     <Compile Include="ExpSystem\Rank.cs" />
     <Compile Include="Internal\BotDataManager.cs" />
     <Compile Include="Internal\FilesControl.cs" />
-    <Compile Include="Followers\Follow.cs" />
+    <Compile Include="Followers\Follower.cs" />
     <Compile Include="Followers\FollowersManager.cs" />
     <Compile Include="IBotClient.cs" />
     <Compile Include="Internal\CommandThrottling.cs" />

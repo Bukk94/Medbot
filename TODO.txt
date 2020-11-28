@@ -18,6 +18,7 @@
 - Allow turn on/off bot's welcome/goodbye messages
 - Improve readme file with some docs how to setup the bot
 - Activate Exp & Point timer only if broadcaster is live
+- Command like !FollowerInfo to get follower info
 
 ### VERIFY ###
 - Sending whisper messages

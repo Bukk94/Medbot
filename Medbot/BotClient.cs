@@ -358,6 +358,7 @@ namespace Medbot
         /// <param name="message">String command message send by user</param>
         private void RespondToCommand(User sender, string message)
         {
+            // TODO: Fix this parsing and make it more efficient
             var command = CommandsList.FirstOrDefault(cmd =>
             {
                 List<string> parsedMessageCommand = message.Split(' ').ToList();
@@ -376,7 +377,7 @@ namespace Medbot
                     return;
                 }
 
-                string commandResult = command.Execute(sender, Parsing.ParseCommandValues(message));
+                string commandResult = CommandsHandler.ExecuteCommand(command, sender, Parsing.ParseCommandValues(message));
                 OnCommandReceived?.Invoke(this, new OnCommandReceivedArgs { Command = command });
                 DeliverCommandResults(command, commandResult, sender);
             }

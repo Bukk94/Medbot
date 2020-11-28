@@ -21,8 +21,6 @@ namespace Medbot.Commands
         private static UsersManager _usersManager;
         private static BotDataManager _botDataManager;
 
-        // TODO: !Followerinfo (or smth)
-
         /// <summary>
         /// Initializes Commands Handler, passing XP object
         /// </summary>
@@ -37,27 +35,43 @@ namespace Medbot.Commands
         }
 
         /// <summary>
+        /// Executes command
+        /// </summary>
+        /// <param name="sender">User who executed the command</param>
+        /// <param name="command">Full name of the command</param>
+        /// <returns>Informative string</returns>
+        internal static string ExecuteCommand(Command commandToExecute, User sender, List<string> args)
+        {
+            if (commandToExecute.IsUserAllowedToExecute(sender))
+                return ExecuteCommandInternal(commandToExecute, sender, args);
+            // TODO: Respond to insufficient permissions
+            //else
+            //    return String.Format("Nemáš dostatečná práva abys provedl tento příkaz. MedBot ti nepomůže.");
+            return "";
+        }
+
+        /// <summary>
         /// Decides which handler should operate the command
         /// </summary>
         /// <param name="methodType">Method type</param>
-        /// <param name="cmd">Command to execute</param>
+        /// <param name="command">Command to execute</param>
         /// <param name="sender">User who sent the command</param>
         /// <param name="args">Command arguments</param>
         /// <returns>String result</returns>
-        public static string ExecuteMethod(CommandType methodType, Command cmd, User sender, List<string> args)
+        private static string ExecuteCommandInternal(Command command, User sender, List<string> args)
         {
             string result = String.Empty;
 
-            switch (methodType)
+            switch (command.CommandType)
             {
                 case CommandType.Points:
-                    result = PointsHandler(sender, cmd, args);
+                    result = PointsHandler(sender, command, args);
                     break;
                 case CommandType.EXP:
-                    result = ExperienceHandler(sender, cmd, args);
+                    result = ExperienceHandler(sender, command, args);
                     break;
                 case CommandType.Internal:
-                    result = Task.Run(() => InternalHandler(sender, cmd, args)).Result;
+                    result = Task.Run(() => InternalHandler(sender, command, args)).Result;
                     break;
             }
 

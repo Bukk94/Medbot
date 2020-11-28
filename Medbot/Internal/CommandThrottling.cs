@@ -7,7 +7,6 @@ namespace Medbot.Internal
 {
     internal class CommandThrottling
     {
-        private readonly Command command;
         private readonly Timer throttlingTimer;
         private readonly bool noCooldown;
         private bool cooldownActive;
@@ -19,10 +18,9 @@ namespace Medbot.Internal
         /// <summary>
         /// Creates an instance of Command throttler which can check if the command is allowed to be executed
         /// </summary>
-        internal CommandThrottling(TimeSpan interval, Command cmd)
+        internal CommandThrottling(TimeSpan interval)
         {
             ThrottlingInterval = interval;
-            this.command = cmd;
 
             if (interval == null || interval.TotalMilliseconds <= 0)
             {
@@ -41,7 +39,7 @@ namespace Medbot.Internal
         /// Determines if the command is allowed to be executed
         /// </summary>
         /// <returns>Bool if command is allowed to execute</returns>
-        internal bool AllowedToExecute()
+        internal bool AllowedToExecute(Command command)
         {
             if (this.noCooldown)
                 return true;
@@ -51,6 +49,7 @@ namespace Medbot.Internal
 
             if (this.cooldownActive)
             {
+                // TODO: Improve this to not take command as a parameter
                 OnCommandThrottled?.Invoke(this, new OnCommandThrottledArgs { Command = command, Interval = ThrottlingInterval });
                 return false;
             }
