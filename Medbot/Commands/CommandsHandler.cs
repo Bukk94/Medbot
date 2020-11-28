@@ -233,13 +233,13 @@ namespace Medbot.Commands
                         int random = rand.Next(1, 100);
 
                         // 99-100 - triple reward
-                        if (random > 100 - BotDictionary.GambleBonusWinPercentage)
+                        if (random > 100 - _botDataManager.BotSettings.GambleBonusWinPercentage)
                         {
                             sender.AddPoints(gambleValue * 3);
                             _usersManager.SaveData();
                             return String.Format(command.SuccessMessage, gambleValue * 3, PointsManager.CurrencyUnits, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural);
                         }
-                        else if (random > 100 - BotDictionary.GambleWinPercentage - BotDictionary.GambleBonusWinPercentage)
+                        else if (random > 100 - _botDataManager.BotSettings.GambleWinPercentage - _botDataManager.BotSettings.GambleBonusWinPercentage)
                         { // 79-98 - double reward
                             sender.AddPoints(gambleValue * 2);
                             _usersManager.SaveData();
@@ -559,7 +559,7 @@ namespace Medbot.Commands
                             return String.Format(command.SuccessMessage, PointsManager.CurrencyNamePlural,
                                                  String.Join(", ", FormLeaderboard(fullPointsLeaderboard)),
                                                  String.Join(", ", FormLeaderboard(fullXPLeaderboard)),
-                                                 BotDictionary.LeaderboardTopNumber);
+                                                 _botDataManager.BotSettings.LeaderboardTopNumber);
                         }
                         else
                         { // Form specific leaderboard
@@ -570,7 +570,7 @@ namespace Medbot.Commands
                                     throw new PointsException("Leaderboard doesn't contain any records");
 
                                 // Success 2 params - {0: currency plural} {1: list of top users} 
-                                return String.Format(command.SuccessMessage, PointsManager.CurrencyNamePlural, String.Join(", ", FormLeaderboard(fullLeaderboard)), BotDictionary.LeaderboardTopNumber);
+                                return String.Format(command.SuccessMessage, PointsManager.CurrencyNamePlural, String.Join(", ", FormLeaderboard(fullLeaderboard)), _botDataManager.BotSettings.LeaderboardTopNumber);
                             }
                             else if (args[0].ToLower().Equals("xp") || args[0].ToLower().Equals("exp") || args[0].ToLower().Equals("level"))
                             {
@@ -579,7 +579,7 @@ namespace Medbot.Commands
                                     throw new PointsException("Leaderboard doesn't contain any records");
 
                                 // Success 2 params - {0: xp} {1: list of top users} 
-                                return String.Format(command.SuccessMessage, "xp", String.Join(", ", FormLeaderboard(fullLeaderboard)), BotDictionary.LeaderboardTopNumber);
+                                return String.Format(command.SuccessMessage, "xp", String.Join(", ", FormLeaderboard(fullLeaderboard)), _botDataManager.BotSettings.LeaderboardTopNumber);
                             }
                             else
                             { // Arguments doens't match
@@ -644,7 +644,7 @@ namespace Medbot.Commands
         {
             List<string> leaderboard = new List<string>();
 
-            foreach (TempUser u in fullLeaderboard.Take(BotDictionary.LeaderboardTopNumber))
+            foreach (TempUser u in fullLeaderboard.Take(_botDataManager.BotSettings.LeaderboardTopNumber))
             {
                 leaderboard.Add(String.Format("{0} ({1})", u.Username, u.Data));
             }

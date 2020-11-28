@@ -299,14 +299,15 @@ namespace Medbot
         }
 
         // TODO: This method do too much, it needs some separation
-        internal void LoadBotSettings()
+        internal BotSettings LoadBotSettings()
         {
+            var botSettings = new BotSettings();
             lock (settingsLock)
             {
                 if (!File.Exists(SettingsPath))
                 {
                     PointsManager.LoadDefaultCurrencyDetails();
-                    return;
+                    return botSettings;
                 }
 
                 try
@@ -314,15 +315,15 @@ namespace Medbot
                     XDocument dataRaw = XDocument.Load(SettingsPath);
                     var data = dataRaw.Element("Medbot").Element("Settings");
 
-                    BotDictionary.LeaderboardTopNumber = data.Element("LeaderboardTopNumber") != null ? int.Parse(data.Element("LeaderboardTopNumber").Value) : 3;
-                    BotDictionary.GambleWinPercentage = data.Element("GambleWinPercentage") != null ? int.Parse(data.Element("GambleWinPercentage").Value) : 20;
-                    BotDictionary.GambleBonusWinPercentage = data.Element("GambleBonusWinPercentage") != null ? int.Parse(data.Element("GambleBonusWinPercentage").Value) : 2;
+                    botSettings.LeaderboardTopNumber = int.Parse(data.Element(nameof(BotSettings.LeaderboardTopNumber))?.Value ?? "3");
+                    botSettings.GambleWinPercentage = int.Parse(data.Element(nameof(BotSettings.GambleWinPercentage))?.Value ?? "20");
+                    botSettings.GambleBonusWinPercentage = int.Parse(data.Element(nameof(BotSettings.GambleBonusWinPercentage))?.Value ?? "2");
 
                     // Percentage is incorrectly set, exceeding 100%. Load default
-                    if (BotDictionary.GambleBonusWinPercentage + BotDictionary.GambleWinPercentage >= 100)
+                    if (botSettings.GambleBonusWinPercentage + botSettings.GambleWinPercentage >= 100)
                     {
-                        BotDictionary.GambleWinPercentage = 20;
-                        BotDictionary.GambleBonusWinPercentage = 2;
+                        botSettings.GambleWinPercentage = 20;
+                        botSettings.GambleBonusWinPercentage = 2;
                     }
 
                     // Load currency details
@@ -339,6 +340,8 @@ namespace Medbot
                     PointsManager.LoadDefaultCurrencyDetails();
                 }
             }
+
+            return botSettings;
         }
 
         /// <summary>
@@ -453,8 +456,6 @@ namespace Medbot
         private DictionaryStrings LoadDefaultDictionary()
         {
             // TODO: Load proper defaults
-            BotDictionary.LeaderboardTopNumber = 3;
-
             return new DictionaryStrings
             {
                 Yes = "Yes",

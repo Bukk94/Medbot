@@ -19,12 +19,14 @@ namespace Medbot.Internal
 
         internal DictionaryStrings BotDictionary { get; private set; }
 
+        internal BotSettings BotSettings { get; set; }
+
         public BotDataManager()
         {
             _filesControl = new FilesControl();
 
             _filesControl.LoadLoginCredentials();
-            _filesControl.LoadBotSettings();
+            this.BotSettings = _filesControl.LoadBotSettings();
             this.BotDictionary = _filesControl.LoadBotDictionary();
             this.BotIntervals = _filesControl.LoadBotIntervals();
         }
