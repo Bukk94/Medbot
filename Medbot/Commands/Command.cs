@@ -75,12 +75,12 @@ namespace Medbot.Commands
             this.ModeratorPermissionRequired = modPermission;
             this.SendWhisper = sendWhisp;
             this._cooldown = cd;
-            this._throttler = new CommandThrottling(this._cooldown, this);
+            this._throttler = new CommandThrottling(this._cooldown);
         }
 
         public bool IsUserAllowedToExecute(User sender)
         {
-            return CheckCommandPermissions(sender) && _throttler.AllowedToExecute();
+            return CheckCommandPermissions(sender) && _throttler.AllowedToExecute(this);
         }
 
         /// <summary>
