@@ -12,14 +12,13 @@
 
 - Bot loaded intervals are dictionary with string key. This should be enum to better access the value
 
-- Implement better logging, like NLog
-
 ### NEW STUFF ###
 - Allow turn on/off bot's welcome/goodbye messages
 - Improve readme file with some docs how to setup the bot
 - Activate Exp & Point timer only if broadcaster is live
 - Command like !FollowerInfo to get follower info
 - Create separate project with own Twitch Helix API
+- Upload data to cloud for shared experience
 
 ### VERIFY ###
 - Sending whisper messages

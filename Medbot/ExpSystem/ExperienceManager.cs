@@ -4,11 +4,13 @@ using System.Threading;
 using Medbot.Events;
 using Medbot.Internal;
 using Medbot.Users;
+using Microsoft.Extensions.Logging;
 
 namespace Medbot.ExpSystem
 {
     internal class ExperienceManager
     {
+        private readonly ILogger _logger;
         private readonly BotDataManager _botDataManager;
         private readonly UsersManager _usersManager;
         private readonly TimeSpan _idleTime;
@@ -44,6 +46,8 @@ namespace Medbot.ExpSystem
         /// <summary>
         /// Experiences class manages exp awarding and timer ticking
         /// </summary>
+        /// <param name="usersManager">User manager instance to get access to user information</param>
+        /// <param name="botDataManager">Bot data manager instance to get access to bot information</param>
         /// <param name="interval">The time interval between each tick in minutes</param>
         /// <param name="activeExp">Number of experience gained by active users</param>
         /// <param name="idleExp">Number of experience gained by idle users</param>
@@ -52,6 +56,8 @@ namespace Medbot.ExpSystem
         internal ExperienceManager(BotDataManager botDataManager, UsersManager usersManager, 
                                    TimeSpan interval, int activeExp, int idleExp, TimeSpan idleTime, bool autostart = false)
         {
+            _logger = Logging.GetLogger<ExperienceManager>();
+
             _usersManager = usersManager;
             _botDataManager = botDataManager;
             this.ExperienceTickInterval = (int)interval.TotalMilliseconds;
@@ -75,7 +81,7 @@ namespace Medbot.ExpSystem
         {
             if (TimerRunning)
             {
-                Console.WriteLine("Experience timer is already running");
+                _logger.LogWarning("Can't start the experience timer! Timer is already running!");
                 return;
             }
 
@@ -84,7 +90,7 @@ namespace Medbot.ExpSystem
 
             this._timer.Change(0, this.ExperienceTickInterval);
             this.TimerRunning = true;
-            Console.WriteLine("Starting experience timer");
+            _logger.LogInformation("Experience timer started.");
         }
 
         /// <summary>
@@ -94,13 +100,13 @@ namespace Medbot.ExpSystem
         {
             if (!TimerRunning)
             {
-                Console.WriteLine("Timer is not running");
+                _logger.LogWarning("Can't stop the experience timer! Timer is not running!");
                 return;
             }
 
             this._timer.Change(Timeout.Infinite, int.MaxValue);
             this.TimerRunning = false;
-            Console.WriteLine("Stopping experience timer");
+            _logger.LogInformation("Experience timer stopped.");
         }
 
         /// <summary>
@@ -111,7 +117,7 @@ namespace Medbot.ExpSystem
             if (!_usersManager.IsAnyUserOnline)
                 return;
 
-            Console.WriteLine("Timer Experience ticked for " + _usersManager.TotalUsersOnline + " users");
+            _logger.LogInformation("Experience Timer ticked for {count} users.", _usersManager.TotalUsersOnline);
 
             foreach (var user in _usersManager.OnlineUsers)
             {
@@ -132,7 +138,7 @@ namespace Medbot.ExpSystem
                 if (newRank && !String.IsNullOrEmpty(_botDataManager.BotDictionary.NewRankMessage))
                     OnRankUp?.Invoke(this, new OnRankUpArgs { User = user, NewRank = user.UserRank });
 
-                Console.WriteLine(user.DisplayName + " gained experience");
+                _logger.LogInformation("{user} gained experience.", user.DisplayName);
             }
 
             _usersManager.SaveData();

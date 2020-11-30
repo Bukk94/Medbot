@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
-using System.Reflection;
 using System.Text;
 using System.Threading;
 using Medbot.Commands;
 using Medbot.ExpSystem;
-using Medbot.LoggingNS;
 using Medbot.Internal;
 using Medbot.Events;
 using System.Threading.Tasks;
@@ -16,6 +14,7 @@ using System.Diagnostics;
 using Medbot.Points;
 using Medbot.Users;
 using Medbot.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace Medbot
 {
@@ -31,6 +30,7 @@ namespace Medbot
         private readonly BotDataManager _botDataManager;
         private readonly CommandsHandler _commandsHandler;
         private readonly MessageThrottling throttler;
+        private readonly ILogger _logger;
         private TcpClient tcpClient;
         private StreamWriter writer;
         private StreamReader reader;
@@ -96,10 +96,11 @@ namespace Medbot
         public event EventHandler<OnMessageArgs> OnConsoleOuput;
         #endregion
 
-        // TODO: Consider backup uploading
         public BotClient()
         {
             UseColoredMessages = true;
+
+            _logger = Logging.GetLogger<BotClient>();
 
             _botDataManager = new BotDataManager();
             _usersManager = new UsersManager(_botDataManager);
@@ -153,7 +154,7 @@ namespace Medbot
         {
             if (IsConnectionAlive)
             {
-                Console.WriteLine("Bot is already running");
+                _logger.LogWarning("Cant start the bot! Bot is already running.");
                 return;
             }
 
@@ -175,7 +176,7 @@ namespace Medbot
             this.uptime.Start();
             this.uptimeTimer.Change(0, 1000);
             IsBotRunning = true;
-            Console.WriteLine("Bot started");
+            _logger.LogInformation("Bot started.");
         }
 
         /// <summary>
@@ -185,7 +186,7 @@ namespace Medbot
         {
             if (!IsConnectionAlive)
             {
-                Console.WriteLine("Bot is not running");
+                _logger.LogWarning("Can't stop the bot! Bot is not running.");
                 return;
             }
 
@@ -203,7 +204,7 @@ namespace Medbot
             IsBotRunning = false;
             this.uptime.Stop();
             this.uptimeTimer.Change(Timeout.Infinite, 0);
-            Console.WriteLine("Bot has been stopped");
+            _logger.LogInformation("Bot has been stopped.");
         }
 
         /// <summary>
@@ -213,7 +214,7 @@ namespace Medbot
         {
             if (!Login.IsLoginCredentialsValid)
             {
-                Console.Error.WriteLine("Can't connect the bot - Invalid credentials!");
+                _logger.LogError("Can't connect the bot - Invalid credentials!");
                 return false;
             }
 
@@ -235,15 +236,13 @@ namespace Medbot
 
                 // TODO: Make welcome message optional
                 //SendChatMessage(BotDictionary.WelcomeMessage);
-                Logging.LogEvent(MethodBase.GetCurrentMethod(), "Bot has successfully connected to Twitch account and joined the channel " + Login.Channel);
+                _logger.LogInformation("Bot has successfully connected to Twitch account and joined the channel {channel}.", Login.Channel);
 
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error occured during connecting");
-                Console.WriteLine(ex);
-                Logging.LogError(this, MethodBase.GetCurrentMethod(), "Error occured during connecting: " + ex.ToString());
+                _logger.LogError("Error occured during bot connecting.\n{ex}", ex);
             }
 
             return false;
@@ -270,13 +269,13 @@ namespace Medbot
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                _logger.LogError("Error occurred during bot disconnection.\n{ex}", ex);
             }
         }
 
         private void ConsoleAppendText(string text)
         {
-            Console.WriteLine(text);
+            _logger.LogInformation(text);
             OnConsoleOuput?.Invoke(this, new OnMessageArgs { Message = text });
         }
 
@@ -349,7 +348,7 @@ namespace Medbot
             }
             catch (Exception ex)
             {
-                Logging.LogError(this, MethodBase.GetCurrentMethod(), ex.ToString());
+                _logger.LogError("Fatal error occured in bot timer mechanism!\n{ex}", ex);
             }
         }
 
@@ -388,15 +387,15 @@ namespace Medbot
         /// <summary>
         /// Delivers command results to chat or whisper, depending on command's settings
         /// </summary>
-        /// <param name="cmd">Executed command</param>
-        /// <param name="result">Command results</param>
+        /// <param name="command">Executed command</param>
+        /// <param name="commandResultsToSend">Command results</param>
         /// <param name="sender">User who send the command</param>
-        private void DeliverCommandResults(Command cmd, string result, User sender)
+        private void DeliverCommandResults(Command command, string commandResultsToSend, User sender)
         {
-            if (cmd.SendWhisper)
-                SendPrivateMessage(result, sender.Username);
+            if (command.SendWhisper)
+                SendPrivateMessage(commandResultsToSend, sender.Username);
             else
-                SendChatMessage(result);
+                SendChatMessage(commandResultsToSend);
         }
 
         /// <summary>
@@ -447,7 +446,7 @@ namespace Medbot
             // :sender!sender@sender.tmi.twitch.tv PRIVMSG #channel :message
             if (!IsConnectionAlive)
             {
-                Console.WriteLine("Cannot send chat message, connection is NOT alive");
+                _logger.LogWarning("Cannot send chat message, connection is NOT alive! Message '{msg}' was not send.", msg);
                 return;
             }
 
@@ -471,9 +470,10 @@ namespace Medbot
             // User must be present in the chat room! Otherwise whisp won't be sent
             if (!IsConnectionAlive)
             {
-                Console.WriteLine("Cannot send whisp message, connection is NOT alive");
+                _logger.LogWarning("Cannot send whisper message, connection is NOT alive! Whisper '{msg}' to {user} was not send.", user, msg);
                 return;
             }
+
             if (!throttler.AllowToSendMessage(msg))
                 return;
 
@@ -482,9 +482,7 @@ namespace Medbot
             writer.WriteLine(String.Format("{0}/w {1} {2}", chatMessagePrefix, user.ToLower(), msg));
             writer.Flush();
             ConsoleAppendText(String.Format("{0}/w {1} {2}", chatMessagePrefix, user.ToLower(), msg));
-            Console.WriteLine("Private message sent");
         }
-
 
         private async Task<bool> IsBroadcasterLive()
         {
@@ -499,7 +497,6 @@ namespace Medbot
         {
             OnUptimeTick?.Invoke(this, uptime.Elapsed);
         }
-
 
         private void ExperienceManager_OnRankUp(object sender, OnRankUpArgs e)
         {

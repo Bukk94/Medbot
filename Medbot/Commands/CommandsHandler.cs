@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Reflection;
-using Medbot.LoggingNS;
 using Medbot.Followers;
 using Medbot.ExpSystem;
 using Medbot.Exceptions;
@@ -11,11 +9,13 @@ using Medbot.Internal;
 using Medbot.Points;
 using Medbot.Users;
 using Medbot.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace Medbot.Commands
 {
     internal class CommandsHandler
     {
+        private readonly ILogger _logger;
         private readonly BotClient botClient;
         private readonly ExperienceManager _experienceManager;
         private readonly UsersManager _usersManager;
@@ -23,10 +23,12 @@ namespace Medbot.Commands
         private readonly FollowersManager _followersManager;
 
         // TODO: Stop using BotClient object
-        public CommandsHandler(UsersManager usersManager, BotDataManager botDataManager, ExperienceManager exp, BotClient bot)
+        public CommandsHandler(UsersManager usersManager, BotDataManager botDataManager, ExperienceManager experienceManager, BotClient bot)
         {
-            _experienceManager = exp;
+            _logger = Logging.GetLogger<CommandsHandler>();
+
             botClient = bot;
+            _experienceManager = experienceManager;
             _usersManager = usersManager;
             _botDataManager = botDataManager;
 
@@ -45,7 +47,7 @@ namespace Medbot.Commands
             if (commandToExecute.IsUserAllowedToExecute(sender))
                 return ExecuteCommandInternal(commandToExecute, sender, args);
 
-            Logging.LogEvent(MethodBase.GetCurrentMethod(), $"User {sender.DisplayName} tried to execute command {commandToExecute.CommandFormat} without having permissions to do so!");
+            _logger.LogInformation("User {sender} tried to execute command {command} without having permissions to do so!", sender.DisplayName, commandToExecute.CommandFormat);
             return _botDataManager.BotDictionary.InsufficientPermissions;
         }
 
@@ -73,6 +75,7 @@ namespace Medbot.Commands
                     break;
             }
 
+            _logger.LogInformation("Command {command} executed by {user}.", command.CommandFormat, sender.DisplayName);
             return result;
         }
 
@@ -91,12 +94,9 @@ namespace Medbot.Commands
                     // Get points info !med |  0 input args
                     if (sender == null)
                     { // Fail: 5 params: {0:Currency name} {1:Currency plural} {2:Currency units} {3:Number of points} {4:User to which add points}
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), String.Format("{0} - Sender is null", command.CommandFormat));
+                        _logger.LogError("Failed to execute command {command}. Sender is null!", command.CommandFormat);
                         return String.Format(command.FailMessage, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits, "N/A", "N/A");
                     }
-
-                    Logging.LogEvent(MethodBase.GetCurrentMethod(),
-                                                 String.Format("{0}  Args: None # Points printed for user {1} # Value: {2}", command.CommandFormat, sender.DisplayName, sender.Points));
 
                     // Success: 4 params: {0:User} {1:Total} {2:Currency plural} {3:Currency units}
                     return String.Format(command.SuccessMessage, sender.DisplayName, sender.Points, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits);
@@ -107,7 +107,7 @@ namespace Medbot.Commands
                     try
                     {
                         if (args.Count < 2)
-                            throw new IndexOutOfRangeException("Command " + command.CommandFormat + "should contain some arguments. Found " + args.Count);
+                            throw new IndexOutOfRangeException($"Command {command.CommandFormat} should contain some arguments. Found {args.Count}.");
 
                         if (long.Parse(args[0]) <= 0)
                         { // Can't add 0 or negative amount
@@ -125,15 +125,15 @@ namespace Medbot.Commands
                             receiver.AddPoints(long.Parse(args[0]));
                             _usersManager.SaveData();
                         }
-                        Logging.LogEvent(MethodBase.GetCurrentMethod(),
-                                                 String.Format("{0}  Args: {1}, {2} - Points successfully added", command.CommandFormat, args[0], args[1]));
+
+                        _logger.LogInformation("Sucessfully added {total} points to {sender}.", args[0], args[1]);
 
                         // Success: 4 params: {0:User} {1:Number of points} {2:Currency plural} {3:Currency units}
                         return String.Format(command.SuccessMessage, args[1], args[0], PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits);
                     }
                     catch (Exception ex)
                     {
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
+                        _logger.LogError("Critical error occurred during points addition.\n{ex}", ex);
 
                         // Fail: 5 params: {0:Currency name} {1:Currency plural} {2:Currency units} {3:Number of points} {4:User to which add points} 
                         return String.Format(command.FailMessage, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits, args[0], receiver != null ? receiver.DisplayName : args[1]);
@@ -146,7 +146,7 @@ namespace Medbot.Commands
                     try
                     {
                         if (args.Count < 2)
-                            throw new IndexOutOfRangeException("Command " + command.CommandFormat + "should contain some arguments. Found " + args.Count);
+                            throw new IndexOutOfRangeException($"Command {command.CommandFormat} should contain some arguments. Found {args.Count}.");
 
                         if (long.Parse(args[0]) <= 0)
                         { // Can't remove 0 or negative amount
@@ -165,15 +165,14 @@ namespace Medbot.Commands
                             _usersManager.SaveData();
                         }
 
-                        Logging.LogEvent(MethodBase.GetCurrentMethod(),
-                                                 String.Format("{0}  Args: {1}, {2} - Points successfully removed", command.CommandFormat, args[0], args[1]));
+                        _logger.LogInformation("Sucessfully removed {total} points from {sender}.", args[0], args[1]);
 
                         // Success: 4 params: {0:User} {1:Number of points} {2:Currency plural} {3:Currency units}
                         return String.Format(command.SuccessMessage, args[1], args[0], PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits);
                     }
                     catch (Exception ex)
                     {
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
+                        _logger.LogError("Critical error occurred during points removal.\n{ex}", ex);
 
                         // Fail: 5 params: {0:Currency name} {1:Currency plural} {2:Currency units} {3:Number of points} {4:User to which remove points} 
                         return String.Format(command.FailMessage, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits, args[0], targetUser != null ? targetUser.DisplayName : args[1]);
@@ -184,7 +183,8 @@ namespace Medbot.Commands
                     try
                     {
                         if (args.Count < 2)
-                            throw new IndexOutOfRangeException("Command " + command.CommandFormat + "should contain some arguments. Found " + args.Count);
+                            throw new IndexOutOfRangeException($"Command {command.CommandFormat} should contain some arguments. Found {args.Count}.");
+
                         if (sender == null)
                             throw new NullReferenceException("Something went wrong, sender is null");
 
@@ -197,8 +197,7 @@ namespace Medbot.Commands
 
                         _usersManager.Trade(long.Parse(args[0]), sender, target, args[1]);
 
-                        Logging.LogEvent(MethodBase.GetCurrentMethod(),
-                                                 String.Format("{0}  Args: {1}, {2} - Points successfully traded", command.CommandFormat, args[0], args[1]));
+                        _logger.LogInformation("{sender} successfully traded {count} points to {target}", sender.DisplayName, args[0], args[1]);
 
                         // Success: 6 params: {0:User} {1:Target User} {2:Number of points} {3:Currency units} {4:Currency name} {4: Currency plural}
                         return String.Format(command.SuccessMessage, sender.DisplayName, target != null ? target.DisplayName : args[1],
@@ -207,13 +206,13 @@ namespace Medbot.Commands
                     catch (PointsException ex)
                     {
                         // Fail 5 params: {0:Currency name} {1:Currency plural} {2:Currency units} {3:Number of points} {4:User to which remove points} 
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
+                        _logger.LogError("Error occurred during points trading.\n{ex}", ex);
                         return String.Format(command.FailMessage, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits, args[0], args[1]);
                     }
                     catch (Exception ex)
                     {
                         // Fail 5 params: {0:Currency name} {1:Currency plural} {2:Currency units} {3:Number of points} {4:User to which remove points} 
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
+                        _logger.LogError("Critical error occurred during points trading.\n{ex}", ex);
                         return String.Format(command.ErrorMessage, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits, args[0], args[1]);
                     }
 
@@ -221,13 +220,13 @@ namespace Medbot.Commands
                     try
                     {
                         if (args.Count < 1)
-                            throw new IndexOutOfRangeException("Command " + command.CommandFormat + "should contain some arguments. Found " + args.Count);
+                            throw new IndexOutOfRangeException($"Command {command.CommandFormat} should contain some arguments. Found {args.Count}.");
                         if (sender == null)
                             throw new NullReferenceException("Something went wrong, sender is null");
 
                         int gambleValue = int.Parse(args[0]);
                         if (gambleValue > sender.Points)
-                            throw new PointsException("User doesn't have enough points");
+                            throw new PointsException("User doesn't have enough points!");
 
                         Random rand = new Random(Guid.NewGuid().GetHashCode());
                         int random = rand.Next(1, 100);
@@ -254,12 +253,12 @@ namespace Medbot.Commands
                     catch (PointsException ex)
                     {
                         // Fail 4 params: {0: Number of points} {1:Currency Name} {2:Currency plural} {3:Currency units}
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
+                        _logger.LogError("Error occurred during gamble command.\n{ex}", ex);
                         return String.Format(command.ErrorMessage, args[0], PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits);
                     }
                     catch (Exception ex)
                     {
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
+                        _logger.LogError("Critical error occurred during gamble command.\n{ex}", ex);
                         return "";
                     }
             }
@@ -286,7 +285,8 @@ namespace Medbot.Commands
                     catch (Exception ex)
                     {
                         // Fail: 4 params: {0:User} {1:rank level} {2: rank name} {3: user's XP}
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
+                        _logger.LogError("Critical error occurred during rank command.\n{ex}", ex);
+
                         if (sender == null)
                             return String.Format(command.FailMessage, "N/A", "N/A", "N/A", "N/A");
 
@@ -313,7 +313,8 @@ namespace Medbot.Commands
                     catch (RanksException ex)
                     {
                         // Fail: 4 params: {0:User} {1:next rank level} {2:next rank name} {3: user's XP}
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
+                        _logger.LogError("Error occurred during rank information command.\n{ex}", ex);
+
                         if (sender == null)
                             return String.Format(command.FailMessage, "N/A", "N/A", "N/A", "N/A");
 
@@ -325,7 +326,8 @@ namespace Medbot.Commands
                     catch (Exception ex)
                     {
                         // Fail: 4 params: {0:User} {1:next rank level} {2:next rank name} {3: user's XP}
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
+                        _logger.LogError("Critical error occurred during rank information command.\n{ex}", ex);
+
                         if (sender == null)
                             return String.Format(command.FailMessage, "N/A", "N/A", "N/A", "N/A");
 
@@ -341,7 +343,7 @@ namespace Medbot.Commands
                     try
                     {
                         if (args.Count < 2)
-                            throw new IndexOutOfRangeException("Command " + command.CommandFormat + "should contain some arguments. Found " + args.Count);
+                            throw new IndexOutOfRangeException($"Command {command.CommandFormat} should contain some arguments. Found {args.Count}.");
 
                         if (long.Parse(args[0]) <= 0)
                         { // Can't add 0 or negative amount
@@ -364,15 +366,15 @@ namespace Medbot.Commands
 
                             _usersManager.SaveData();
                         }
-                        Logging.LogEvent(MethodBase.GetCurrentMethod(),
-                                                 String.Format("{0}  Args: {1}, {2} - Experience successfully added", command.CommandFormat, args[0], args[1]));
+
+                        _logger.LogInformation("Sucessfully added {total} experience points to {sender}.", args[0], args[1]);
 
                         // Success: 2 params: {0:User} {1:Number of points}
                         return String.Format(command.SuccessMessage, args[1], args[0]);
                     }
                     catch (Exception ex)
                     {
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
+                        _logger.LogError("Critical error occurred during experienece addition command.\n{ex}", ex);
 
                         // Fail: 1 param: {:User to which add points} 
                         return String.Format(receiver != null ? receiver.DisplayName : args[1]);
@@ -407,7 +409,8 @@ namespace Medbot.Commands
                     }
                     catch (Exception ex)
                     {
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
+                        _logger.LogError("Critical error occurred during last follower command.\n{ex}", ex);
+
                         return command.FailMessage;
                     }
 
@@ -442,7 +445,7 @@ namespace Medbot.Commands
                     }
                     catch (Exception ex)
                     {
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
+                        _logger.LogError("Critical error occurred during random command.\n{ex}", ex);
                         return command.FailMessage;
                     }
 
@@ -450,7 +453,7 @@ namespace Medbot.Commands
                     // !color on  !color off    | input args 1 {1: state}
                     if (args.Count != 1)
                     {
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), "ERROR while switching colors on/off. Arguments doesn't match");
+                        _logger.LogError("Error occurred while switching colors on/off. Arguments doesn't match!");
                         return command.ErrorMessage;
                     }
 
@@ -463,7 +466,7 @@ namespace Medbot.Commands
                         }
 
                         botClient.UseColoredMessages = true;
-                        Logging.LogEvent(MethodBase.GetCurrentMethod(), "Colored message were turned ON");
+                        _logger.LogInformation("Bot colored messages were turned ON.");
                         return command.SuccessMessage;
                     }
                     else if (args[0].ToLower().Equals("off"))
@@ -475,12 +478,12 @@ namespace Medbot.Commands
                         }
 
                         botClient.UseColoredMessages = false;
-                        Logging.LogEvent(MethodBase.GetCurrentMethod(), "Colored message were turned OFF");
+                        _logger.LogInformation("Bot colored messages were turned OFF.");
                         return command.FailMessage; // FailMessage is here used for turning off
                     }
                     else
                     { // Error
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), "ERROR while switching colors on/off. Arguments doesn't match");
+                        _logger.LogError("Error occurred while switching colors on/off. Arguments doesn't match!");
                         return String.Format(command.ErrorMessage);
                     }
 
@@ -536,8 +539,8 @@ namespace Medbot.Commands
                             return command.FailMessage;
                         }
                     }
-                    // there are more than 1 args, throw errro
-                    Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), "ERROR while listing all commands. Arguments doesn't match");
+                    // there are more than 1 args, throw error
+                    _logger.LogError("Error occurred while listing all commands. Arguments doesn't match!");
                     return String.Format(command.ErrorMessage);
 
                 case CommandHandlerType.Leaderboard:
@@ -591,7 +594,8 @@ namespace Medbot.Commands
                     }
                     catch (Exception ex)
                     {
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), "ERROR while forming leaderboard!\n" + ex.ToString());
+                        _logger.LogError("Critical error occurred while forming leaderboard.\n{ex}", ex);
+
                         return command.ErrorMessage;
                     }
                 case CommandHandlerType.FollowAge:
@@ -624,7 +628,8 @@ namespace Medbot.Commands
                     }
                     catch (Exception ex)
                     {
-                        Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), "ERROR while getting follower's age\n" + ex.ToString());
+                        _logger.LogError("Critical error occurred while getting follower's age.\n{ex}", ex);
+
                         return command.ErrorMessage;
                     }
 

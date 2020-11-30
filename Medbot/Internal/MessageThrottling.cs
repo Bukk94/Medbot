@@ -1,16 +1,17 @@
 ﻿using Medbot.Events;
-using Medbot.LoggingNS;
 using Medbot.Enums;
 using System;
 using System.Timers;
+using Microsoft.Extensions.Logging;
 
 namespace Medbot.Internal
 {
     internal class MessageThrottling
     {
+        private readonly ILogger _logger;
         private readonly BotDataManager _botDataManager;
         private readonly Timer _throttlingTimer;
-        private int messagesSent;
+        private int _messagesSent;
 
         /// <summary>
         /// Activates when message is throttled
@@ -42,9 +43,11 @@ namespace Medbot.Internal
         /// </summary>
         internal MessageThrottling(BotDataManager botDataManager)
         {
+            _logger = Logging.GetLogger<MessageThrottling>();
+
             _botDataManager = botDataManager;
             _throttlingTimer = new Timer();
-            messagesSent = 0;
+            _messagesSent = 0;
             _throttlingTimer.Interval = ThrottlingInterval.TotalMilliseconds;
             _throttlingTimer.Elapsed += ThrottlingTimer_Tick;
         }
@@ -62,7 +65,7 @@ namespace Medbot.Internal
             // Message is empty or exceeds maximum characater limit
             if (String.IsNullOrEmpty(message) || message.Length >= MaxCharacterLimit)
             {
-                Logging.LogEvent(System.Reflection.MethodBase.GetCurrentMethod(), "Message was THROTTLED. Message was empty or exceeds maximum character limit: " + message);
+                _logger.LogInformation("Message was THROTTLED. Message was empty or exceeds maximum character limit: {message}.", message);
 
                 OnMessageThrottled?.Invoke(this, new OnMessageThrottledArgs
                 {
@@ -74,9 +77,10 @@ namespace Medbot.Internal
             }
 
             // Check messages limit
-            if ((_botDataManager.IsBotModerator && messagesSent >= MaxModeratorMessagesLimit) || (!_botDataManager.IsBotModerator && messagesSent >= MaxMessagesLimit))
+            if ((_botDataManager.IsBotModerator && _messagesSent >= MaxModeratorMessagesLimit) || (!_botDataManager.IsBotModerator && _messagesSent >= MaxMessagesLimit))
             {
-                Logging.LogEvent(System.Reflection.MethodBase.GetCurrentMethod(), "Message was THROTTLED: " + message);
+                _logger.LogInformation("Message was THROTTLED: {message}.", message);
+
                 OnMessageThrottled?.Invoke(this, new OnMessageThrottledArgs
                 {
                     Interval = ThrottlingInterval,
@@ -86,7 +90,7 @@ namespace Medbot.Internal
                 return false;
             }
 
-            messagesSent++;
+            _messagesSent++;
             return true;
         }
 
@@ -96,7 +100,7 @@ namespace Medbot.Internal
         void ThrottlingTimer_Tick(object sender, ElapsedEventArgs e)
         {
             _throttlingTimer.Stop();
-            messagesSent = 0;
+            _messagesSent = 0;
         }
     }
 }

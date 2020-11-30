@@ -1,6 +1,7 @@
 ﻿using Medbot.Events;
 using Medbot.Exceptions;
 using Medbot.Internal;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace Medbot.Users
 {
     internal class UsersManager
     {
+        private readonly ILogger _logger;
         private readonly BotDataManager _botDataManager;
 
         /// <summary>
@@ -39,6 +41,7 @@ namespace Medbot.Users
 
         public UsersManager(BotDataManager botDataManager)
         {
+            _logger = Logging.GetLogger<UsersManager>();
             _botDataManager = botDataManager;
 
             OnlineUsers = new List<User>();
@@ -46,18 +49,18 @@ namespace Medbot.Users
         }
 
         /// <summary>
-        /// Tries to add user to Online List, if already exists, find him and return
+        /// Try to add user to Online List, if already exists, find him and return
         /// </summary>
         /// <param name="chatLine">Full chat line</param>
         /// <returns>Sender user</returns>
         public User JoinUser(string chatLine)
         {
-            string userName = Parsing.ParseUsername(chatLine);
+            string username = Parsing.ParseUsername(chatLine);
             long userId = Parsing.ParseUserId(chatLine);
 
-            if (!OnlineUsers.Any(x => x.Username == userName))
+            if (!OnlineUsers.Any(x => x.Username == username))
             { // User is not in the list
-                var newUser = new User(userName)
+                var newUser = new User(username)
                 {
                     ID = userId
                 };
@@ -66,33 +69,32 @@ namespace Medbot.Users
                 OnlineUsers.Add(newUser);
 
                 OnUserJoined?.Invoke(this, new OnUserArgs { User = newUser });
-                Console.WriteLine("User " + userName + " JOINED");
+                _logger.LogInformation("[JOIN] {name} joined the broadcast!", username);
                 return newUser;
             }
 
-            return FindOnlineUser(userName);
+            return FindOnlineUser(username);
         }
 
         /// <summary>
         /// User disconnected, remove from OnlineUsers and save all points
         /// </summary>
-        /// <param name="user"></param>
-        public void DisconnectUser(string user)
+        /// <param name="username"></param>
+        public void DisconnectUser(string username)
         {
-            var disconnectingUser = FindOnlineUser(user);
+            var disconnectingUser = FindOnlineUser(username);
             if (disconnectingUser == null)
                 return;
 
             SaveData();
             // TODO: Pass object to remove method?
-            OnlineUsers.RemoveAll(x => x.Username == user);
+            OnlineUsers.RemoveAll(x => x.Username == username);
             OnUserDisconnected?.Invoke(this, new OnUserArgs { User = disconnectingUser });
-            Console.WriteLine("User " + user + " LEFT");
+            _logger.LogInformation("[DISCONNECT] {name} left the broadcast!", username);
         }
 
-
         /// <summary>
-        /// Trades user points. If fail, throws PointsException
+        /// Trades user points. If fail occurres, throws PointsException
         /// </summary>
         /// <param name="pointsToTrade"></param>
         /// <exception cref="PointsException">When user doesn't have enough points</exception>

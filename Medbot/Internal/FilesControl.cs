@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Xml.Linq;
-using Medbot.LoggingNS;
 using Medbot.Internal;
 using Medbot.Commands;
-using System.Reflection;
 using Medbot.Points;
 using Medbot.Users;
 using Medbot.Enums;
 using Medbot.ExpSystem;
 using Medbot.Internal.Models;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Medbot
 {
     internal class FilesControl
     {
-        private readonly Object fileLock = new Object();
-        private readonly Object settingsLock = new Object();
-        private readonly Object dictionaryLock = new Object();
+        private readonly ILogger _logger;
+        private readonly object fileLock = new object();
+        private readonly object settingsLock = new object();
+        private readonly object dictionaryLock = new object();
         private readonly LeaderboardComparer LeaderboardComparer;
 
         public string SettingsPath => Path.Combine(Directory.GetCurrentDirectory(), "Settings.xml");
@@ -31,6 +31,7 @@ namespace Medbot
 
         public FilesControl()
         {
+            _logger = Logging.GetLogger<FilesControl>();
             LeaderboardComparer = new LeaderboardComparer();
         }
 
@@ -38,7 +39,7 @@ namespace Medbot
         {
             if (!File.Exists(CommandsPath))
             {
-                Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), "FAILED to load commands. File not found");
+                _logger.LogError("Failed to load commands. Commands file not found at '{path}'.", CommandsPath);
                 return null;
             }
             
@@ -74,11 +75,11 @@ namespace Medbot
                     }
                 }
 
-                Logging.LogEvent(MethodBase.GetCurrentMethod(), "Commands Loaded");
+                _logger.LogInformation("Commands loaded successfully.");
             }
             catch (Exception ex)
             {
-                Logging.LogError(typeof(CommandsHandler), MethodBase.GetCurrentMethod(), ex.ToString());
+                _logger.LogError("Fatal error occurred during loading commands.\n{ex}", ex);
                 return null;
             }
 
@@ -94,7 +95,7 @@ namespace Medbot
 
             if (!File.Exists(RanksPath))
             {
-                Logging.LogError(this, System.Reflection.MethodBase.GetCurrentMethod(), "FAILED to load ranks. File not found.");
+                _logger.LogError("Loading ranks failed. File not found at '{path}'!", RanksPath);
                 return ranks;
             }
 
@@ -111,7 +112,7 @@ namespace Medbot
                 }
                 catch (Exception ex)
                 {
-                    Logging.LogError(this, System.Reflection.MethodBase.GetCurrentMethod(), ex.ToString());
+                    _logger.LogError("Fatal error occurred during loading ranks.\n{ex}", ex);
                     continue;
                 }
             }
@@ -127,11 +128,10 @@ namespace Medbot
         {
             lock (fileLock)
             {
-                // Loading
-                Console.WriteLine("LOADING user profile " + user.DisplayName);
+                _logger.LogInformation("Loading user profile '{user}'.", user.DisplayName);
                 if (!File.Exists(DataPath))
                 {
-                    Logging.LogError(typeof(FilesControl), System.Reflection.MethodBase.GetCurrentMethod(), "Data loading of user" + user.DisplayName + " FAILED. FILE NOT FOUND.");
+                    _logger.LogError("Loading data for user {user} failed. File not found at '{path}'!", user.DisplayName, DataPath);
                     return user;
                 }
 
@@ -156,8 +156,7 @@ namespace Medbot
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex);
-                    Logging.LogError(typeof(FilesControl), MethodBase.GetCurrentMethod(), ex.ToString());
+                    _logger.LogError("Fatal error occurred during loading user data.\n{ex}", ex);
                 }
             }
 
@@ -175,7 +174,7 @@ namespace Medbot
             lock (fileLock)
             {
                 // Saving
-                Console.WriteLine("SAVING DATA");
+                _logger.LogInformation("SAVING DATA...");
 
                 // File exists, load it, apply new values and save it
                 if (File.Exists(DataPath))
@@ -207,14 +206,13 @@ namespace Medbot
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex);
-                        Logging.LogError(typeof(FilesControl), MethodBase.GetCurrentMethod(), ex.ToString());
+                        _logger.LogError("Fatal error occurred during saving data.\n{ex}", ex);
                     }
 
-                    // Don't save witout root!
+                    // Don't save without root!
                     if (data.Root == null)
                     {
-                        Logging.LogError(typeof(FilesControl), MethodBase.GetCurrentMethod(), "Points were NOT saved! Method tried to save the XML without root !");
+                        _logger.LogError("Points were not saved! Method tried to save the XML without root!");
                         return;
                     }
 
@@ -239,15 +237,15 @@ namespace Medbot
                 AddUserRecord(ref doc, user);
             }
 
-            // Don't save witout root!
+            // Don't save without root!
             if (doc.Root == null)
             {
-                Logging.LogError(typeof(FilesControl), System.Reflection.MethodBase.GetCurrentMethod(), "Points were NOT saved! Method tried to save the XML without root !");
+                _logger.LogError("Points were not saved! Method tried to save the XML without root!");
                 return;
             }
 
-            Logging.LogEvent(System.Reflection.MethodBase.GetCurrentMethod(), "Points file was sucessfully created");
             doc.Save(DataPath);
+            _logger.LogInformation("Points file was sucessfully created at '{path}'.", DataPath);
         }
 
         /// <summary>
@@ -290,7 +288,7 @@ namespace Medbot
                 }
                 catch (Exception ex)
                 {
-                    Logging.LogError(typeof(FilesControl), MethodBase.GetCurrentMethod(), ex.ToString());
+                    _logger.LogError("Fatal error occurred during loading login credentials.\n{ex}", ex);
                     return false;
                 }
             }
@@ -332,11 +330,11 @@ namespace Medbot
                     PointsManager.CurrencyNamePlural = currency.Attribute("Plural") != null ? currency.Attribute("Plural").Value : "golds";
                     PointsManager.CurrencyUnits = currency.Attribute("Units") != null ? currency.Attribute("Units").Value : "g";
 
-                    Logging.LogEvent(MethodBase.GetCurrentMethod(), "Bot dictionary and currency details were load successfully");
+                    _logger.LogInformation("Bot settings loaded successfully.");
                 }
                 catch (Exception ex)
                 {
-                    Logging.LogError(typeof(FilesControl), MethodBase.GetCurrentMethod(), ex.ToString());
+                    _logger.LogError("Fatal error occurred during loading bot settings.\n{ex}", ex);
                     PointsManager.LoadDefaultCurrencyDetails();
                 }
             }
@@ -383,7 +381,7 @@ namespace Medbot
                 }
                 catch (Exception ex)
                 {
-                    Logging.LogError(typeof(FilesControl), MethodBase.GetCurrentMethod(), ex.ToString());
+                    _logger.LogError("Fatal error occurred during loading user blacklist.\n{ex}", ex);
                     return new List<string>();
                 }
             }
@@ -419,11 +417,11 @@ namespace Medbot
                     intervals.Add("ExperienceActiveExp", expData.Attribute("ActiveExp") != null ? int.Parse(expData.Attribute("ActiveExp").Value) : 5);
                     intervals.Add("ExperienceIdleTime", expData.Attribute("IdleTime") != null ? int.Parse(expData.Attribute("IdleTime").Value) : 5);
 
-                    Logging.LogEvent(MethodBase.GetCurrentMethod(), "Intervals were loaded successfully");
+                    _logger.LogInformation("Bot intervals loaded successfully.");
                 }
                 catch (Exception ex)
                 {
-                    Logging.LogError(typeof(FilesControl), MethodBase.GetCurrentMethod(), ex.ToString());
+                    _logger.LogError("Fatal error occurred during loading bot intervals.\n{ex}", ex);
                     intervals = LoadDefaultIntervals();
                 }
             }
@@ -526,7 +524,7 @@ namespace Medbot
                 }
                 catch (Exception ex)
                 {
-                    Logging.LogError(typeof(FilesControl), MethodBase.GetCurrentMethod(), ex.ToString());
+                    _logger.LogError("Fatal error occurred during loading user specific info.\n{ex}", ex);
                     return new List<TempUser>();
                 }
             }
@@ -604,7 +602,7 @@ namespace Medbot
                 }
                 catch (Exception ex)
                 {
-                    Logging.LogError(typeof(FilesControl), System.Reflection.MethodBase.GetCurrentMethod(), ex.ToString());
+                    _logger.LogError("Fatal error occurred during user data manipulation!\n{ex}", ex);
                 }
             }
         }

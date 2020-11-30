@@ -1,5 +1,5 @@
-﻿using Medbot.Internal;
-using Medbot.Users;
+﻿using Medbot.Users;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 
@@ -8,8 +8,8 @@ namespace Medbot.Points
     public class PointsManager
     {
         private readonly UsersManager _usersManager;
-        private readonly bool rewardIdles;
-        private TimeSpan idleTime;
+        private readonly ILogger _logger;
+        private readonly bool _rewardIdles;
         private Timer timer;
 
         #region Properties
@@ -19,36 +19,32 @@ namespace Medbot.Points
         public int PointsPerTick { get; set; }
 
         /// <summary>
-        /// Sets/Gets Idle time before stopping rewarding the user, in minutes
+        /// Idle time before stopping rewarding the user, in minutes
         /// </summary>
-        public TimeSpan IdleTime
-        {
-            get { return this.idleTime; }
-            set { this.idleTime = value; }
-        }
+        public TimeSpan IdleTime { get; set; }
 
         /// <summary>
-        /// Gets/Sets currency name
+        /// Currency name (e.g. gold)
         /// </summary>
         public static string CurrencyName { get; set; } = String.Empty;
 
         /// <summary>
-        /// Gets/Sets currency plural name
+        /// Currency plural name
         /// </summary>
         public static string CurrencyNamePlural { get; set; } = String.Empty;
 
         /// <summary>
-        /// Gets/Sets currency units
+        /// Currency units (e.g. G)
         /// </summary>
         public static string CurrencyUnits { get; set; } = String.Empty;
 
         /// <summary>
-        /// Gets bool if the Points timer is running
+        /// If the points timer is running
         /// </summary>
         public bool TimerRunning { get; private set; }
 
         /// <summary>
-        /// Gets points timer interval
+        /// Points timer interval
         /// </summary>
         public TimeSpan TimerInterval { get; private set; }
 
@@ -56,8 +52,9 @@ namespace Medbot.Points
         #endregion
 
         /// <summary>
-        /// Point class manages point awarding and timer ticking
+        /// Manages point awarding and timer ticking
         /// </summary>
+        /// <param name="usersManager">User manager instance to get access to user information</param>
         /// <param name="interval">The time interval between each tick</param>
         /// <param name="idleTime">Time after which the user will become idle</param>
         /// <param name="rewardIdles">Bool if idle users should be rewarded</param>
@@ -65,11 +62,13 @@ namespace Medbot.Points
         /// <param name="autostart">Bool value if the time should start immediately</param>
         internal PointsManager(UsersManager usersManager, TimeSpan interval, TimeSpan idleTime, bool rewardIdles, int pointsPerTick, bool autostart = false)
         {
+            _logger = Logging.GetLogger<PointsManager>();
+
             _usersManager = usersManager;
             this.TimerInterval = interval;
             this.PointsPerTick = pointsPerTick;
-            this.idleTime = idleTime;
-            this.rewardIdles = rewardIdles;
+            this.IdleTime = idleTime;
+            this._rewardIdles = rewardIdles;
             this.TimerRunning = false;
 
             if (autostart)
@@ -85,7 +84,7 @@ namespace Medbot.Points
         {
             if (TimerRunning)
             {
-                Console.WriteLine("Points timer is already running");
+                _logger.LogWarning("Can't start the points timer! Timer is already running!");
                 return;
             }
 
@@ -94,7 +93,7 @@ namespace Medbot.Points
 
             this.timer.Change(0, this.TimerIntervalMs);
             this.TimerRunning = true;
-            Console.WriteLine("Starting points timer");
+            _logger.LogInformation("Points timer started!");
         }
 
         /// <summary>
@@ -104,13 +103,14 @@ namespace Medbot.Points
         {
             if (!TimerRunning)
             {
-                Console.WriteLine("Timer is not running");
+                _logger.LogWarning("Can't stop the points timer! Timer is not running!");
+
                 return;
             }
 
             this.timer.Change(Timeout.Infinite, int.MaxValue);
             this.TimerRunning = false;
-            Console.WriteLine("Stopping points timer");
+            _logger.LogInformation("Points timer stopped!");
         }
 
         /// <summary>
@@ -121,16 +121,17 @@ namespace Medbot.Points
             if (!_usersManager.IsAnyUserOnline)
                 return;
 
-            Console.WriteLine("Timer Points ticked, Number of users: " + _usersManager.TotalUsersOnline);
+            _logger.LogInformation("Points Timer ticked for {count} users.", _usersManager.TotalUsersOnline);
+            
             foreach (var user in _usersManager.OnlineUsers)
             {
                 if (_usersManager.IsUserBlacklisted(user)) // Skip blacklisted user
                     continue;
 
-                if (user.LastMessage != null && (DateTime.Now - user.LastMessage < TimeSpan.FromMilliseconds(this.idleTime.TotalMilliseconds) || rewardIdles))
+                if (user.LastMessage != null && (DateTime.Now - user.LastMessage < TimeSpan.FromMilliseconds(this.IdleTime.TotalMilliseconds) || _rewardIdles))
                 {
                     user.AddPoints(this.PointsPerTick);
-                    Console.WriteLine("Rewarding " + user.Username + " for activity");
+                    _logger.LogInformation("Rewarding {user} for activity.", user.Username);
                 }
             }
 

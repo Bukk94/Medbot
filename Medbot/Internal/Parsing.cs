@@ -1,17 +1,18 @@
 ﻿using Medbot.Enums;
-using Medbot.LoggingNS;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace Medbot.Internal
 {
-    public static class Parsing
+    public class Parsing
     {
+        private static readonly ILogger _logger = Logging.GetLogger<Parsing>();
+
         /// <summary>
         /// Gets a username from full chat informative string
         /// </summary>
@@ -81,8 +82,10 @@ namespace Medbot.Internal
             var badges = Regex.Split(badgesRawList, @"\/\d,?");
 
             return badges.Select(x => {
-                if (Enum.TryParse<Badges>(x, true, out var badge)) return badge;
-                Console.WriteLine($"WARNING: Unknown badge found: {x}!");
+                if (Enum.TryParse<Badges>(x, true, out var badge)) 
+                    return badge;
+                
+                _logger.LogWarning("WARNING: Unknown badge found: {badge}!", x);
                 return Badges.Unknown;
             }).ToList();
         }
@@ -136,7 +139,7 @@ namespace Medbot.Internal
             }
             catch (Exception ex)
             {
-                Logging.LogError(typeof(Parsing), System.Reflection.MethodBase.GetCurrentMethod(), ex.ToString());
+                _logger.LogError("Fatal error occured during json deserialization. JSON: '{json}'.\n{ex}", json, ex);
                 return default;
             }
         }
