@@ -1,0 +1,34 @@
+{
+   "Login":{
+      "BotName":"medvedibot",
+      "Channel":"Bukk94",
+      "BotFullTwitchName":"MedvediBot",
+      "ClientID":"XXXXXXXXXXXXXXXXXXXXX",
+      "BotOAuth":"XXXXXXXXXXXXXXXXXXXXX",
+      "BotIrcOAuth":"XXXXXXXXXXXXXXXXXXXXX"
+   },
+   "Currency": {
+	  "Name": "med",
+	  "Plural": "medu",
+	  "Units": "ml",
+	  "TickInterval": "00:01:00",
+	  "IdleTime": "00:05:00",
+	  "PointsPerTick": 1,
+	  "RewardIdles": false
+   },
+   "Experience": {
+      "TickInterval": "00:01:00",
+	  "ActiveExp": 5,
+	  "IdleExp": 1,
+	  "IdleTime": "00:05:00"
+   },
+   "Settings": {
+      "LeaderboardTopNumber": 5,
+	  "GambleWinPercentage": 20,
+	  "GambleBonusWinPercentage": 2
+   },
+   "Blacklist": [
+	  "Medvedibot",
+	  "Nightbot"
+   ]
+}

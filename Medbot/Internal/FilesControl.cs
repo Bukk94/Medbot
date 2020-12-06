@@ -23,7 +23,7 @@ namespace Medbot
         private readonly object dictionaryLock = new object();
         private readonly LeaderboardComparer LeaderboardComparer;
 
-        public string SettingsPath => Path.Combine(Directory.GetCurrentDirectory(), "Settings.xml");
+        public string SettingsPath => Path.Combine(Directory.GetCurrentDirectory(), "Settings.json");
         public string DictionaryPath => Path.Combine(Directory.GetCurrentDirectory(), "Dictionary.json");
         public string DataPath => Path.Combine(Directory.GetCurrentDirectory(), "Users_data.xml");
         public string CommandsPath => Path.Combine(Directory.GetCurrentDirectory(), "Commands.xml");
@@ -264,82 +264,22 @@ namespace Medbot
             doc.Element("Medbot").Add(element);
         }
 
-        internal bool LoadLoginCredentials()
+        internal AllSettings LoadAllSettings()
         {
-            lock (settingsLock)
+            if (!File.Exists(SettingsPath))
             {
-                if (!File.Exists(SettingsPath))
-                    return false;
-
-                try
+                return new AllSettings
                 {
-                    XDocument dataRaw = XDocument.Load(SettingsPath);
-                    var data = dataRaw.Element("Medbot").Element("Login");
-
-                    // Load credentials
-                    Login.BotName = data.Element("BotName") != null ? data.Element("BotName").Value : "";
-                    Login.BotOauth = data.Element("Oauth") != null ? data.Element("Oauth").Value : "";
-                    Login.BotIrcOAuth = data.Element("IrcOauth") != null ? data.Element("IrcOauth").Value : "";
-                    Login.Channel = data.Element("Channel") != null ? data.Element("Channel").Value : "";
-                    Login.BotFullTwitchName = data.Element("BotFullName") != null ? data.Element("BotFullName").Value : "";
-                    Login.ClientID = data.Element("ClientID") != null ? data.Element("ClientID").Value : "";
-
-                    Login.ChannelId = Task.Run(() => Requests.GetUserId(Login.Channel)).Result;
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError("Fatal error occurred during loading login credentials.\n{ex}", ex);
-                    return false;
-                }
+                    Settings = new BotSettings(),
+                    Login = new LoginDetails(),
+                    Blacklist = new List<string>(),
+                    Currency = new CurrencySettings(),
+                    Experience = new ExperienceSettings()
+                };
             }
 
-            return Login.IsLoginCredentialsValid;
-        }
-
-        // TODO: This method do too much, it needs some separation
-        internal BotSettings LoadBotSettings()
-        {
-            var botSettings = new BotSettings();
-            lock (settingsLock)
-            {
-                if (!File.Exists(SettingsPath))
-                {
-                    PointsManager.LoadDefaultCurrencyDetails();
-                    return botSettings;
-                }
-
-                try
-                {
-                    XDocument dataRaw = XDocument.Load(SettingsPath);
-                    var data = dataRaw.Element("Medbot").Element("Settings");
-
-                    botSettings.LeaderboardTopNumber = int.Parse(data.Element(nameof(BotSettings.LeaderboardTopNumber))?.Value ?? "3");
-                    botSettings.GambleWinPercentage = int.Parse(data.Element(nameof(BotSettings.GambleWinPercentage))?.Value ?? "20");
-                    botSettings.GambleBonusWinPercentage = int.Parse(data.Element(nameof(BotSettings.GambleBonusWinPercentage))?.Value ?? "2");
-
-                    // Percentage is incorrectly set, exceeding 100%. Load default
-                    if (botSettings.GambleBonusWinPercentage + botSettings.GambleWinPercentage >= 100)
-                    {
-                        botSettings.GambleWinPercentage = 20;
-                        botSettings.GambleBonusWinPercentage = 2;
-                    }
-
-                    // Load currency details
-                    var currency = dataRaw.Element("Medbot").Element("Currency");
-                    PointsManager.CurrencyName = currency.Attribute("Name") != null ? currency.Attribute("Name").Value : "gold";
-                    PointsManager.CurrencyNamePlural = currency.Attribute("Plural") != null ? currency.Attribute("Plural").Value : "golds";
-                    PointsManager.CurrencyUnits = currency.Attribute("Units") != null ? currency.Attribute("Units").Value : "g";
-
-                    _logger.LogInformation("Bot settings loaded successfully.");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError("Fatal error occurred during loading bot settings.\n{ex}", ex);
-                    PointsManager.LoadDefaultCurrencyDetails();
-                }
-            }
-
-            return botSettings;
+            var json = File.ReadAllText(SettingsPath);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<AllSettings>(json);
         }
 
         /// <summary>
@@ -351,101 +291,11 @@ namespace Medbot
             if (!File.Exists(DictionaryPath))
                 return LoadDefaultDictionary();
 
-            lock(dictionaryLock)
+            lock (dictionaryLock)
             {
                 var dictionary = Parsing.Deserialize<DictionaryStrings>(File.ReadAllText(DictionaryPath));
                 return dictionary ?? LoadDefaultDictionary();
             }
-        }
-
-        /// <summary>
-        /// Loads users blacklist, usernames are in lowercase
-        /// </summary>
-        internal List<string> LoadUsersBlacklist()
-        {
-            if (!File.Exists(SettingsPath))
-                return new List<string>();
-
-            lock (settingsLock)
-            {
-                try
-                {
-                    XDocument dataRaw = XDocument.Load(SettingsPath);
-                    var data = dataRaw.Element("Medbot").Element("Blacklist");
-
-                    List<string> blacklist = data.Value.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                    blacklist = blacklist.Select(val => val.Replace('\u0009'.ToString(), "").ToLower()).ToList();
-                    blacklist = blacklist.Where(val => !String.IsNullOrEmpty(val)).Distinct().ToList();
-
-                    return blacklist;
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError("Fatal error occurred during loading user blacklist.\n{ex}", ex);
-                    return new List<string>();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Loads bot intervals
-        /// </summary>
-        /// <returns>Returns Dictionary<string, int> containing intervals and values</returns>
-        internal Dictionary<string, int> LoadBotIntervals()
-        {
-            Dictionary<string, int> intervals = new Dictionary<string, int>();
-            lock (settingsLock)
-            {
-                if (!File.Exists(SettingsPath))
-                    return LoadDefaultIntervals();
-
-                try
-                {
-                    XDocument dataRaw = XDocument.Load(SettingsPath);
-                    var pointsData = dataRaw.Element("Medbot").Element("Currency");
-                    var expData = dataRaw.Element("Medbot").Element("Experience");
-
-                    // Load currency data
-                    intervals.Add("PointsInterval", pointsData.Attribute("Interval") != null ? int.Parse(pointsData.Attribute("Interval").Value) : 1);
-                    intervals.Add("PointsIdleTime", pointsData.Attribute("IdleTime") != null ? int.Parse(pointsData.Attribute("IdleTime").Value) : 5);
-                    intervals.Add("PointsPerTick", pointsData.Attribute("PointsPerTick") != null ? int.Parse(pointsData.Attribute("PointsPerTick").Value) : 1);
-                    intervals.Add("PointsRewardIdles", pointsData.Attribute("RewardIdles") != null ? int.Parse(pointsData.Attribute("RewardIdles").Value) : 0);
-
-                    // Load experience data
-                    intervals.Add("ExperienceInterval", expData.Attribute("Interval") != null ? int.Parse(expData.Attribute("Interval").Value) : 1);
-                    intervals.Add("ExperienceIdleExp", expData.Attribute("IdleExp") != null ? int.Parse(expData.Attribute("IdleExp").Value) : 1);
-                    intervals.Add("ExperienceActiveExp", expData.Attribute("ActiveExp") != null ? int.Parse(expData.Attribute("ActiveExp").Value) : 5);
-                    intervals.Add("ExperienceIdleTime", expData.Attribute("IdleTime") != null ? int.Parse(expData.Attribute("IdleTime").Value) : 5);
-
-                    _logger.LogInformation("Bot intervals loaded successfully.");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError("Fatal error occurred during loading bot intervals.\n{ex}", ex);
-                    intervals = LoadDefaultIntervals();
-                }
-            }
-
-            return intervals;
-        }
-
-        /// <summary>
-        /// Loads default bot intervals
-        /// </summary>
-        /// <returns>Returns dictionary of default intervals</returns>
-        private Dictionary<string, int> LoadDefaultIntervals()
-        {
-            return new Dictionary<string, int>
-            {
-                { "PointsInterval", 1 },
-                { "PointsIdleTime", 5 },
-                { "PointsPerTick", 1 },
-                { "PointsRewardIdles", 0 },
-                { "ExperienceInterval", 1 },
-                { "ExperienceIdleExp", 1 },
-                { "ExperienceActiveExp", 5 },
-                { "ExperienceIdleTime", 5 }
-            };
         }
 
         /// <summary>

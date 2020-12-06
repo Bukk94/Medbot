@@ -1,4 +1,5 @@
 ﻿using Medbot.Enums;
+using Medbot.Internal.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
@@ -9,6 +10,8 @@ namespace Medbot.Internal
 {
     public class Requests
     {
+        internal static LoginDetails LoginDetails { get; set; }
+
         /// <summary>
         /// Gets JSON response of the given url
         /// </summary>
@@ -17,18 +20,18 @@ namespace Medbot.Internal
         /// <returns>Request results</returns>
         public static async Task<string> TwitchJsonRequestAsync(string url, RequestType method, string payload = null)
         {
-            if (string.IsNullOrEmpty(Login.ClientID))
+            if (string.IsNullOrEmpty(LoginDetails.ClientID))
                 throw new ArgumentException("Client ID is missing!");
             
-            if (string.IsNullOrEmpty(Login.BotOauth))
+            if (string.IsNullOrEmpty(LoginDetails.BotOAuth))
                 throw new ArgumentException("OAuth is missing!");
-
+            
             if (method == RequestType.POST && string.IsNullOrEmpty(payload))
                 Console.WriteLine("WARNING: POST request was sent without payload!");
 
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Client-ID", Login.ClientID);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Login.BotOauth);
+            client.DefaultRequestHeaders.Add("Client-ID", LoginDetails.ClientID);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LoginDetails.BotOAuth);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             HttpResponseMessage response;

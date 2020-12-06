@@ -1,4 +1,6 @@
-﻿using Medbot.Users;
+﻿using Medbot.Internal;
+using Medbot.Internal.Models;
+using Medbot.Users;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
@@ -9,72 +11,70 @@ namespace Medbot.Points
     {
         private readonly UsersManager _usersManager;
         private readonly ILogger _logger;
-        private readonly bool _rewardIdles;
-        private Timer timer;
+        private readonly CurrencySettings _currencySettings;
+        private Timer _timer;
 
         #region Properties
         /// <summary>
+        /// If the points timer is running
+        /// </summary>
+        public bool IsTimerRunning { get; private set; }
+
+        /// <summary>
         /// Amount added to users each tick
         /// </summary>
-        public int PointsPerTick { get; set; }
+        public int PointsPerTick => _currencySettings.PointsPerTick;
 
         /// <summary>
         /// Idle time before stopping rewarding the user, in minutes
         /// </summary>
-        public TimeSpan IdleTime { get; set; }
-
-        /// <summary>
-        /// Currency name (e.g. gold)
-        /// </summary>
-        public static string CurrencyName { get; set; } = String.Empty;
-
-        /// <summary>
-        /// Currency plural name
-        /// </summary>
-        public static string CurrencyNamePlural { get; set; } = String.Empty;
-
-        /// <summary>
-        /// Currency units (e.g. G)
-        /// </summary>
-        public static string CurrencyUnits { get; set; } = String.Empty;
-
-        /// <summary>
-        /// If the points timer is running
-        /// </summary>
-        public bool TimerRunning { get; private set; }
+        public TimeSpan IdleTime => _currencySettings.IdleTime;
 
         /// <summary>
         /// Points timer interval
         /// </summary>
-        public TimeSpan TimerInterval { get; private set; }
+        public TimeSpan TimerInterval => _currencySettings.TickInterval;
 
         public int TimerIntervalMs => (int)TimerInterval.TotalMilliseconds;
+
+        /// <summary>
+        /// Currency name (e.g. gold)
+        /// </summary>
+        public static string CurrencyName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Currency plural name
+        /// </summary>
+        public static string CurrencyNamePlural { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Currency units (e.g. G)
+        /// </summary>
+        public static string CurrencyUnits { get; set; } = string.Empty;
         #endregion
 
         /// <summary>
         /// Manages point awarding and timer ticking
         /// </summary>
+        /// <param name="botDataManager">Bot data manager instance to get access to bot information</param>
         /// <param name="usersManager">User manager instance to get access to user information</param>
-        /// <param name="interval">The time interval between each tick</param>
-        /// <param name="idleTime">Time after which the user will become idle</param>
-        /// <param name="rewardIdles">Bool if idle users should be rewarded</param>
-        /// <param name="pointsPerTick">Amount of points awarded to active users each tick</param>
         /// <param name="autostart">Bool value if the time should start immediately</param>
-        internal PointsManager(UsersManager usersManager, TimeSpan interval, TimeSpan idleTime, bool rewardIdles, int pointsPerTick, bool autostart = false)
+        internal PointsManager(BotDataManager botDataManager, UsersManager usersManager, bool autostart = false)
         {
             _logger = Logging.GetLogger<PointsManager>();
-
             _usersManager = usersManager;
-            this.TimerInterval = interval;
-            this.PointsPerTick = pointsPerTick;
-            this.IdleTime = idleTime;
-            this._rewardIdles = rewardIdles;
-            this.TimerRunning = false;
+
+            _currencySettings = botDataManager.CurrencySettings;
+            CurrencyName = _currencySettings.Name;
+            CurrencyNamePlural = _currencySettings.Plural;
+            CurrencyUnits = _currencySettings.Units;
+
+            this.IsTimerRunning = false;
 
             if (autostart)
                 StartPointsTimer();
             else
-                this.timer = new Timer(AwardPoints_TimerTick, null, Timeout.Infinite, this.TimerIntervalMs);
+                _timer = new Timer(AwardPoints_TimerTick, null, Timeout.Infinite, this.TimerIntervalMs);
         }
 
         /// <summary>
@@ -82,17 +82,17 @@ namespace Medbot.Points
         /// </summary>
         internal void StartPointsTimer()
         {
-            if (TimerRunning)
+            if (IsTimerRunning)
             {
                 _logger.LogWarning("Can't start the points timer! Timer is already running!");
                 return;
             }
 
-            if (this.timer == null)
-                this.timer = new Timer(AwardPoints_TimerTick, null, 0, this.TimerIntervalMs);
+            if (this._timer == null)
+                this._timer = new Timer(AwardPoints_TimerTick, null, 0, this.TimerIntervalMs);
 
-            this.timer.Change(0, this.TimerIntervalMs);
-            this.TimerRunning = true;
+            this._timer.Change(0, this.TimerIntervalMs);
+            this.IsTimerRunning = true;
             _logger.LogInformation("Points timer started!");
         }
 
@@ -101,15 +101,15 @@ namespace Medbot.Points
         /// </summary>
         internal void StopPointsTimer()
         {
-            if (!TimerRunning)
+            if (!IsTimerRunning)
             {
                 _logger.LogWarning("Can't stop the points timer! Timer is not running!");
 
                 return;
             }
 
-            this.timer.Change(Timeout.Infinite, int.MaxValue);
-            this.TimerRunning = false;
+            this._timer.Change(Timeout.Infinite, int.MaxValue);
+            this.IsTimerRunning = false;
             _logger.LogInformation("Points timer stopped!");
         }
 
@@ -128,7 +128,7 @@ namespace Medbot.Points
                 if (_usersManager.IsUserBlacklisted(user)) // Skip blacklisted user
                     continue;
 
-                if (user.LastMessage != null && (DateTime.Now - user.LastMessage < TimeSpan.FromMilliseconds(this.IdleTime.TotalMilliseconds) || _rewardIdles))
+                if (user.LastMessage != null && (DateTime.Now - user.LastMessage < TimeSpan.FromMilliseconds(this.IdleTime.TotalMilliseconds) || _currencySettings.RewardIdles))
                 {
                     user.AddPoints(this.PointsPerTick);
                     _logger.LogInformation("Rewarding {user} for activity.", user.Username);
@@ -136,16 +136,6 @@ namespace Medbot.Points
             }
 
             _usersManager.SaveData();
-        }
-
-        /// <summary>
-        /// Loads default currency details
-        /// </summary>
-        internal static void LoadDefaultCurrencyDetails()
-        {
-            CurrencyName = "gold";
-            CurrencyNamePlural = "gold";
-            CurrencyUnits = "g";
         }
     }
 }

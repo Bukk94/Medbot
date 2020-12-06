@@ -6,6 +6,7 @@
 	"No": "Ne",
 	"CommandsNotFound": "Nedokázal jsem načíst příkazy. Někdo něco posral. Já za to nemůžu :(",
 	"ZeroCommands": "Něco je špatně ... Nemám tu žádné příkazy se kterými můžu pracovat. Zavolejte pomoc! Je to i ve vašem zájmu! Když je nemám já, nemá je nikdo!",
+	"InsufficientPermissions": "Nemáš dostatečná práva, abys provedl tento příkaz. MedBot ti v tomhle nepomůže :(",
 	"BotRespondMessages": [
 		"Ahoj! Jsem MedBot, nový medvědí bot-pomocník. Momentálně jsem ještě ve vývoji, buďte na mě hodný :)"
 	]

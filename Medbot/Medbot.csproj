@@ -129,8 +129,12 @@
     <Compile Include="Internal\InternalExtensions.cs" />
     <Compile Include="Internal\LeaderboardComparer.cs" />
     <Compile Include="Internal\MessageThrottling.cs" />
+    <Compile Include="Internal\Models\AllSettings.cs" />
     <Compile Include="Internal\Models\BotSettings.cs" />
+    <Compile Include="Internal\Models\CurrencySettings.cs" />
     <Compile Include="Internal\Models\DictionaryStrings.cs" />
+    <Compile Include="Internal\Models\ExperienceSettings.cs" />
+    <Compile Include="Internal\Models\LoginDetails.cs" />
     <Compile Include="Internal\Requests.cs" />
     <Compile Include="Logging\Logging.cs" />
     <Compile Include="Login.cs" />

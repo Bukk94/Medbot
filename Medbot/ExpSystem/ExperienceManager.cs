@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Medbot.Events;
 using Medbot.Internal;
+using Medbot.Internal.Models;
 using Medbot.Users;
 using Microsoft.Extensions.Logging;
 
@@ -13,7 +14,7 @@ namespace Medbot.ExpSystem
         private readonly ILogger _logger;
         private readonly BotDataManager _botDataManager;
         private readonly UsersManager _usersManager;
-        private readonly TimeSpan _idleTime;
+        private readonly ExperienceSettings _experienceSettings;
         private Timer _timer;
 
         internal event EventHandler<OnRankUpArgs> OnRankUp;
@@ -29,49 +30,43 @@ namespace Medbot.ExpSystem
         internal bool TimerRunning { get; private set; }
 
         /// <summary>
-        /// Experience timer tick interval in ms
+        /// Experience timer tick interval
         /// </summary>
-        internal int ExperienceTickInterval { get; private set; }
+        internal TimeSpan ExperienceTickInterval => _experienceSettings.TickInterval;
+
+        internal int ExperienceTickIntervalMs => (int)ExperienceTickInterval.TotalMilliseconds;
 
         /// <summary>
         /// Value of experience reward for active users
         /// </summary>
-        internal int ActiveExperienceReward { get; private set; }
+        internal int ActiveExperienceReward => _experienceSettings.ActiveExp;
 
         /// <summary>
         /// Value of experience reward for idle users
         /// </summary>
-        internal int IdleExperienceReward { get; private set; }
+        internal int IdleExperienceReward => _experienceSettings.IdleExp;
 
         /// <summary>
         /// Experiences class manages exp awarding and timer ticking
         /// </summary>
         /// <param name="usersManager">User manager instance to get access to user information</param>
         /// <param name="botDataManager">Bot data manager instance to get access to bot information</param>
-        /// <param name="interval">The time interval between each tick in minutes</param>
-        /// <param name="activeExp">Number of experience gained by active users</param>
-        /// <param name="idleExp">Number of experience gained by idle users</param>
-        /// <param name="idleTime">Time after which user will become idle (in minutes)</param>
         /// <param name="autostart">Bool value if timer should start immediately</param>
-        internal ExperienceManager(BotDataManager botDataManager, UsersManager usersManager, 
-                                   TimeSpan interval, int activeExp, int idleExp, TimeSpan idleTime, bool autostart = false)
+        internal ExperienceManager(BotDataManager botDataManager, UsersManager usersManager, bool autostart = false)
         {
             _logger = Logging.GetLogger<ExperienceManager>();
 
             _usersManager = usersManager;
             _botDataManager = botDataManager;
-            this.ExperienceTickInterval = (int)interval.TotalMilliseconds;
+            _experienceSettings = _botDataManager.ExperienceSettings;
             this.TimerRunning = false;
-            this.ActiveExperienceReward = activeExp;
-            this.IdleExperienceReward = idleExp;
-            this._idleTime = idleTime;
 
             RankList = _botDataManager.LoadRanks();
 
             if (autostart)
                 StartExperienceTimer();
             else
-                this._timer = new Timer(AwardExperience_TimerTick, null, Timeout.Infinite, this.ExperienceTickInterval);
+                _timer = new Timer(AwardExperience_TimerTick, null, Timeout.Infinite, this.ExperienceTickIntervalMs);
         }
 
         /// <summary>
@@ -85,10 +80,10 @@ namespace Medbot.ExpSystem
                 return;
             }
 
-            if (this._timer == null)
-                this._timer = new Timer(AwardExperience_TimerTick, null, 0, this.ExperienceTickInterval);
+            if (_timer == null)
+                _timer = new Timer(AwardExperience_TimerTick, null, 0, this.ExperienceTickIntervalMs);
 
-            this._timer.Change(0, this.ExperienceTickInterval);
+            _timer.Change(0, this.ExperienceTickIntervalMs);
             this.TimerRunning = true;
             _logger.LogInformation("Experience timer started.");
         }
@@ -104,7 +99,7 @@ namespace Medbot.ExpSystem
                 return;
             }
 
-            this._timer.Change(Timeout.Infinite, int.MaxValue);
+            _timer.Change(Timeout.Infinite, int.MaxValue);
             this.TimerRunning = false;
             _logger.LogInformation("Experience timer stopped.");
         }
@@ -129,7 +124,7 @@ namespace Medbot.ExpSystem
                     continue;
 
                 // Reward active
-                if (DateTime.Now - user.LastMessage < TimeSpan.FromMilliseconds(this._idleTime.TotalMilliseconds))
+                if (DateTime.Now - user.LastMessage < _experienceSettings.IdleTime)
                     user.AddExperience(this.ActiveExperienceReward);
                 else // Reward idle
                     user.AddExperience(this.IdleExperienceReward);

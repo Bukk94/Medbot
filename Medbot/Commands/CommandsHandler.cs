@@ -308,7 +308,7 @@ namespace Medbot.Commands
                                             nextRank.RankLevel,
                                             nextRank.RankName,
                                             sender.ToNextRank(),
-                                            sender.TimeToNextRank(_experienceManager.ActiveExperienceReward, TimeSpan.FromMilliseconds(_experienceManager.ExperienceTickInterval)));
+                                            sender.TimeToNextRank(_experienceManager.ActiveExperienceReward, _experienceManager.ExperienceTickInterval));
                     }
                     catch (RanksException ex)
                     {

@@ -10,6 +10,7 @@ namespace Medbot.Internal
     internal class BotDataManager
     {
         private readonly FilesControl _filesControl;
+        private AllSettings _allSettings;
 
         internal bool IsBotModerator => BotObject?.IsModerator ?? false;
 
@@ -19,16 +20,77 @@ namespace Medbot.Internal
 
         internal DictionaryStrings BotDictionary { get; private set; }
 
-        internal BotSettings BotSettings { get; set; }
+        internal LoginDetails Login { get; private set; }
+        
+        internal BotSettings BotSettings { get; private set; }
+
+        internal CurrencySettings CurrencySettings { get; private set; }
+
+        internal ExperienceSettings ExperienceSettings { get; private set; }
 
         public BotDataManager()
         {
             _filesControl = new FilesControl();
 
-            _filesControl.LoadLoginCredentials();
-            this.BotSettings = _filesControl.LoadBotSettings();
+            _allSettings = _filesControl.LoadAllSettings();
+            //_logger.LogInformation("Bot settings loaded successfully.");
+
+            this.LoadLoginCredentials();
+            this.LoadBotSettings();
+            this.LoadBotIntervals();
             this.BotDictionary = _filesControl.LoadBotDictionary();
-            this.BotIntervals = _filesControl.LoadBotIntervals();
+        }
+
+        private void CheckLoadedSettings()
+        {
+            if (_allSettings == null)
+                _allSettings = _filesControl.LoadAllSettings();
+        }
+
+        private void LoadBotIntervals()
+        {
+            CheckLoadedSettings();
+            this.CurrencySettings = _allSettings.Currency;
+            this.ExperienceSettings = _allSettings.Experience;
+        }
+
+        private void LoadLoginCredentials()
+        {
+            CheckLoadedSettings();
+
+            this.Login = _allSettings.Login;
+            this.Login.VerifyLoginCredentials();
+            Requests.LoginDetails = this.Login;
+            this.Login.ChannelId = Task.Run(() => Requests.GetUserId(this.Login.Channel)).Result;
+
+            // TODO: Remove this obsolete login details
+            Medbot.Login.BotName = this.Login.BotName;
+            Medbot.Login.BotOauth = this.Login.BotOAuth;
+            Medbot.Login.BotIrcOAuth = this.Login.BotIrcOAuth;
+            Medbot.Login.Channel = this.Login.Channel;
+            Medbot.Login.BotFullTwitchName = this.Login.BotFullTwitchName;
+            Medbot.Login.ClientID = this.Login.ClientID;
+            Medbot.Login.ChannelId = this.Login.ChannelId;
+        }
+
+        private void LoadBotSettings()
+        {
+            CheckLoadedSettings();
+
+            this.BotSettings = _allSettings.Settings;
+
+            // Percentage is incorrectly set, exceeding 100%. Load default
+            if (this.BotSettings.GambleBonusWinPercentage + this.BotSettings.GambleWinPercentage >= 100)
+            {
+                this.BotSettings.GambleWinPercentage = 20;
+                this.BotSettings.GambleBonusWinPercentage = 2;
+            }
+        }
+
+        internal List<string> LoadUsersBlacklist()
+        {
+            CheckLoadedSettings();
+            return _allSettings.Blacklist ?? new List<string>();
         }
 
         // TODO: Delete this and create Commands list here
@@ -41,11 +103,6 @@ namespace Medbot.Internal
         internal void SaveDataInternal(List<User> onlineUsers)
         {
             _filesControl.SaveData(onlineUsers);
-        }
-
-        internal List<string> LoadUsersBlacklist()
-        {
-            return _filesControl.LoadUsersBlacklist();
         }
 
         internal User LoadUserData(User user)

@@ -106,17 +106,10 @@ namespace Medbot
             _usersManager = new UsersManager(_botDataManager);
             throttler = new MessageThrottling(_botDataManager);
 
-            // TODO: Convert interval strings to enum
-            Dictionary<string, int> intervals = _botDataManager.BotIntervals;
+            chatMessagePrefix = string.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :", _botDataManager.Login.BotName, _botDataManager.Login.Channel);
+            _pointsManager = new PointsManager(_botDataManager, _usersManager, false);
 
-            chatMessagePrefix = String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :", Login.BotName, Login.Channel);
-            _pointsManager = new PointsManager(_usersManager, new TimeSpan(0, intervals["PointsInterval"], 0), new TimeSpan(0,
-                                                intervals["PointsIdleTime"], 0), Convert.ToBoolean(intervals["PointsRewardIdles"]),
-                                                intervals["PointsPerTick"], false);
-
-            _experienceManager = new ExperienceManager(_botDataManager, _usersManager, TimeSpan.FromMinutes(intervals["ExperienceInterval"]),
-                                                       intervals["ExperienceActiveExp"], intervals["ExperienceIdleExp"],
-                                                       TimeSpan.FromMinutes(intervals["ExperienceIdleTime"]), false);
+            _experienceManager = new ExperienceManager(_botDataManager, _usersManager, false);
             _commandsHandler = new CommandsHandler(_usersManager, _botDataManager, _experienceManager, this);
             CommandsList = _botDataManager.LoadCommands();
 
@@ -166,7 +159,7 @@ namespace Medbot
             this.readingTimer.Change(0, 200);
 
             // Start points timer
-            if (!_pointsManager.TimerRunning)
+            if (!_pointsManager.IsTimerRunning)
                 _pointsManager.StartPointsTimer();
 
             // Start experience timer
@@ -194,7 +187,7 @@ namespace Medbot
             Disconnect();
 
             // Shutdown points timer
-            if (_pointsManager.TimerRunning)
+            if (_pointsManager.IsTimerRunning)
                 _pointsManager.StopPointsTimer();
 
             // Shutdown experience timer

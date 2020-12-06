@@ -37,7 +37,7 @@ All commands can be customized in the `Commands.xml` file.
 
 ## Settings
 
-All settings are stored in the `Settings.xml` file. This file contains OAuth tokens, 
+All settings are stored in the `Settings.json` file. This file contains OAuth tokens, 
 ranking and point interval limits, rewards, blacklist, and many more.
 
 ## Dictionary
