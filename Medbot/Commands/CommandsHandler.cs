@@ -400,7 +400,7 @@ namespace Medbot.Commands
                     // Last follower, !lastfollower |  0 input args
                     try
                     {
-                        Follower last = await _followersManager.GetNewestFollower(Login.ChannelId);
+                        Follower last = await _followersManager.GetNewestFollower(_botDataManager.Login.ChannelId);
                         if (last == null) // Fail: 0 params
                             throw new NullReferenceException("Last follower has not been found");
 
@@ -605,7 +605,7 @@ namespace Medbot.Commands
                         if (sender == null)
                             throw new NullReferenceException("Something went wrong, sender is null");
 
-                        var followDate = await _followersManager.GetFollowDate(Login.ChannelId, sender);
+                        var followDate = await _followersManager.GetFollowDate(_botDataManager.Login.ChannelId, sender);
                         if (followDate == null)
                             return "";
 

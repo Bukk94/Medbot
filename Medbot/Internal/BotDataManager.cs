@@ -2,6 +2,7 @@
 using Medbot.ExpSystem;
 using Medbot.Internal.Models;
 using Medbot.Users;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,14 +10,13 @@ namespace Medbot.Internal
 {
     internal class BotDataManager
     {
+        private readonly ILogger _logger;
         private readonly FilesControl _filesControl;
         private AllSettings _allSettings;
 
         internal bool IsBotModerator => BotObject?.IsModerator ?? false;
 
         internal User BotObject { get; set; }
-
-        internal Dictionary<string, int> BotIntervals { get; private set; }
 
         internal DictionaryStrings BotDictionary { get; private set; }
 
@@ -31,9 +31,10 @@ namespace Medbot.Internal
         public BotDataManager()
         {
             _filesControl = new FilesControl();
+            _logger = Logging.GetLogger<BotDataManager>();
 
             _allSettings = _filesControl.LoadAllSettings();
-            //_logger.LogInformation("Bot settings loaded successfully.");
+            _logger.LogInformation("Bot settings loaded successfully.");
 
             this.LoadLoginCredentials();
             this.LoadBotSettings();
@@ -62,15 +63,6 @@ namespace Medbot.Internal
             this.Login.VerifyLoginCredentials();
             Requests.LoginDetails = this.Login;
             this.Login.ChannelId = Task.Run(() => Requests.GetUserId(this.Login.Channel)).Result;
-
-            // TODO: Remove this obsolete login details
-            Medbot.Login.BotName = this.Login.BotName;
-            Medbot.Login.BotOauth = this.Login.BotOAuth;
-            Medbot.Login.BotIrcOAuth = this.Login.BotIrcOAuth;
-            Medbot.Login.Channel = this.Login.Channel;
-            Medbot.Login.BotFullTwitchName = this.Login.BotFullTwitchName;
-            Medbot.Login.ClientID = this.Login.ClientID;
-            Medbot.Login.ChannelId = this.Login.ChannelId;
         }
 
         private void LoadBotSettings()
@@ -112,12 +104,12 @@ namespace Medbot.Internal
 
         internal List<TempUser> GetPointsLeaderboard()
         {
-            return _filesControl.GetPointsLeaderboard();
+            return _filesControl.GetPointsLeaderboard(Login.BotName);
         }
 
         internal List<TempUser> GetExperienceLeaderboard()
         {
-            return _filesControl.GetExperienceLeaderboard();
+            return _filesControl.GetExperienceLeaderboard(Login.BotName);
         }
 
         internal List<Rank> LoadRanks()

@@ -39,7 +39,7 @@ namespace Medbot
         /// <summary>
         /// Channel on which bot is deployed on
         /// </summary>
-        public string DeployedChannel => Login.Channel;
+        public string DeployedChannel => _botDataManager.Login.Channel;
 
         /// <summary>
         /// Bool if the bot is running
@@ -205,7 +205,7 @@ namespace Medbot
         /// </summary>
         public bool Connect()
         {
-            if (!Login.IsLoginCredentialsValid)
+            if (!_botDataManager.Login.IsLoginCredentialsValid)
             {
                 _logger.LogError("Can't connect the bot - Invalid credentials!");
                 return false;
@@ -218,18 +218,18 @@ namespace Medbot
                 reader = new StreamReader(tcpClient.GetStream(), Encoding.UTF8);
                 writer = new StreamWriter(tcpClient.GetStream());
 
-                writer.WriteLine("PASS " + Login.BotOauthWithPrefix + Environment.NewLine +
-                                 "NICK " + Login.BotName + Environment.NewLine +
-                                 "USER " + Login.BotName + " 8 * :" + Login.BotName);
+                writer.WriteLine("PASS " + _botDataManager.Login.BotOAuthWithPrefix + Environment.NewLine +
+                                 "NICK " + _botDataManager.Login.BotName + Environment.NewLine +
+                                 "USER " + _botDataManager.Login.BotName + " 8 * :" + _botDataManager.Login.BotName);
                 writer.WriteLine("CAP REQ :twitch.tv/membership");
                 writer.WriteLine("CAP REQ :twitch.tv/commands");
                 writer.WriteLine("CAP REQ :twitch.tv/tags");
-                writer.WriteLine("JOIN #" + Login.Channel);
+                writer.WriteLine("JOIN #" + _botDataManager.Login.Channel);
                 writer.Flush();
 
                 // TODO: Make welcome message optional
                 //SendChatMessage(BotDictionary.WelcomeMessage);
-                _logger.LogInformation("Bot has successfully connected to Twitch account and joined the channel {channel}.", Login.Channel);
+                _logger.LogInformation("Bot has successfully connected to Twitch account and joined the channel {channel}.", _botDataManager.Login.Channel);
 
                 return true;
             }
@@ -304,7 +304,7 @@ namespace Medbot
                         string message = Parsing.ParseChatMessage(chatLine);
                         OnMessageReceived?.Invoke(this, new OnMessageArgs { Message = message, Sender = sender });
 
-                        if (message.ContainsInsensitive("@" + Login.BotFullTwitchName))
+                        if (message.ContainsInsensitive("@" + _botDataManager.Login.BotFullTwitchName))
                         { // Bot is called by it's name, respond somehow
                             SendChatMessage(_botDataManager.BotDictionary.BotRespondMessages.SelectOneRandom());
                         }
@@ -327,7 +327,7 @@ namespace Medbot
                     {
                         // TODO: What this does?!
                         GetUserFromChat(chatLine);
-                        var botUser = _usersManager.FindOnlineUser(Login.BotName);
+                        var botUser = _usersManager.FindOnlineUser(_botDataManager.Login.BotName);
                         _botDataManager.UpdateBotPermissions(botUser);
                     }
                     else if (chatLine.Contains("PING :tmi.twitch.tv"))
@@ -481,7 +481,7 @@ namespace Medbot
         {
             // https://api.twitch.tv/helix/streams?user_login=Bukk94
             // https://api.twitch.tv/helix/streams?user_id=5798794897
-            var data = await Requests.TwitchJsonRequestAsync($"https://api.twitch.tv/helix/streams?user_login={Login.Channel}", RequestType.GET);
+            var data = await Requests.TwitchJsonRequestAsync($"https://api.twitch.tv/helix/streams?user_login={_botDataManager.Login.Channel}", RequestType.GET);
 
             return Requests.GetJsonData(data)?.Any() == true;
         }

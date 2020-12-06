@@ -316,9 +316,9 @@ namespace Medbot
         /// Gets a points full leaderboard
         /// </summary>
         /// <returns>Sorted list of users</returns>
-        internal List<TempUser> GetPointsLeaderboard()
+        internal List<TempUser> GetPointsLeaderboard(string botname)
         {
-            List<TempUser> leaderboard = GetAllUsersSpecificInfo(DataType.Points);
+            List<TempUser> leaderboard = GetAllUsersSpecificInfo(DataType.Points, botname);
             leaderboard.Sort(LeaderboardComparer);
             leaderboard.Reverse();
 
@@ -329,9 +329,9 @@ namespace Medbot
         /// Gets experience full leaderboard
         /// </summary>
         /// <returns>Sorted list of users</returns>
-        internal List<TempUser> GetExperienceLeaderboard()
+        internal List<TempUser> GetExperienceLeaderboard(string botname)
         {
-            List<TempUser> leaderboard = GetAllUsersSpecificInfo(DataType.Experience);
+            List<TempUser> leaderboard = GetAllUsersSpecificInfo(DataType.Experience, botname);
             leaderboard.Sort(LeaderboardComparer);
             leaderboard.Reverse();
 
@@ -339,11 +339,11 @@ namespace Medbot
         }
 
         /// <summary>
-        /// Gets all user records from XML file where attribute is not null, empty and 0
+        /// Gets all user records from XML file where attribute is not null, empty or 0
         /// </summary>
         /// <param name="attribute"></param>
         /// <returns></returns>
-        internal List<TempUser> GetAllUsersSpecificInfo(DataType dataType)
+        internal List<TempUser> GetAllUsersSpecificInfo(DataType dataType, string botname)
         {
             lock (fileLock)
             {
@@ -361,7 +361,7 @@ namespace Medbot
                         long numData = -1;
                         return u.Attribute(attribute) != null &&
                         (long.TryParse(u.Attribute(attribute).Value, out numData)) && numData > 0 &&
-                        !u.Attribute("Username").Value.Equals(Login.BotName);
+                        !u.Attribute("Username").Value.Equals(botname);
                     }) //Exclude bot from leaderboard
                     .ToList();
 
