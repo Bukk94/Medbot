@@ -111,6 +111,7 @@
     <Compile Include="Enums\RequestType.cs" />
     <Compile Include="Enums\ThrottleViolation.cs" />
     <Compile Include="Events\OnCommandReceivedArgs.cs" />
+    <Compile Include="Events\OnCommandResponseArgs.cs" />
     <Compile Include="Events\OnCommandThrottledArgs.cs" />
     <Compile Include="Events\OnMessageArgs.cs" />
     <Compile Include="Events\OnMessageThrottledArgs.cs" />

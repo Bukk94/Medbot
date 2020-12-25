@@ -10,13 +10,13 @@ using Medbot.Points;
 using Medbot.Users;
 using Medbot.Enums;
 using Microsoft.Extensions.Logging;
+using Medbot.Events;
 
 namespace Medbot.Commands
 {
     internal class CommandsHandler
     {
         private readonly ILogger _logger;
-        private readonly BotClient botClient;
         private readonly ExperienceManager _experienceManager;
         private readonly UsersManager _usersManager;
         private readonly BotDataManager _botDataManager;
@@ -27,17 +27,17 @@ namespace Medbot.Commands
         /// </summary>
         public List<Command> CommandsList { get; private set; }
 
+        public event EventHandler<OnCommandResponseArgs> OnCommandResponse;
+
         // TODO: Stop using BotClient object
-        public CommandsHandler(UsersManager usersManager, BotDataManager botDataManager, ExperienceManager experienceManager, BotClient bot)
+        public CommandsHandler(UsersManager usersManager, BotDataManager botDataManager, ExperienceManager experienceManager)
         {
             _logger = Logging.GetLogger<CommandsHandler>();
+            _followersManager = new FollowersManager();
 
-            botClient = bot;
             _experienceManager = experienceManager;
             _usersManager = usersManager;
             _botDataManager = botDataManager;
-
-            _followersManager = new FollowersManager();
 
             InitializeCommands();
         }
@@ -47,9 +47,9 @@ namespace Medbot.Commands
             CommandsList = _botDataManager.LoadCommands();
 
             if (CommandsList == null)
-                botClient.SendChatMessage(_botDataManager.BotDictionary.CommandsNotFound);
+                OnCommandResponse?.Invoke(this, new OnCommandResponseArgs(_botDataManager.BotDictionary.CommandsNotFound));
             else if (CommandsList.Count <= 0)
-                botClient.SendChatMessage(_botDataManager.BotDictionary.ZeroCommands);
+                OnCommandResponse?.Invoke(this, new OnCommandResponseArgs(_botDataManager.BotDictionary.ZeroCommands));
         }
 
         /// <summary>
@@ -377,9 +377,16 @@ namespace Medbot.Commands
                         {
                             receiver.AddExperience(long.Parse(args[0]));
                             bool newRank = receiver.CheckRankUp();
-                            if (newRank && !String.IsNullOrEmpty(_botDataManager.BotDictionary.NewRankMessage))
-                                botClient.SendChatMessage(String.Format(_botDataManager.BotDictionary.NewRankMessage, receiver.DisplayName,
-                                                                receiver.UserRank.RankLevel, receiver.UserRank.RankName));
+                            if (newRank && !string.IsNullOrEmpty(_botDataManager.BotDictionary.NewRankMessage)) 
+                            {
+                                OnCommandResponse?.Invoke(this, new OnCommandResponseArgs
+                                { 
+                                    Message = string.Format(_botDataManager.BotDictionary.NewRankMessage, 
+                                                            receiver.DisplayName,
+                                                            receiver.UserRank.RankLevel, 
+                                                            receiver.UserRank.RankName)
+                                });
+                            }
 
                             _usersManager.SaveData();
                         }
@@ -510,7 +517,8 @@ namespace Medbot.Commands
                     if (match == null)
                         return "";
 
-                    botClient.SendChatMessage($".color {match}", true);
+                    OnCommandResponse?.Invoke(this, new OnCommandResponseArgs($".color {match}", true));
+
                     return command.SuccessMessage;
                 case CommandHandlerType.All:
                     // !medbot   !medbot mod  !medbot streamer         |  0 or 1 input args {1: mod/streamer}

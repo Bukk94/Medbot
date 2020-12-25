@@ -98,7 +98,8 @@ namespace Medbot
             _pointsManager = new PointsManager(_botDataManager, _usersManager, false);
 
             _experienceManager = new ExperienceManager(_botDataManager, _usersManager, false);
-            _commandsHandler = new CommandsHandler(_usersManager, _botDataManager, _experienceManager, this);
+            _commandsHandler = new CommandsHandler(_usersManager, _botDataManager, _experienceManager);
+            _commandsHandler.OnCommandResponse += CommandsHandler_OnCommandResponse;
 
             this.readingTimer = new Timer(Reader_Timer_Tick, null, Timeout.Infinite, 200);
             this.uptimeTimer = new Timer(Uptime_Timer_Tick, null, Timeout.Infinite, 1000);
@@ -476,6 +477,12 @@ namespace Medbot
         private void ExperienceManager_OnRankUp(object sender, OnRankUpArgs e)
         {
             SendChatMessage(String.Format(_botDataManager.BotDictionary.NewRankMessage, e.User.DisplayName, e.NewRank.RankLevel, e.NewRank.RankName));
+        }
+
+        private void CommandsHandler_OnCommandResponse(object sender, OnCommandResponseArgs e)
+        {
+            if (!string.IsNullOrEmpty(e.Message))
+                SendChatMessage(e.Message, e.IsResponseACommand);
         }
     }
 }
