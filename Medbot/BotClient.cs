@@ -52,11 +52,6 @@ namespace Medbot
         public bool IsConnectionAlive => tcpClient != null ? tcpClient.Connected : false;
 
         /// <summary>
-        /// Bool if bot can use colored messages
-        /// </summary>
-        public bool UseColoredMessages { get; set; }
-
-        /// <summary>
         /// List of bot's commands
         /// </summary>
         public List<Command> CommandsList { get; }
@@ -98,8 +93,6 @@ namespace Medbot
 
         public BotClient()
         {
-            UseColoredMessages = true;
-
             _logger = Logging.GetLogger<BotClient>();
 
             _botDataManager = new BotDataManager();
@@ -446,7 +439,7 @@ namespace Medbot
             if (!throttler.AllowToSendMessage(msg))
                 return;
 
-            writer.WriteLine(String.Format("{0}{1}{2}", chatMessagePrefix, UseColoredMessages && !isCommand ? "/me " : "", msg));
+            writer.WriteLine(String.Format("{0}{1}{2}", chatMessagePrefix, _botDataManager.UseColoredMessages && !isCommand ? "/me " : "", msg));
             writer.Flush();
             ConsoleAppendText(chatMessagePrefix + msg);
             OnMessageSent?.Invoke(this, new OnMessageArgs { Message = msg });

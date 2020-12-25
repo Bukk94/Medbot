@@ -459,25 +459,25 @@ namespace Medbot.Commands
 
                     if (args[0].ToLower().Equals("on"))
                     { // Turn on colors
-                        if (botClient.UseColoredMessages)
+                        if (_botDataManager.UseColoredMessages)
                         { // already on
                             command.ResetCommandCooldown();
                             return "";
                         }
 
-                        botClient.UseColoredMessages = true;
+                        _botDataManager.UseColoredMessages = true;
                         _logger.LogInformation("Bot colored messages were turned ON.");
                         return command.SuccessMessage;
                     }
                     else if (args[0].ToLower().Equals("off"))
                     { // Turn off colors
-                        if (!botClient.UseColoredMessages)
+                        if (!_botDataManager.UseColoredMessages)
                         { // already off
                             command.ResetCommandCooldown();
                             return "";
                         }
 
-                        botClient.UseColoredMessages = false;
+                        _botDataManager.UseColoredMessages = false;
                         _logger.LogInformation("Bot colored messages were turned OFF.");
                         return command.FailMessage; // FailMessage is here used for turning off
                     }

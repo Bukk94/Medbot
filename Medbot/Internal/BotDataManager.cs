@@ -28,6 +28,11 @@ namespace Medbot.Internal
 
         internal ExperienceSettings ExperienceSettings { get; private set; }
 
+        /// <summary>
+        /// Can bot use colored messages?
+        /// </summary>
+        public bool UseColoredMessages { get; set; }
+
         public BotDataManager()
         {
             _filesControl = new FilesControl();
@@ -40,6 +45,9 @@ namespace Medbot.Internal
             this.LoadBotSettings();
             this.LoadBotIntervals();
             this.BotDictionary = _filesControl.LoadBotDictionary();
+
+            // TODO: Make this configurable
+            UseColoredMessages = true;
         }
 
         private void CheckLoadedSettings()
