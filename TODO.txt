@@ -11,11 +11,14 @@
 
 ### NEW STUFF ###
 - Allow turn on/off bot's welcome/goodbye messages
+- Make colors default value configurable
+
 - Improve readme file with some docs how to setup the bot
 - Activate Exp & Point timer only if broadcaster is live
 - Command like !FollowerInfo to get follower info
 - Create separate project with own Twitch Helix API
 - Upload data to cloud for shared experience
+
 
 ### VERIFY ###
 - Sending whisper messages

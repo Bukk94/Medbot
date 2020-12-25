@@ -22,6 +22,11 @@ namespace Medbot.Commands
         private readonly BotDataManager _botDataManager;
         private readonly FollowersManager _followersManager;
 
+        /// <summary>
+        /// List of bot's commands
+        /// </summary>
+        public List<Command> CommandsList { get; private set; }
+
         // TODO: Stop using BotClient object
         public CommandsHandler(UsersManager usersManager, BotDataManager botDataManager, ExperienceManager experienceManager, BotClient bot)
         {
@@ -33,6 +38,18 @@ namespace Medbot.Commands
             _botDataManager = botDataManager;
 
             _followersManager = new FollowersManager();
+
+            InitializeCommands();
+        }
+
+        private void InitializeCommands()
+        {
+            CommandsList = _botDataManager.LoadCommands();
+
+            if (CommandsList == null)
+                botClient.SendChatMessage(_botDataManager.BotDictionary.CommandsNotFound);
+            else if (CommandsList.Count <= 0)
+                botClient.SendChatMessage(_botDataManager.BotDictionary.ZeroCommands);
         }
 
         /// <summary>
@@ -502,7 +519,7 @@ namespace Medbot.Commands
                         // Commands for normal users
 
                         List<string> usersCommands = new List<string>();
-                        foreach (Command com in botClient.CommandsList)
+                        foreach (Command com in CommandsList)
                         {
                             if (!com.ModeratorPermissionRequired && !com.BroadcasterOnly)
                                 usersCommands.Add(com.ToReadableFormat());
@@ -517,7 +534,7 @@ namespace Medbot.Commands
 
                         if (args[0].ToLower().Equals("mod") || args[0].ToLower().Equals("moderator"))
                         {
-                            foreach (Command com in botClient.CommandsList)
+                            foreach (Command com in CommandsList)
                             {
                                 if (com.ModeratorPermissionRequired && !com.BroadcasterOnly)
                                     usersCommands.Add(com.ToReadableFormat());
@@ -526,7 +543,7 @@ namespace Medbot.Commands
                         }
                         else if (args[0].ToLower().Equals("streamer") || args[0].ToLower().Equals("broadcaster") || args[0].ToLower().Equals("owner"))
                         {
-                            foreach (Command com in botClient.CommandsList)
+                            foreach (Command com in CommandsList)
                             {
                                 if (!com.ModeratorPermissionRequired && com.BroadcasterOnly)
                                     usersCommands.Add(com.ToReadableFormat());
@@ -634,7 +651,7 @@ namespace Medbot.Commands
                     }
 
                 case CommandHandlerType.Help:
-                    Command matchedCommand = botClient.CommandsList.FirstOrDefault(c => c.CommandFormat.Contains(args[0]));
+                    Command matchedCommand = CommandsList.FirstOrDefault(c => c.CommandFormat.Contains(args[0]));
                     if (matchedCommand == null)
                         return "";
 

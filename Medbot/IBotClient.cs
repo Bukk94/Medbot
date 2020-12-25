@@ -1,7 +1,5 @@
-﻿using Medbot.Commands;
-using Medbot.Events;
+﻿using Medbot.Events;
 using System;
-using System.Collections.Generic;
 
 namespace Medbot
 {
@@ -15,7 +13,6 @@ namespace Medbot
         event EventHandler<TimeSpan> OnUptimeTick;
         event EventHandler<OnMessageArgs> OnConsoleOuput;
 
-        List<Command> CommandsList { get; }
         bool IsConnectionAlive { get; }
         bool IsBotRunning { get; }
         string DeployedChannel { get; }

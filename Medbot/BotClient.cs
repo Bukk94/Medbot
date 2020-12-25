@@ -50,11 +50,6 @@ namespace Medbot
         /// Bool if the connection of the bot is alive
         /// </summary>
         public bool IsConnectionAlive => tcpClient != null ? tcpClient.Connected : false;
-
-        /// <summary>
-        /// List of bot's commands
-        /// </summary>
-        public List<Command> CommandsList { get; }
         #endregion
 
         #region Events
@@ -104,12 +99,6 @@ namespace Medbot
 
             _experienceManager = new ExperienceManager(_botDataManager, _usersManager, false);
             _commandsHandler = new CommandsHandler(_usersManager, _botDataManager, _experienceManager, this);
-            CommandsList = _botDataManager.LoadCommands();
-
-            if (CommandsList == null)
-                SendChatMessage(_botDataManager.BotDictionary.CommandsNotFound);
-            else if (CommandsList.Count <= 0)
-                SendChatMessage(_botDataManager.BotDictionary.ZeroCommands);
 
             this.readingTimer = new Timer(Reader_Timer_Tick, null, Timeout.Infinite, 200);
             this.uptimeTimer = new Timer(Uptime_Timer_Tick, null, Timeout.Infinite, 1000);
@@ -346,7 +335,7 @@ namespace Medbot
         private void RespondToCommand(User sender, string message)
         {
             // TODO: Fix this parsing and make it more efficient
-            var command = CommandsList.FirstOrDefault(cmd =>
+            var command = _commandsHandler.CommandsList.FirstOrDefault(cmd =>
             {
                 List<string> parsedMessageCommand = message.Split(' ').ToList();
                 string messageCmdName = parsedMessageCommand.FirstOrDefault();
