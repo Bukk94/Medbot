@@ -210,8 +210,9 @@ namespace Medbot
                 writer.WriteLine("JOIN #" + _botDataManager.Login.Channel);
                 writer.Flush();
 
-                // TODO: Make welcome message optional
-                //SendChatMessage(BotDictionary.WelcomeMessage);
+                if (_botDataManager.BotSettings.GreetOnBotJoining)
+                    SendChatMessage(_botDataManager.BotDictionary.WelcomeMessage);
+
                 _logger.LogInformation("Bot has successfully connected to Twitch account and joined the channel {channel}.", _botDataManager.Login.Channel);
 
                 return true;
@@ -234,8 +235,8 @@ namespace Medbot
 
             try
             {
-                // TODO: Make goodbye message optional
-                // SendChatMessage(BotDictionary.GoodbyeMessage);
+                if (_botDataManager.BotSettings.FarewellOnBotLeaving)
+                    SendChatMessage(_botDataManager.BotDictionary.GoodbyeMessage);
 
                 _usersManager.SaveData();
                 reader.Close();

@@ -46,8 +46,7 @@ namespace Medbot.Internal
             this.LoadBotIntervals();
             this.BotDictionary = _filesControl.LoadBotDictionary();
 
-            // TODO: Make this configurable
-            UseColoredMessages = true;
+            UseColoredMessages = BotSettings.UseColoredMessages;
         }
 
         private void CheckLoadedSettings()

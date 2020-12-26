@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{E99A
 		Samples\Commands.xml = Samples\Commands.xml
 		Samples\Dictionary.json = Samples\Dictionary.json
 		Samples\Ranks.txt = Samples\Ranks.txt
-		Samples\Settings.xml = Samples\Settings.xml
+		Samples\Settings.json = Samples\Settings.json
 	EndProjectSection
 EndProject
 Global

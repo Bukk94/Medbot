@@ -25,7 +25,10 @@
    "Settings": {
       "LeaderboardTopNumber": 5,
 	  "GambleWinPercentage": 20,
-	  "GambleBonusWinPercentage": 2
+	  "GambleBonusWinPercentage": 2,
+	  "GreetOnBotJoining": false,
+	  "FarewellOnBotLeaving": false,
+      "UseColoredMessages": false
    },
    "Blacklist": [
 	  "Medvedibot",
