@@ -38,19 +38,19 @@ namespace Medbot.Points
         public int TimerIntervalMs => (int)TimerInterval.TotalMilliseconds;
 
         /// <summary>
-        /// Currency name (e.g. gold)
+        /// Currency name (e.g. 'gold')
         /// </summary>
-        public static string CurrencyName { get; set; } = string.Empty;
+        public string CurrencyName => _currencySettings.Name;
 
         /// <summary>
         /// Currency plural name
         /// </summary>
-        public static string CurrencyNamePlural { get; set; } = string.Empty;
+        public string CurrencyNamePlural => _currencySettings.Plural;
 
         /// <summary>
-        /// Currency units (e.g. G)
+        /// Currency units (e.g. 'G')
         /// </summary>
-        public static string CurrencyUnits { get; set; } = string.Empty;
+        public string CurrencyUnits => _currencySettings.Units;
         #endregion
 
         /// <summary>
@@ -63,11 +63,7 @@ namespace Medbot.Points
         {
             _logger = Logging.GetLogger<PointsManager>();
             _usersManager = usersManager;
-
             _currencySettings = botDataManager.CurrencySettings;
-            CurrencyName = _currencySettings.Name;
-            CurrencyNamePlural = _currencySettings.Plural;
-            CurrencyUnits = _currencySettings.Units;
 
             this.IsTimerRunning = false;
 

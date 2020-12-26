@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Medbot.Events;
 using Medbot.Internal;
@@ -22,7 +23,7 @@ namespace Medbot.ExpSystem
         /// <summary>
         /// List of all available ranks
         /// </summary>
-        internal static List<Rank> RankList { get; private set; }
+        internal List<Rank> RankList { get; private set; }
 
         /// <summary>
         /// If the Experience timer is running
@@ -104,6 +105,77 @@ namespace Medbot.ExpSystem
             _logger.LogInformation("Experience timer stopped.");
         }
 
+
+        // TODO: Maybe rework this method? It's doing check and rankup at the same time!
+        /// <summary>
+        /// Checks if the user is able to rank up, if yes, promote him to next rank
+        /// </summary>
+        /// <param name="user">User to check</param>
+        /// <returns>Return bool if user got new rank up</returns>
+        internal bool CheckUserRankUp(User user)
+        {
+            bool nullRank = user.UserRank == null;
+            Rank matchRank = RankList.Last(r => r.ExpRequired <= user.Experience);
+
+            if (matchRank != user.UserRank)
+            { // Gain new rank
+                user.UserRank = matchRank;
+
+                if (!nullRank) // Skip initiate null value (loading data from file)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns how much experience user needs to gain new rank
+        /// </summary>
+        /// <param name="user">User to check</param>
+        /// <returns>long value</returns>
+        public long ToNextUserRank(User user)
+        {
+            if (user.UserRank == null)
+                return 0;
+
+            Rank next = NextUserRank(user);
+            return next != null ? next.ExpRequired - user.Experience : 0;
+        }
+
+        /// <summary>
+        /// User's next rank
+        /// </summary>
+        /// <param name="user">User to check</param>
+        /// <returns>Return user's next rank as Rank object</returns>
+        public Rank NextUserRank(User user)
+        {
+            var rankIndex = RankList.IndexOf(user.UserRank);
+            return rankIndex + 1 < RankList.Count - 1 ? RankList[rankIndex + 1] : null;
+        }
+
+        /// <summary>
+        /// Gets time needed for user rankup
+        /// </summary>
+        /// <param name="user">User to check</param>
+        /// <param name="xpRate">Rate of gaining experiences</param>
+        /// <param name="interval">Experience timer interval</param>
+        /// <returns>Returns double value with 2 decimal places</returns>
+        public string TimeToNextUserRank(User user, int xpRate, TimeSpan interval)
+        {
+            //  exp / activeExp / (60/intervalMinutes) -> hours
+            //  exp / activeExp / (60/intervalMinutes) * 60 -> minutes
+
+            long nextRank = ToNextUserRank(user);
+            double hours = Math.Round((double)nextRank / xpRate / (60 / interval.TotalMinutes), 0);
+            double minutes = Math.Round((double)nextRank / xpRate / (60 / interval.TotalMinutes) * 60, 0) - (hours * 60);
+
+            if (hours <= 0)
+                return minutes + " min";
+            else if (minutes <= 0)
+                return hours + " h";
+
+            return String.Format("{0} h {1} min", hours, minutes);
+        }
+
         /// <summary>
         /// Award experience to users
         /// </summary>
@@ -129,7 +201,7 @@ namespace Medbot.ExpSystem
                 else // Reward idle
                     user.AddExperience(this.IdleExperienceReward);
 
-                bool newRank = user.CheckRankUp();
+                bool newRank = CheckUserRankUp(user);
                 if (newRank && !String.IsNullOrEmpty(_botDataManager.BotDictionary.NewRankMessage))
                     OnRankUp?.Invoke(this, new OnRankUpArgs { User = user, NewRank = user.UserRank });
 

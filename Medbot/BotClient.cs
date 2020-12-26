@@ -98,7 +98,7 @@ namespace Medbot
             _pointsManager = new PointsManager(_botDataManager, _usersManager, false);
 
             _experienceManager = new ExperienceManager(_botDataManager, _usersManager, false);
-            _commandsHandler = new CommandsHandler(_usersManager, _botDataManager, _experienceManager);
+            _commandsHandler = new CommandsHandler(_usersManager, _botDataManager, _experienceManager, _pointsManager);
             _commandsHandler.OnCommandResponse += CommandsHandler_OnCommandResponse;
 
             this.readingTimer = new Timer(Reader_Timer_Tick, null, Timeout.Infinite, 200);
@@ -382,6 +382,7 @@ namespace Medbot
         private User GetUserFromChat(string chatLine)
         {
             User sender = _usersManager.JoinUser(chatLine);
+            _experienceManager.CheckUserRankUp(sender);
             sender.ApplyBadges(Parsing.ParseBadges(chatLine));
             return sender;
         }

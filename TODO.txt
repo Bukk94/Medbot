@@ -4,8 +4,6 @@
 ### IMPROVEMENTS ###
 - Save user data as JSON instead of XML
 
-- Remove static classes and create instance managers
-
 - Improve command handling, maybe create separate commands for each and use polymorphism to call out the function (instead of ugly swiches...)
 
 ### NEW STUFF ###

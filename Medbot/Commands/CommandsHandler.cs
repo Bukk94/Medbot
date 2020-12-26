@@ -17,10 +17,11 @@ namespace Medbot.Commands
     internal class CommandsHandler
     {
         private readonly ILogger _logger;
-        private readonly ExperienceManager _experienceManager;
         private readonly UsersManager _usersManager;
         private readonly BotDataManager _botDataManager;
         private readonly FollowersManager _followersManager;
+        private readonly ExperienceManager _experienceManager;
+        private readonly PointsManager _pointsManager;
 
         /// <summary>
         /// List of bot's commands
@@ -29,15 +30,15 @@ namespace Medbot.Commands
 
         public event EventHandler<OnCommandResponseArgs> OnCommandResponse;
 
-        // TODO: Stop using BotClient object
-        public CommandsHandler(UsersManager usersManager, BotDataManager botDataManager, ExperienceManager experienceManager)
+        public CommandsHandler(UsersManager usersManager, BotDataManager botDataManager, ExperienceManager experienceManager, PointsManager pointsManager)
         {
             _logger = Logging.GetLogger<CommandsHandler>();
             _followersManager = new FollowersManager();
 
-            _experienceManager = experienceManager;
             _usersManager = usersManager;
             _botDataManager = botDataManager;
+            _experienceManager = experienceManager;
+            _pointsManager = pointsManager;
 
             InitializeCommands();
         }
@@ -112,11 +113,11 @@ namespace Medbot.Commands
                     if (sender == null)
                     { // Fail: 5 params: {0:Currency name} {1:Currency plural} {2:Currency units} {3:Number of points} {4:User to which add points}
                         _logger.LogError("Failed to execute command {command}. Sender is null!", command.CommandFormat);
-                        return String.Format(command.FailMessage, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits, "N/A", "N/A");
+                        return string.Format(command.FailMessage, _pointsManager.CurrencyName, _pointsManager.CurrencyNamePlural, _pointsManager.CurrencyUnits, "N/A", "N/A");
                     }
 
                     // Success: 4 params: {0:User} {1:Total} {2:Currency plural} {3:Currency units}
-                    return String.Format(command.SuccessMessage, sender.DisplayName, sender.Points, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits);
+                    return string.Format(command.SuccessMessage, sender.DisplayName, sender.Points, _pointsManager.CurrencyNamePlural, _pointsManager.CurrencyUnits);
 
                 case CommandHandlerType.Add:
                     // Add points,  !addhoney 50 Bukk94 |  2 input args {0:Number of points} {1:User to which add points}
@@ -146,14 +147,14 @@ namespace Medbot.Commands
                         _logger.LogInformation("Sucessfully added {total} points to {sender}.", args[0], args[1]);
 
                         // Success: 4 params: {0:User} {1:Number of points} {2:Currency plural} {3:Currency units}
-                        return String.Format(command.SuccessMessage, args[1], args[0], PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits);
+                        return string.Format(command.SuccessMessage, args[1], args[0], _pointsManager.CurrencyNamePlural, _pointsManager.CurrencyUnits);
                     }
                     catch (Exception ex)
                     {
                         _logger.LogError("Critical error occurred during points addition.\n{ex}", ex);
 
                         // Fail: 5 params: {0:Currency name} {1:Currency plural} {2:Currency units} {3:Number of points} {4:User to which add points} 
-                        return String.Format(command.FailMessage, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits, args[0], receiver != null ? receiver.DisplayName : args[1]);
+                        return string.Format(command.FailMessage, _pointsManager.CurrencyName, _pointsManager.CurrencyNamePlural, _pointsManager.CurrencyUnits, args[0], receiver != null ? receiver.DisplayName : args[1]);
                     }
 
                 case CommandHandlerType.Remove:
@@ -185,14 +186,14 @@ namespace Medbot.Commands
                         _logger.LogInformation("Sucessfully removed {total} points from {sender}.", args[0], args[1]);
 
                         // Success: 4 params: {0:User} {1:Number of points} {2:Currency plural} {3:Currency units}
-                        return String.Format(command.SuccessMessage, args[1], args[0], PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits);
+                        return string.Format(command.SuccessMessage, args[1], args[0], _pointsManager.CurrencyNamePlural, _pointsManager.CurrencyUnits);
                     }
                     catch (Exception ex)
                     {
                         _logger.LogError("Critical error occurred during points removal.\n{ex}", ex);
 
                         // Fail: 5 params: {0:Currency name} {1:Currency plural} {2:Currency units} {3:Number of points} {4:User to which remove points} 
-                        return String.Format(command.FailMessage, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits, args[0], targetUser != null ? targetUser.DisplayName : args[1]);
+                        return string.Format(command.FailMessage, _pointsManager.CurrencyName, _pointsManager.CurrencyNamePlural, _pointsManager.CurrencyUnits, args[0], targetUser != null ? targetUser.DisplayName : args[1]);
                     }
 
                 case CommandHandlerType.Trade:
@@ -217,20 +218,20 @@ namespace Medbot.Commands
                         _logger.LogInformation("{sender} successfully traded {count} points to {target}", sender.DisplayName, args[0], args[1]);
 
                         // Success: 6 params: {0:User} {1:Target User} {2:Number of points} {3:Currency units} {4:Currency name} {4: Currency plural}
-                        return String.Format(command.SuccessMessage, sender.DisplayName, target != null ? target.DisplayName : args[1],
-                                             args[0], PointsManager.CurrencyUnits, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural);
+                        return string.Format(command.SuccessMessage, sender.DisplayName, target != null ? target.DisplayName : args[1],
+                                             args[0], _pointsManager.CurrencyUnits, _pointsManager.CurrencyName, _pointsManager.CurrencyNamePlural);
                     }
                     catch (PointsException ex)
                     {
                         // Fail 5 params: {0:Currency name} {1:Currency plural} {2:Currency units} {3:Number of points} {4:User to which remove points} 
                         _logger.LogError("Error occurred during points trading.\n{ex}", ex);
-                        return String.Format(command.FailMessage, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits, args[0], args[1]);
+                        return string.Format(command.FailMessage, _pointsManager.CurrencyName, _pointsManager.CurrencyNamePlural, _pointsManager.CurrencyUnits, args[0], args[1]);
                     }
                     catch (Exception ex)
                     {
                         // Fail 5 params: {0:Currency name} {1:Currency plural} {2:Currency units} {3:Number of points} {4:User to which remove points} 
                         _logger.LogError("Critical error occurred during points trading.\n{ex}", ex);
-                        return String.Format(command.ErrorMessage, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits, args[0], args[1]);
+                        return string.Format(command.ErrorMessage, _pointsManager.CurrencyName, _pointsManager.CurrencyNamePlural, _pointsManager.CurrencyUnits, args[0], args[1]);
                     }
 
                 case CommandHandlerType.Gamble:
@@ -253,25 +254,25 @@ namespace Medbot.Commands
                         {
                             sender.AddPoints(gambleValue * 3);
                             _usersManager.SaveData();
-                            return String.Format(command.SuccessMessage, gambleValue * 3, PointsManager.CurrencyUnits, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural);
+                            return string.Format(command.SuccessMessage, gambleValue * 3, _pointsManager.CurrencyUnits, _pointsManager.CurrencyName, _pointsManager.CurrencyNamePlural);
                         }
                         else if (random > 100 - _botDataManager.BotSettings.GambleWinPercentage - _botDataManager.BotSettings.GambleBonusWinPercentage)
                         { // 79-98 - double reward
                             sender.AddPoints(gambleValue * 2);
                             _usersManager.SaveData();
-                            return String.Format(command.SuccessMessage, gambleValue * 2, PointsManager.CurrencyUnits, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural);
+                            return string.Format(command.SuccessMessage, gambleValue * 2, _pointsManager.CurrencyUnits, _pointsManager.CurrencyName, _pointsManager.CurrencyNamePlural);
                         }
 
                         // User lost
                         sender.RemovePoints(gambleValue);
                         _usersManager.SaveData();
-                        return String.Format(command.FailMessage, args[0], PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits);
+                        return string.Format(command.FailMessage, args[0], _pointsManager.CurrencyName, _pointsManager.CurrencyNamePlural, _pointsManager.CurrencyUnits);
                     }
                     catch (PointsException ex)
                     {
                         // Fail 4 params: {0: Number of points} {1:Currency Name} {2:Currency plural} {3:Currency units}
                         _logger.LogError("Error occurred during gamble command.\n{ex}", ex);
-                        return String.Format(command.ErrorMessage, args[0], PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits);
+                        return string.Format(command.ErrorMessage, args[0], _pointsManager.CurrencyName, _pointsManager.CurrencyNamePlural, _pointsManager.CurrencyUnits);
                     }
                     catch (Exception ex)
                     {
@@ -295,9 +296,13 @@ namespace Medbot.Commands
                             throw new NullReferenceException("Something went wrong, sender is null");
 
                         // Success: 5 params: {0:User} {1:rank level} {2: rank name} {3: user's XP} {4: XP needed to next level}
-                        return String.Format(command.SuccessMessage, sender.DisplayName,
-                                             sender.UserRank.RankLevel, sender.UserRank.RankName,
-                                             sender.Experience, sender.NextRank() != null ? sender.NextRank().ExpRequired.ToString() : "??");
+                        var xpToNextRank = _experienceManager.NextUserRank(sender)?.ExpRequired.ToString() ?? "??";
+                        return string.Format(command.SuccessMessage, 
+                                             sender.DisplayName,
+                                             sender.UserRank.RankLevel, 
+                                             sender.UserRank.RankName,
+                                             sender.Experience,
+                                             xpToNextRank);
                     }
                     catch (Exception ex)
                     {
@@ -316,7 +321,7 @@ namespace Medbot.Commands
                         if (sender == null)
                             throw new NullReferenceException("Something went wrong, sender is null");
 
-                        Rank nextRank = sender.NextRank();
+                        Rank nextRank = _experienceManager.NextUserRank(sender);
                         if (nextRank == null)
                             throw new RanksException("User's next rank is null");
 
@@ -324,8 +329,8 @@ namespace Medbot.Commands
                         return String.Format(command.SuccessMessage, sender.DisplayName,
                                             nextRank.RankLevel,
                                             nextRank.RankName,
-                                            sender.ToNextRank(),
-                                            sender.TimeToNextRank(_experienceManager.ActiveExperienceReward, _experienceManager.ExperienceTickInterval));
+                                            _experienceManager.ToNextUserRank(sender),
+                                            _experienceManager.TimeToNextUserRank(sender, _experienceManager.ActiveExperienceReward, _experienceManager.ExperienceTickInterval));
                     }
                     catch (RanksException ex)
                     {
@@ -335,7 +340,7 @@ namespace Medbot.Commands
                         if (sender == null)
                             return String.Format(command.FailMessage, "N/A", "N/A", "N/A", "N/A");
 
-                        Rank nextRank = sender.NextRank();
+                        Rank nextRank = _experienceManager.NextUserRank(sender);
                         return String.Format(command.FailMessage, sender.DisplayName,
                                              nextRank != null ? nextRank.RankLevel.ToString() : "N/A",
                                              nextRank != null ? nextRank.RankName : "N/A", sender.Experience);
@@ -348,7 +353,7 @@ namespace Medbot.Commands
                         if (sender == null)
                             return String.Format(command.FailMessage, "N/A", "N/A", "N/A", "N/A");
 
-                        Rank nextRank = sender.NextRank();
+                        Rank nextRank = _experienceManager.NextUserRank(sender);
                         return String.Format(command.ErrorMessage, sender.DisplayName,
                                              nextRank != null ? nextRank.RankLevel.ToString() : "N/A",
                                              nextRank != null ? nextRank.RankName : "N/A", sender.Experience);
@@ -376,7 +381,7 @@ namespace Medbot.Commands
                         else
                         {
                             receiver.AddExperience(long.Parse(args[0]));
-                            bool newRank = receiver.CheckRankUp();
+                            bool newRank = _experienceManager.CheckUserRankUp(receiver);
                             if (newRank && !string.IsNullOrEmpty(_botDataManager.BotDictionary.NewRankMessage)) 
                             {
                                 OnCommandResponse?.Invoke(this, new OnCommandResponseArgs
@@ -584,21 +589,21 @@ namespace Medbot.Commands
                                 throw new PointsException("Leaderboard doesn't contain any records");
 
                             // Success 3 params - {0: currency plural} {1: list of top points users} {2: list of top XP users} 
-                            return String.Format(command.SuccessMessage, PointsManager.CurrencyNamePlural,
+                            return String.Format(command.SuccessMessage, _pointsManager.CurrencyNamePlural,
                                                  String.Join(", ", FormLeaderboard(fullPointsLeaderboard)),
                                                  String.Join(", ", FormLeaderboard(fullXPLeaderboard)),
                                                  _botDataManager.BotSettings.LeaderboardTopNumber);
                         }
                         else
                         { // Form specific leaderboard
-                            if (args[0].ToLower().Equals(PointsManager.CurrencyName.ToLower()) || args[0].ToLower().Equals("points"))
+                            if (args[0].ToLower().Equals(_pointsManager.CurrencyName.ToLower()) || args[0].ToLower().Equals("points"))
                             {
                                 List<TempUser> fullLeaderboard = _botDataManager.GetPointsLeaderboard();
                                 if (fullLeaderboard.Count <= 0)
                                     throw new PointsException("Leaderboard doesn't contain any records");
 
                                 // Success 2 params - {0: currency plural} {1: list of top users} 
-                                return String.Format(command.SuccessMessage, PointsManager.CurrencyNamePlural, String.Join(", ", FormLeaderboard(fullLeaderboard)), _botDataManager.BotSettings.LeaderboardTopNumber);
+                                return string.Format(command.SuccessMessage, _pointsManager.CurrencyNamePlural, string.Join(", ", FormLeaderboard(fullLeaderboard)), _botDataManager.BotSettings.LeaderboardTopNumber);
                             }
                             else if (args[0].ToLower().Equals("xp") || args[0].ToLower().Equals("exp") || args[0].ToLower().Equals("level"))
                             {
@@ -613,7 +618,7 @@ namespace Medbot.Commands
                             { // Arguments doens't match
                                 command.ResetCommandCooldown();
                                 // Fail: 1 param - {0: currency name} {1: currency plural} {2: currency units}
-                                return String.Format(command.FailMessage, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits);
+                                return string.Format(command.FailMessage, _pointsManager.CurrencyName, _pointsManager.CurrencyNamePlural, _pointsManager.CurrencyUnits);
                             }
                         }
                     }
@@ -664,7 +669,7 @@ namespace Medbot.Commands
                         return "";
 
                     // {0: Points name} {1: Points plural} {2: Points units}
-                    return String.Format(matchedCommand.AboutMessage, PointsManager.CurrencyName, PointsManager.CurrencyNamePlural, PointsManager.CurrencyUnits);
+                    return string.Format(matchedCommand.AboutMessage, _pointsManager.CurrencyName, _pointsManager.CurrencyNamePlural, _pointsManager.CurrencyUnits);
             }
 
             return "Unknown internal handler";

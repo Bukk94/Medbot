@@ -150,8 +150,6 @@ namespace Medbot
                     user.ID = fileUserId != null ? long.Parse(fileUserId) : user.ID;
                     user.Points = long.Parse(userRecord.Parent.Attribute("Points").Value);
                     user.Experience = long.Parse(userRecord.Parent.Attribute("Experience").Value);
-                    user.CheckRankUp();
-
                     user.LastMessage = DateTime.TryParse(userRecord.Parent.Attribute("LastMessage").Value, out DateTime date) ? date : (DateTime?)null;
                 }
                 catch (Exception ex)
