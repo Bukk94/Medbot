@@ -1,6 +1,4 @@
-﻿using Medbot.Commands;
-using Medbot.Events;
-using System;
+﻿using System;
 using System.Timers;
 
 namespace Medbot.Internal
@@ -10,8 +8,6 @@ namespace Medbot.Internal
         private readonly Timer throttlingTimer;
         private readonly bool noCooldown;
         private bool cooldownActive;
-
-        internal event EventHandler<OnCommandThrottledArgs> OnCommandThrottled;
 
         internal TimeSpan ThrottlingInterval { get; }
 
@@ -39,7 +35,7 @@ namespace Medbot.Internal
         /// Determines if the command is allowed to be executed
         /// </summary>
         /// <returns>Bool if command is allowed to execute</returns>
-        internal bool AllowedToExecute(Command command)
+        internal bool AllowedToExecute()
         {
             if (this.noCooldown)
                 return true;
@@ -48,11 +44,7 @@ namespace Medbot.Internal
                 throttlingTimer.Start();
 
             if (this.cooldownActive)
-            {
-                // TODO: Improve this to not take command as a parameter
-                OnCommandThrottled?.Invoke(this, new OnCommandThrottledArgs { Command = command, Interval = ThrottlingInterval });
                 return false;
-            }
 
             this.cooldownActive = true;
             return true;

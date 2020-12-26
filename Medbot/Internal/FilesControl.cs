@@ -301,12 +301,15 @@ namespace Medbot
         /// </summary>
         private DictionaryStrings LoadDefaultDictionary()
         {
-            // TODO: Load proper defaults
             return new DictionaryStrings
             {
                 Yes = "Yes",
                 No = "No",
-                BotRespondMessages = new string[0]
+                BotRespondMessages = new string[0],
+                ZeroCommands = "I'm helpless! I have no active commands! Notify the broadcaster!",
+                InsufficientPermissions = "You do not have enough permissions to do that!",
+                NewRankMessage = "{0} got a new rank: [{1}] {2}!",
+                CommandsNotFound = "Something went wrong! I can't find the file with all the commands!"
             };
         }
 

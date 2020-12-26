@@ -92,7 +92,6 @@ namespace Medbot.Internal
             return _allSettings.Blacklist ?? new List<string>();
         }
 
-        // TODO: Delete this and create Commands list here
         internal List<Command> LoadCommands()
         {
             return _filesControl.LoadCommands();

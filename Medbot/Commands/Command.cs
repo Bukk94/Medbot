@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using Medbot.Enums;
+using Medbot.Events;
 using Medbot.Internal;
 using Medbot.Users;
 
@@ -61,6 +62,8 @@ namespace Medbot.Commands
         /// </summary>
         internal bool SendWhisper { get; }
 
+        internal event EventHandler<OnCommandThrottledArgs> OnCommandThrottled;
+
         internal Command(CommandType type, CommandHandlerType handler, string commandFormat, string about, string successMessage,
                          string failMessage, string errorMessage, bool broadcasterOnly, bool modPermission, bool sendWhisp, TimeSpan cd)
         {
@@ -80,7 +83,11 @@ namespace Medbot.Commands
 
         public bool IsUserAllowedToExecute(User sender)
         {
-            return CheckCommandPermissions(sender) && _throttler.AllowedToExecute(this);
+            var throttled = _throttler.AllowedToExecute() == false;
+            if (throttled)
+                OnCommandThrottled?.Invoke(this, new OnCommandThrottledArgs { Command = this, Interval = _throttler.ThrottlingInterval });
+
+            return CheckCommandPermissions(sender) && !throttled;
         }
 
         /// <summary>
