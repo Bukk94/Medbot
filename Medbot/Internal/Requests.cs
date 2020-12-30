@@ -1,56 +1,67 @@
-﻿using Medbot.Commands;
-using Medbot.LoggingNS;
-using Newtonsoft.Json;
+﻿using Medbot.Enums;
+using Medbot.Internal.Models;
 using Newtonsoft.Json.Linq;
 using System;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace Medbot.Internal {
-    public class Requests {
-
-        /// <summary>
-        /// Gets a Client ID from oAuth token
-        /// </summary>
-        /// <param name="token">oAuth token</param>
-        /// <returns>Returns string client ID</returns>
-        public async static Task<string> GetClientID(string token) {
-            if (String.IsNullOrEmpty(token)) {
-                Logging.LogError(typeof(CommandsHandler), System.Reflection.MethodBase.GetCurrentMethod(), "Token was null or empty");
-                return null;
-            }
-            if (token.Contains("oauth:"))
-                token = token.Replace("oauth:", "");
-
-            string url = String.Format("https://api.twitch.tv/kraken?oauth_token={0}", token);
-            var serverResponse = JsonConvert.DeserializeObject(await TwitchJsonRequest(url, "GET"));
-            dynamic parsedJson = JObject.Parse(serverResponse.ToString());
-            return parsedJson.token.client_id.Value;
-        }
+namespace Medbot.Internal
+{
+    public class Requests
+    {
+        internal static LoginDetails LoginDetails { get; set; }
 
         /// <summary>
         /// Gets JSON response of the given url
         /// </summary>
         /// <param name="url">URL to request JSON file</param>
         /// <param name="method">POST/GET HTTP method</param>
-        /// <returns></returns>
-        public async static Task<string> TwitchJsonRequest(string url, string method) {
-            var request = WebRequest.CreateHttp(url);
-            request.Method = method;
-            request.ContentType = "application/json";
+        /// <returns>Request results</returns>
+        public static async Task<string> TwitchJsonRequestAsync(string url, RequestType method, string payload = null)
+        {
+            if (string.IsNullOrEmpty(LoginDetails.ClientID))
+                throw new ArgumentException("Client ID is missing!");
+            
+            if (string.IsNullOrEmpty(LoginDetails.BotOAuth))
+                throw new ArgumentException("OAuth is missing!");
+            
+            if (method == RequestType.POST && string.IsNullOrEmpty(payload))
+                Console.WriteLine("WARNING: POST request was sent without payload!");
 
-            try {
-                WebResponse response = request.GetResponse();
-                StreamReader reader = new StreamReader(response.GetResponseStream());
-                var data = await reader.ReadToEndAsync();
-                return data;
-            } catch (Exception ex) {
-                Logging.LogError(typeof(CommandsHandler), System.Reflection.MethodBase.GetCurrentMethod(), ex.ToString());
-                return null;
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("Client-ID", LoginDetails.ClientID);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LoginDetails.BotOAuth);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            HttpResponseMessage response;
+            if (method == RequestType.POST && payload != null)
+            {
+                var payloadContent = new StringContent(payload);
+                payloadContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response = client.PostAsync(url, payloadContent).Result;
             }
+            else
+            {
+                response = await client.GetAsync(new Uri(url));
+            }
+
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+
+            return content;
+        }
+
+        internal async static Task<long> GetUserId(string username)
+        {
+            var data = await TwitchJsonRequestAsync($"https://api.twitch.tv/helix/users?login={username}", RequestType.GET);
+            return GetJsonData(data).First.Value<long>("id");
+        }
+
+        internal static JToken GetJsonData(string json)
+        {
+            var parsedJson = JObject.Parse(json);
+            return parsedJson["data"];
         }
     }
 }

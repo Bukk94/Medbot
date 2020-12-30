@@ -1,0 +1,4 @@
+﻿0		Rank 1
+100		Rank 2
+500		Rank 3
+1500	Rank 4

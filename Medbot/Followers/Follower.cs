@@ -1,37 +1,23 @@
-﻿using System;
-using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
 
-namespace Medbot.Followers {
-    public class Follower {
-        [JsonProperty(PropertyName = "type")]
-        public string Type { get; internal set; }
+namespace Medbot.Followers
+{
+    public class Follower
+    {
+        [JsonProperty(PropertyName = "from_id")]
+        public int FollowerId { get; internal set; }
 
-        [JsonProperty(PropertyName = "bio")]
-        public string Bio { get; internal set; }
+        [JsonProperty(PropertyName = "from_name")]
+        public string FollowerName { get; internal set; }
 
-        [JsonProperty(PropertyName = "logo")]
-        public string Logo { get; internal set; }
+        [JsonProperty(PropertyName = "to_id")]
+        public int ChannelId { get; internal set; }
 
-        /// <summary>
-        /// Gets Display name of the follower
-        /// </summary>
-        [JsonProperty(PropertyName = "display_name")]
-        public string DisplayName { get; internal set; }
+        [JsonProperty(PropertyName = "to_name")]
+        public string ChannelName { get; internal set; }
 
-        [JsonProperty(PropertyName = "created_at")]
-        public DateTime CreatedAt { get; internal set; }
-
-        [JsonProperty(PropertyName = "updated_at")]
-        public DateTime UpdatedAt { get; internal set; }
-
-        /// <summary>
-        /// Gets ID of the follower
-        /// </summary>
-        [JsonProperty(PropertyName = "_id")]
-        public string ID { get; internal set; }
-
-        [JsonProperty(PropertyName = "name")]
-        public string Name { get; internal set; }
+        [JsonProperty(PropertyName = "followed_at")]
+        public DateTime FollowedAt { get; internal set; }
     }
 }

@@ -1,14 +1,14 @@
-﻿using Medbot.Internal;
+﻿using Medbot.Enums;
 using System;
 
-namespace Medbot.Events {
-    public class OnMessageThrottledArgs : EventArgs {
-
+namespace Medbot.Events
+{
+    public class OnMessageThrottledArgs : EventArgs
+    {
         public ThrottleViolation Violation { get; set; }
 
         public string Message { get; set; }
 
         public TimeSpan Interval { get; set; }
-
     }
 }

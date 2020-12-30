@@ -3,84 +3,56 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
-using System.Reflection;
 using System.Text;
 using System.Threading;
 using Medbot.Commands;
 using Medbot.ExpSystem;
-using Medbot.LoggingNS;
 using Medbot.Internal;
 using Medbot.Events;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using Medbot.Points;
+using Medbot.Users;
+using Medbot.Enums;
+using Microsoft.Extensions.Logging;
 
-namespace Medbot {
-    internal class BotClient : IBotClient {
-        private static bool botMod;
-        private static List<User> onlineUsers;
+namespace Medbot
+{
+    public class BotClient : IBotClient
+    {
         private readonly string chatMessagePrefix;
-        private bool useColor;
+        private readonly Timer readingTimer;
+        private readonly Timer uptimeTimer;
+        private readonly Stopwatch uptime;
+        private readonly PointsManager _pointsManager;
+        private readonly ExperienceManager _experienceManager;
+        private readonly UsersManager _usersManager;
+        private readonly BotDataManager _botDataManager;
+        private readonly CommandsHandler _commandsHandler;
+        private readonly MessageThrottling throttler;
+        private readonly ILogger _logger;
         private TcpClient tcpClient;
         private StreamWriter writer;
         private StreamReader reader;
-        private Timer readingTimer;
-        private Points points;
-        private Experiences experience;
-        private List<Command> commands;
-        private MessageThrottling throttler;
 
-        // REMOVE: After compiling API
-        private MainFrame main;
-        
+        #region Properties
         /// <summary>
-        /// Gets list of currently online users
+        /// Channel on which bot is deployed on
         /// </summary>
-        public static List<User> OnlineUsers { get { return onlineUsers; } }
+        public string DeployedChannel => _botDataManager.Login.Channel;
 
         /// <summary>
-        /// Gets/Sets list of usernames that are blacklisted from receiveing points, EXP and ranks
+        /// Bool if the bot is running
         /// </summary>
-        public static List<string> UserBlacklist { get; set; }
+        public bool IsBotRunning { get; private set; }
 
         /// <summary>
-        /// Gets full path to settings XML file
+        /// Bool if the connection of the bot is alive
         /// </summary>
-        public static string SettingsPath { get { return Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Settings.xml"; } }
+        public bool IsConnectionAlive => tcpClient != null ? tcpClient.Connected : false;
+        #endregion
 
-        /// <summary>
-        /// Gets full path to file where are all users data stored
-        /// </summary>
-        public static string DataPath { get { return Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Users_data.xml"; } }
-
-        /// <summary>
-        /// Gets full path to file where are all users data stored
-        /// </summary>
-        public static string CommandsPath { get { return Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Commands.xml"; } }
-
-        /// <summary>
-        /// Gets full path to ranks file
-        /// </summary>
-        public static string RanksPath { get { return Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Ranks.txt"; } }
-
-        /// <summary>
-        /// Gets bool if bot has moderator permissions
-        /// </summary>
-        public static bool BotModeratorPermission { get { return botMod; } }
-
-        /// <summary>
-        /// Gets bool if the connection of the bot is alive
-        /// </summary>
-        public bool IsConnectionAlive { get { return tcpClient != null ? tcpClient.Connected : false; } }
-
-        /// <summary>
-        /// Gets/Sets bool if bot can use colored messages
-        /// </summary>
-        public bool UseColoredMessages { get { return this.useColor; } set { this.useColor = value; } }
-
-        /// <summary>
-        /// Gets list of bot's commands
-        /// </summary>
-        public List<Command> CommandsList { get { return this.commands; } }
-
+        #region Events
         /// <summary>
         /// Activates when command is received
         /// </summary>
@@ -106,72 +78,91 @@ namespace Medbot {
         /// </summary>
         public event EventHandler<OnUserArgs> OnUserDisconnected;
 
-        // TODO: Consider backup uploading
-        public BotClient(MainFrame main) {
-            // REMOVE: After compiling API
-            this.main = main;
-            /////////////////
+        /// <summary>
+        /// Activates when uptime timer ticks
+        /// </summary>
+        public event EventHandler<TimeSpan> OnUptimeTick;
 
-            useColor = true;
-            botMod = false;
-            throttler = new MessageThrottling();
+        public event EventHandler<OnMessageArgs> OnConsoleOuput;
+        #endregion
 
-            onlineUsers = new List<User>();
+        public BotClient()
+        {
+            _logger = Logging.GetLogger<BotClient>();
 
-            FilesControl.LoadLoginCredentials();
-            FilesControl.LoadUsersBlacklist();
-            FilesControl.LoadBotDictionary();
-            Dictionary<string, int> intervals = FilesControl.LoadBotIntervals();
+            _botDataManager = new BotDataManager();
+            _usersManager = new UsersManager(_botDataManager);
+            throttler = new MessageThrottling(_botDataManager);
 
-            chatMessagePrefix = String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :", Login.BotName, Login.Channel);
-            points = new Points(new TimeSpan(0, intervals["PointsInterval"], 0), new TimeSpan(0, 
-                                                intervals["PointsIdleTime"], 0), Convert.ToBoolean(intervals["PointsRewardIdles"]), 
-                                                intervals["PointsPerTick"], true);
+            chatMessagePrefix = string.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :", _botDataManager.Login.BotName, _botDataManager.Login.Channel);
+            _pointsManager = new PointsManager(_botDataManager, _usersManager, false);
 
-            experience = new Experiences(this, new TimeSpan(0, intervals["ExperienceInterval"], 0), 
-                                               intervals["ExperienceActiveExp"],
-                                               intervals["ExperienceIdleExp"], new TimeSpan(0, intervals["ExperienceIdleTime"], 0), true);
-            CommandsHandler.Initialize(experience, this);
-            commands = FilesControl.LoadCommands();
-
-            if (commands == null)
-                SendChatMessage(BotDictionary.CommandsNotFound);
-            else if (commands.Count <= 0)
-                SendChatMessage(BotDictionary.ZeroCommands);
+            _experienceManager = new ExperienceManager(_botDataManager, _usersManager, false);
+            _commandsHandler = new CommandsHandler(_usersManager, _botDataManager, _experienceManager, _pointsManager);
+            _commandsHandler.OnCommandResponse += CommandsHandler_OnCommandResponse;
 
             this.readingTimer = new Timer(Reader_Timer_Tick, null, Timeout.Infinite, 200);
+            this.uptimeTimer = new Timer(Uptime_Timer_Tick, null, Timeout.Infinite, 1000);
+            this.uptime = new Stopwatch();
+
+            SetupEvents();
+            // Task.Run(() => TestAPI()).Wait();
+        }
+
+        public async Task TestAPI()
+        {
+            var isLive = await IsBroadcasterLive();
+            var test = await Requests.TwitchJsonRequestAsync("https://api.twitch.tv/helix/users/follows?to_id=24395849&first=1", RequestType.GET);
+            var test2 = await Requests.TwitchJsonRequestAsync("https://api.twitch.tv/helix/streams?user_login=bukk94", RequestType.GET);
+        }
+
+        private void SetupEvents()
+        {
+            _usersManager.OnUserJoined += (sender, e) => OnUserJoined?.Invoke(sender, e);
+            _usersManager.OnUserDisconnected += (sender, e) => OnUserDisconnected?.Invoke(sender, e);
+            _experienceManager.OnRankUp += ExperienceManager_OnRankUp;
         }
 
         /// <summary>
         /// Starts the bot. Auto-connects to bot's Twitch account
         /// </summary>
-        public void Start() {
-            if (IsConnectionAlive) {
-                Console.WriteLine("Bot is already running");
+        public void Start()
+        {
+            if (IsConnectionAlive)
+            {
+                _logger.LogWarning("Cant start the bot! Bot is already running.");
                 return;
             }
 
-            Connect();
+            var connected = Connect();
+            if (!connected)
+                return;
+
             // Immediatelly start primary timer
             this.readingTimer.Change(0, 200);
 
             // Start points timer
-            if(!points.TimerRunning)
-                points.StartPointsTimer();
+            if (!_pointsManager.IsTimerRunning)
+                _pointsManager.StartPointsTimer();
 
             // Start experience timer
-            if (!experience.TimerRunning)
-                experience.StartExperienceTimer();
+            if (!_experienceManager.TimerRunning)
+                _experienceManager.StartExperienceTimer();
 
-            Console.WriteLine("Bot started");
+            this.uptime.Start();
+            this.uptimeTimer.Change(0, 1000);
+            IsBotRunning = true;
+            _logger.LogInformation("Bot started.");
         }
 
         /// <summary>
         /// Stops the bot. Disconnects bot from his Twitch account and discarding TCP connection
         /// </summary>
-        public void Stop() {
-            if (!IsConnectionAlive) {
-                Console.WriteLine("Bot is not running");
+        public void Stop()
+        {
+            if (!IsConnectionAlive)
+            {
+                _logger.LogWarning("Can't stop the bot! Bot is not running.");
                 return;
             }
 
@@ -179,80 +170,112 @@ namespace Medbot {
             Disconnect();
 
             // Shutdown points timer
-            if(points.TimerRunning)
-                points.StopPointsTimer();
+            if (_pointsManager.IsTimerRunning)
+                _pointsManager.StopPointsTimer();
 
             // Shutdown experience timer
-            if (experience.TimerRunning)
-                experience.StopExperienceTimer();
-            Console.WriteLine("Bot has been stopped");
+            if (_experienceManager.TimerRunning)
+                _experienceManager.StopExperienceTimer();
+
+            IsBotRunning = false;
+            this.uptime.Stop();
+            this.uptimeTimer.Change(Timeout.Infinite, 0);
+            _logger.LogInformation("Bot has been stopped.");
         }
 
         /// <summary>
         /// Connects the bot to the Twitch account
         /// </summary>
-        public void Connect() {
-            try {
-                var encoding = Encoding.GetEncoding(65001, new EncoderExceptionFallback(), new DecoderReplacementFallback(string.Empty));
+        public bool Connect()
+        {
+            if (!_botDataManager.Login.IsLoginCredentialsValid)
+            {
+                _logger.LogError("Can't connect the bot - Invalid credentials!");
+                return false;
+            }
+
+            try
+            {
+                //var encoding = Encoding.GetEncoding(65001, new EncoderExceptionFallback(), new DecoderReplacementFallback(string.Empty));
                 tcpClient = new TcpClient("irc.chat.twitch.tv", 6667);
-                reader = new StreamReader(tcpClient.GetStream(), encoding);
+                reader = new StreamReader(tcpClient.GetStream(), Encoding.UTF8);
                 writer = new StreamWriter(tcpClient.GetStream());
 
-                writer.WriteLine("PASS " + Login.BotOauthWithPrefix + Environment.NewLine +
-                                 "NICK " + Login.BotName + Environment.NewLine +
-                                 "USER " + Login.BotName + " 8 * :" + Login.BotName);
+                writer.WriteLine("PASS " + _botDataManager.Login.BotOAuthWithPrefix + Environment.NewLine +
+                                 "NICK " + _botDataManager.Login.BotName + Environment.NewLine +
+                                 "USER " + _botDataManager.Login.BotName + " 8 * :" + _botDataManager.Login.BotName);
                 writer.WriteLine("CAP REQ :twitch.tv/membership");
                 writer.WriteLine("CAP REQ :twitch.tv/commands");
                 writer.WriteLine("CAP REQ :twitch.tv/tags");
-                writer.WriteLine("JOIN #" + Login.Channel);
+                writer.WriteLine("JOIN #" + _botDataManager.Login.Channel);
                 writer.Flush();
 
-                SendChatMessage(BotDictionary.WelcomeMessage);
-                Logging.LogEvent(MethodBase.GetCurrentMethod(), "Bot has successfully connected to Twitch account and joined the channel " + Login.Channel);
-            } catch (Exception ex) {
-                Console.WriteLine("Error occured during connecting");
-                Console.WriteLine(ex);
-                Logging.LogError(this, MethodBase.GetCurrentMethod(), "Error occured during connecting: " + ex.ToString());
+                if (_botDataManager.BotSettings.GreetOnBotJoining)
+                    SendChatMessage(_botDataManager.BotDictionary.WelcomeMessage);
+
+                _logger.LogInformation("Bot has successfully connected to Twitch account and joined the channel {channel}.", _botDataManager.Login.Channel);
+
+                return true;
             }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occured during bot connecting.\n{ex}", ex);
+            }
+
+            return false;
         }
 
         /// <summary>
         /// Disconnects the bot from the Twitch account, clean OnlineUsers list and closes TCP connection
         /// </summary>
-        public void Disconnect() {
-            try {
-                SendChatMessage(BotDictionary.GoodbyeMessage);
+        public void Disconnect()
+        {
+            if (!IsBotRunning)
+                return;
 
-                FilesControl.SaveData();
+            try
+            {
+                if (_botDataManager.BotSettings.FarewellOnBotLeaving)
+                    SendChatMessage(_botDataManager.BotDictionary.GoodbyeMessage);
+
+                _usersManager.SaveData();
                 reader.Close();
                 writer.Close();
                 tcpClient.Close();
-                OnlineUsers.Clear();
-            } catch (Exception ex) {
-                Console.WriteLine(ex);
+                _usersManager.ClearOnlineUsers();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occurred during bot disconnection.\n{ex}", ex);
             }
         }
 
-        // TODO: Change this to console output after compiling API
-        private void ConsoleAppendText(string text) {
-            main.ConsoleAppendText(text);
+        private void ConsoleAppendText(string text)
+        {
+            _logger.LogInformation(text);
+            OnConsoleOuput?.Invoke(this, new OnMessageArgs { Message = text });
         }
 
         /// <summary>
-        /// Main bot's 'hearth'. Timer tick event
+        /// Main bot's 'heart'. Timer tick event
         /// </summary>
-        private void Reader_Timer_Tick(Object s) {
+        private void Reader_Timer_Tick(Object s)
+        {
             if (!IsConnectionAlive)
                 Connect();
 
-            try {
-                if (tcpClient.Available > 0 || reader.Peek() >= 0) {
+            // TODO: Bot should be initialized to online users as fast as possible
+            // Current JOIN event is quite slow and can result into bot's insufficient permissions
+            try
+            {
+                if (tcpClient.Available > 0 || reader.Peek() >= 0)
+                {
                     string chatLine = reader.ReadLine();
                     ConsoleAppendText(chatLine);
 
                     // User sent a message
-                    if (chatLine.Contains("PRIVMSG")) {
-
+                    if (chatLine.Contains("PRIVMSG"))
+                    {
                         // Get user, add him in OnlineUsers
                         User sender = GetUserFromChat(chatLine);
 
@@ -265,30 +288,44 @@ namespace Medbot {
                         string message = Parsing.ParseChatMessage(chatLine);
                         OnMessageReceived?.Invoke(this, new OnMessageArgs { Message = message, Sender = sender });
 
-                        if (message.Contains("@" + Login.BotFullTwitchName)) { // Bot is called by it's name, respond somehow
-                            // TODO: Bot respond
-                            SendChatMessage("Ahoj! Jsem MedBot, nový medvědí bot-pomocník. Momentálně jsem ještě ve vývoji, buďte na mě hodný :)");
-                        } else if (message.StartsWith("!")) { // Someone is trying to call an command
+                        if (message.ContainsInsensitive("@" + _botDataManager.Login.BotFullTwitchName))
+                        { // Bot is called by it's name, respond somehow
+                            SendChatMessage(_botDataManager.BotDictionary.BotRespondMessages.SelectOneRandom());
+                        }
+                        else if (message.StartsWith("!"))
+                        { // Someone is trying to call an command
                             RespondToCommand(sender, message);
                         }
-                    } else if (chatLine.Contains("JOIN")) {
+                    }
+                    else if (chatLine.Contains("JOIN"))
+                    {
                         // User joined, add him in OnlineUsers, apply user's badges
                         GetUserFromChat(chatLine);
-                    } else if (chatLine.Contains("PART")) {
+                    }
+                    else if (chatLine.Contains("PART"))
+                    {
                         // User disconnected
-                        UserDisconnect(Parsing.ParseUsername(chatLine));
-                    } else if (chatLine.Contains("USERSTATE")){
+                        _usersManager.DisconnectUser(Parsing.ParseUsername(chatLine));
+                    }
+                    else if (chatLine.Contains("USERSTATE"))
+                    {
+                        // TODO: What this does?!
                         GetUserFromChat(chatLine);
-                        CheckBotsPermissions(FindOnlineUser(Login.BotName));
-                    } else if (chatLine.Contains("PING :tmi.twitch.tv")) {
-                        // Request bot response on ping command, keep connection alive
+                        var botUser = _usersManager.FindOnlineUser(_botDataManager.Login.BotName);
+                        _botDataManager.UpdateBotPermissions(botUser);
+                    }
+                    else if (chatLine.Contains("PING :tmi.twitch.tv"))
+                    {
+                        // Request bot response on ping command, keeps connection alive
                         writer.WriteLine("PONG :tmi.twitch.tv");
                         writer.Flush();
                         ConsoleAppendText("PONG :tmi.twitch.tv");
                     }
                 }
-            } catch (Exception ex) {
-                Logging.LogError(this, MethodBase.GetCurrentMethod(), ex.ToString());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Fatal error occured in bot timer mechanism!\n{ex}", ex);
             }
         }
 
@@ -297,22 +334,28 @@ namespace Medbot {
         /// </summary>
         /// <param name="sender">User who sent the command</param>
         /// <param name="message">String command message send by user</param>
-        private void RespondToCommand(User sender, string message) {
-            var command = commands.FirstOrDefault(cmd => {
-                                                  List<string> parsedMessageCommand = message.Split(' ').ToList();
-                                                  string messageCmdName = parsedMessageCommand.FirstOrDefault();
-                                                  int commandArgs = cmd.CommandFormat.Split(' ').Count();
+        private void RespondToCommand(User sender, string message)
+        {
+            // TODO: Fix this parsing and make it more efficient
+            var command = _commandsHandler.CommandsList.FirstOrDefault(cmd =>
+            {
+                List<string> parsedMessageCommand = message.Split(' ').ToList();
+                string messageCmdName = parsedMessageCommand.FirstOrDefault();
+                int commandArgs = cmd.CommandFormat.Split(' ').Count();
 
-                                                  return cmd.CommandFormat.Contains(messageCmdName) && parsedMessageCommand.Count == commandArgs; });
+                return cmd.CommandFormat.Contains(messageCmdName) && parsedMessageCommand.Count == commandArgs;
+            });
 
-            if (command != null) {
-                if (!command.VerifyFormat(message)) { // Check permission, if user doesn't have permission, don't send anything
+            if (command != null)
+            {
+                if (!command.VerifyFormat(message))
+                { // Check permission, if user doesn't have permission, don't send anything
                     // FIX: Inform user about wrong command structure?
                     //DeliverCommandResults(command, command.CheckCommandPermissions(sender) ? command.GetAboutInfoMessage() : "", sender);
                     return;
                 }
 
-                string commandResult = command.Execute(sender, Parsing.ParseCommandValues(message));
+                string commandResult = _commandsHandler.ExecuteCommand(command, sender, Parsing.ParseCommandValues(message));
                 OnCommandReceived?.Invoke(this, new OnCommandReceivedArgs { Command = command });
                 DeliverCommandResults(command, commandResult, sender);
             }
@@ -321,14 +364,15 @@ namespace Medbot {
         /// <summary>
         /// Delivers command results to chat or whisper, depending on command's settings
         /// </summary>
-        /// <param name="cmd">Executed command</param>
-        /// <param name="result">Command results</param>
+        /// <param name="command">Executed command</param>
+        /// <param name="commandResultsToSend">Command results</param>
         /// <param name="sender">User who send the command</param>
-        private void DeliverCommandResults(Command cmd, string result, User sender) {
-            if (cmd.SendWhisper)
-                SendPrivateMessage(result, sender.Username);
+        private void DeliverCommandResults(Command command, string commandResultsToSend, User sender)
+        {
+            if (command.SendWhisper)
+                SendPrivateMessage(commandResultsToSend, sender.Username);
             else
-                SendChatMessage(result);
+                SendChatMessage(commandResultsToSend);
         }
 
         /// <summary>
@@ -336,41 +380,12 @@ namespace Medbot {
         /// </summary>
         /// <param name="chatLine">Full chat line</param>
         /// <returns>Sender user</returns>
-        public User GetUserFromChat(string chatLine) {
-            User sender = TryUserJoin(chatLine);
-            ApplyUserBadges(sender, Parsing.ParseBadges(chatLine));
+        private User GetUserFromChat(string chatLine)
+        {
+            User sender = _usersManager.JoinUser(chatLine);
+            _experienceManager.CheckUserRankUp(sender);
+            sender.ApplyBadges(Parsing.ParseBadges(chatLine));
             return sender;
-        }
-
-        /// <summary>
-        /// Tries to add user to Online List, if already exists, find him and return
-        /// </summary>
-        /// <param name="chatLine">Full chat line</param>
-        /// <returns>Sender user</returns>
-        private User TryUserJoin(string chatLine) {
-            string user = Parsing.ParseUsername(chatLine);
-
-            if (!onlineUsers.Any(u => u.Username == user)) { // User is not in the list
-                User newUser = new User(user);
-
-                FilesControl.LoadUserData(ref newUser);
-                onlineUsers.Add(newUser);
-
-                OnUserJoined?.Invoke(this, new OnUserArgs { User = newUser });
-                Console.WriteLine("User " + user + " JOINED");
-                return newUser;
-            }
-
-            return onlineUsers.Find(u => u.Username.Equals(user));
-        }
-
-        /// <summary>
-        /// Applies user badges to User's object
-        /// </summary>
-        /// <param name="user">User which should be given the badges</param>
-        /// <param name="badges">List of badges</param>
-        private void ApplyUserBadges(User user, List<string> badges) {
-            user.ApplyBadges(badges);
         }
 
         /// <summary>
@@ -378,8 +393,10 @@ namespace Medbot {
         /// </summary>
         /// <param name="user">User to check</param>
         /// <param name="chatLine">PRIVMSG chat line containing Display name</param>
-        private void CheckUserDisplayName(User user, string chatLine) {
-            if (user.Username.Equals(user.DisplayName)) {
+        private void CheckUserDisplayName(User user, string chatLine)
+        {
+            if (user.Username.Equals(user.DisplayName))
+            {
                 string displayName = Parsing.ParseDisplayName(chatLine);
                 if (!String.IsNullOrEmpty(displayName))
                     user.DisplayName = displayName;
@@ -387,34 +404,11 @@ namespace Medbot {
         }
 
         /// <summary>
-        /// User disconnected, remove from OnlineUsers and save all points
-        /// </summary>
-        /// <param name="user"></param>
-        private void UserDisconnect(string user) {
-            User disconnectingUser = FindOnlineUser(user);
-            if (disconnectingUser == null)
-                return;
-
-            FilesControl.SaveData();
-            onlineUsers.RemoveAll(u => u.Username == user);
-            OnUserDisconnected?.Invoke(this, new OnUserArgs { User = disconnectingUser });
-            Console.WriteLine("User " + user + " LEFT");
-        }
-
-        /// <summary>
-        /// Finds user from Online Users list by its name
-        /// </summary>
-        /// <param name="username">Username to find</param>
-        /// <returns>User object or null</returns>
-        public static User FindOnlineUser(string username) {
-            return OnlineUsers.Find(u => u.Username.Equals(username.ToLower()));
-        }
-
-        /// <summary>
         /// Sends chat message via bot
         /// </summary>
         /// <param name="msg">String message to send</param>
-        public void SendChatMessage(string msg) {
+        public void SendChatMessage(string msg)
+        {
             SendChatMessage(msg, false);
         }
 
@@ -422,35 +416,42 @@ namespace Medbot {
         /// Sends chat message via bot
         /// </summary>
         /// <param name="msg">String message to send</param>
-        public void SendChatMessage(string msg, bool isCommand) {
+        public void SendChatMessage(string msg, bool isCommand)
+        {
+            if (string.IsNullOrEmpty(msg))
+                return;
+
             // :sender!sender@sender.tmi.twitch.tv PRIVMSG #channel :message
-            if (!IsConnectionAlive) {
-                Console.WriteLine("Cannot send chat message, connection is NOT alive");
+            if (!IsConnectionAlive)
+            {
+                _logger.LogWarning("Cannot send chat message, connection is NOT alive! Message '{msg}' was not send.", msg);
                 return;
             }
+
             if (!throttler.AllowToSendMessage(msg))
                 return;
 
-            writer.WriteLine(String.Format("{0}{1}{2}", chatMessagePrefix, useColor && !isCommand ? "/me " : "", msg));
+            writer.WriteLine(String.Format("{0}{1}{2}", chatMessagePrefix, _botDataManager.UseColoredMessages && !isCommand ? "/me " : "", msg));
             writer.Flush();
             ConsoleAppendText(chatMessagePrefix + msg);
             OnMessageSent?.Invoke(this, new OnMessageArgs { Message = msg });
         }
-
-        
 
         /// <summary>
         /// Sends whisper to user via bot
         /// </summary>
         /// <param name="msg">String whisp message to send</param>
         /// <param name="user">User where whisper should be send</param>
-        public void SendPrivateMessage(string msg, string user) {
+        public void SendPrivateMessage(string msg, string user)
+        {
             // :sender!sender@sender.tmi.twitch.tv PRIVMSG #channel :/w user message
             // User must be present in the chat room! Otherwise whisp won't be sent
-            if (!IsConnectionAlive) {
-                Console.WriteLine("Cannot send whisp message, connection is NOT alive");
+            if (!IsConnectionAlive)
+            {
+                _logger.LogWarning("Cannot send whisper message, connection is NOT alive! Whisper '{msg}' to {user} was not send.", user, msg);
                 return;
             }
+
             if (!throttler.AllowToSendMessage(msg))
                 return;
 
@@ -459,25 +460,31 @@ namespace Medbot {
             writer.WriteLine(String.Format("{0}/w {1} {2}", chatMessagePrefix, user.ToLower(), msg));
             writer.Flush();
             ConsoleAppendText(String.Format("{0}/w {1} {2}", chatMessagePrefix, user.ToLower(), msg));
-            Console.WriteLine("Private message sent");
         }
 
-        /// <summary>
-        /// Saves all online users points
-        /// </summary>
-        public void SaveData() {
-            FilesControl.SaveData();
+        private async Task<bool> IsBroadcasterLive()
+        {
+            // https://api.twitch.tv/helix/streams?user_login=Bukk94
+            // https://api.twitch.tv/helix/streams?user_id=5798794897
+            var data = await Requests.TwitchJsonRequestAsync($"https://api.twitch.tv/helix/streams?user_login={_botDataManager.Login.Channel}", RequestType.GET);
+
+            return Requests.GetJsonData(data)?.Any() == true;
         }
 
-        /// <summary>
-        /// Updates class's static variable BotModeratorPermission
-        /// </summary>
-        /// <param name="botObject">Bot's user object</param>
-        private void CheckBotsPermissions(User botObject) {
-            if (botObject == null || botObject.Moderator == botMod) // Do nothing if botObject is null or permissions were not changed
-                return;
-            
-            botMod = botObject.Moderator;
+        private void Uptime_Timer_Tick(Object sender)
+        {
+            OnUptimeTick?.Invoke(this, uptime.Elapsed);
+        }
+
+        private void ExperienceManager_OnRankUp(object sender, OnRankUpArgs e)
+        {
+            SendChatMessage(String.Format(_botDataManager.BotDictionary.NewRankMessage, e.User.DisplayName, e.NewRank.RankLevel, e.NewRank.RankName));
+        }
+
+        private void CommandsHandler_OnCommandResponse(object sender, OnCommandResponseArgs e)
+        {
+            if (!string.IsNullOrEmpty(e.Message))
+                SendChatMessage(e.Message, e.IsResponseACommand);
         }
     }
 }

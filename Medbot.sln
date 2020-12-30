@@ -1,9 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medbot", "Medbot\Medbot.csproj", "{D2371013-88B0-452D-B0E3-9FDA00B1B29D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medbot_UI", "Medbot_UI\Medbot_UI.csproj", "{D012C868-69F1-4A3E-8A4E-C402A673456B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medbot_CLI", "Medbot_CLI\Medbot_CLI.csproj", "{629980FC-F780-449C-B561-49CFCEB20C09}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{5D0DE9CB-1900-41DA-95E5-C40EEBE17F9C}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		TODO.txt = TODO.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{E99ACD91-0A5C-464F-9B9D-921BC2D83A0C}"
+	ProjectSection(SolutionItems) = preProject
+		Samples\Commands.xml = Samples\Commands.xml
+		Samples\Dictionary.json = Samples\Dictionary.json
+		Samples\Ranks.txt = Samples\Ranks.txt
+		Samples\Settings.json = Samples\Settings.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +33,22 @@ Global
 		{D2371013-88B0-452D-B0E3-9FDA00B1B29D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2371013-88B0-452D-B0E3-9FDA00B1B29D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2371013-88B0-452D-B0E3-9FDA00B1B29D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D012C868-69F1-4A3E-8A4E-C402A673456B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D012C868-69F1-4A3E-8A4E-C402A673456B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D012C868-69F1-4A3E-8A4E-C402A673456B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D012C868-69F1-4A3E-8A4E-C402A673456B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{629980FC-F780-449C-B561-49CFCEB20C09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{629980FC-F780-449C-B561-49CFCEB20C09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{629980FC-F780-449C-B561-49CFCEB20C09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{629980FC-F780-449C-B561-49CFCEB20C09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E99ACD91-0A5C-464F-9B9D-921BC2D83A0C} = {5D0DE9CB-1900-41DA-95E5-C40EEBE17F9C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {37ACAD0C-CDCF-4803-8DE1-D07723C9F1DA}
 	EndGlobalSection
 EndGlobal
